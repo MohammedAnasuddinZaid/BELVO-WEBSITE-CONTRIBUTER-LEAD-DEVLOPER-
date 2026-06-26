@@ -254,7 +254,7 @@ export default function ServicesSection({ id }: Props) {
             Let's talk about which services are right for your business. Book a free consultation with our team.
           </p>
           <button
-            style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "10px", padding: "14px 40px", background: "linear-gradient(135deg,#7B2FBE,#9D4EDD)", border: "none", borderRadius: "8px", color: "#ffffff", fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: "0.82rem", letterSpacing: "0.18em", textTransform: "uppercase", cursor: "pointer", boxShadow: "0 0 32px rgba(130,40,200,0.35)", transition: "box-shadow 0.3s, transform 0.2s", width: "100%", maxWidth: "360px" }}
+            style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "8px", padding: "10px 28px", background: "linear-gradient(135deg,#7B2FBE,#9D4EDD)", border: "none", borderRadius: "8px", color: "#ffffff", fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: "0.75rem", letterSpacing: "0.18em", textTransform: "uppercase", cursor: "pointer", boxShadow: "0 0 24px rgba(130,40,200,0.3)", transition: "box-shadow 0.3s, transform 0.2s" }}
             onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 0 52px rgba(157,78,221,0.55)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
             onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 0 32px rgba(130,40,200,0.35)"; e.currentTarget.style.transform = "translateY(0)"; }}
           >
