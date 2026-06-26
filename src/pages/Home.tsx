@@ -7,7 +7,7 @@ import Footer from "@/sections/Footer";
 import UnderConstruction from "@/sections/UnderConstruction";
 import ServicesSection from "@/sections/ServicesSection";
 import PortfolioSection from "@/sections/PortfolioSection";
-import Works from "@/sections/Works";
+
 import TeamSection from "@/sections/TeamSection";
 import About from "@/sections/About";
 
