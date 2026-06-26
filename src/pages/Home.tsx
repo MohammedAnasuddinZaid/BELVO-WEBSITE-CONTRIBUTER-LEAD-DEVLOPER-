@@ -174,14 +174,15 @@ export default function Home() {
               <ArrowUpRight size={15} strokeWidth={2.5} />
             </button>
 
-            <Link
-              href="/services"
+            <button
+              onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
               data-testid="button-hero-services"
               className="inline-flex items-center gap-2.5 px-8 py-3.5 font-semibold text-sm tracking-[0.12em] uppercase"
               style={{
                 background: "var(--belvo-bg-card)",
                 border: "1px solid var(--belvo-border-card)",
                 borderRadius: "8px", color: "var(--belvo-text-1)",
+                cursor: "pointer",
                 transition: "background 0.3s, border-color 0.3s",
               }}
               onMouseEnter={e => {
@@ -195,13 +196,13 @@ export default function Home() {
             >
               <Play size={13} fill="currentColor" strokeWidth={0} />
               View Services
-            </Link>
+            </button>
           </motion.div>
         </div>
       </div>
 
       <About />
-      <UnderConstruction id="services"     number="02" title="Services"                  glowSide="left"   />
+      <ServicesSection id="services" />
       <UnderConstruction id="why-belvo"    number="03" title="Why Choose BELVO"          glowSide="center" />
       <UnderConstruction id="process"      number="04" title="Our Process"               glowSide="right"  />
       <UnderConstruction id="portfolio"    number="05" title="Portfolio / Featured Work"  glowSide="left"   />
