@@ -7,7 +7,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 const NAV_LINKS = [
   { name: "Home",     href: "/" },
   { name: "About",    href: "/#about" },
-  { name: "Services", href: "/#services" },
+  { name: "Services", href: "/services" },
   { name: "Works",    href: "/#works" },
   { name: "Careers",  href: "/careers" },
   { name: "Blogs",    href: "/blogs" },
