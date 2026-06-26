@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { INTENTS, FALLBACK, GREETING } from "@/lib/chatbot-knowledge";
+import { INTENTS, FALLBACKS, GREETINGS, GREETING_KEYWORDS, type Answer } from "@/lib/chatbot-knowledge";
 
 interface Message {
   text: string;
@@ -8,29 +8,79 @@ interface Message {
   link?: { label: string; href: string };
 }
 
-function findAnswer(input: string) {
+function tokenize(text: string): string[] {
+  return text.toLowerCase().replace(/[^a-z0-9\s]/g, "").split(/\s+/).filter(Boolean);
+}
+
+function isGreeting(input: string): boolean {
+  const tokens = tokenize(input);
+  if (tokens.length > 6) return false;
   const lower = input.toLowerCase();
-  let best: { intent: typeof INTENTS[number]; score: number } | null = null;
+  for (const kw of GREETING_KEYWORDS) {
+    if (lower.includes(kw)) return true;
+  }
+  const greetingTokens = new Set(["hello", "hi", "hey", "greetings", "howdy", "sup", "yo", "heyo"]);
+  const matchCount = tokens.filter((t) => greetingTokens.has(t)).length;
+  return matchCount >= 1 && tokens.length <= 3;
+}
+
+function wordsContainPhrase(words: string[], phrase: string): boolean {
+  const phraseWords = phrase.toLowerCase().split(/\s+/);
+  for (let i = 0; i <= words.length - phraseWords.length; i++) {
+    let match = true;
+    for (let j = 0; j < phraseWords.length; j++) {
+      if (words[i + j] !== phraseWords[j]) { match = false; break; }
+    }
+    if (match) return true;
+  }
+  return false;
+}
+
+function findAnswer(input: string): Answer | null {
+  const words = tokenize(input);
+  if (words.length === 0) return null;
+
+  let best: { answer: Answer; score: number } | null = null;
 
   for (const intent of INTENTS) {
     let score = 0;
     for (const kw of intent.keywords) {
-      const kwLower = kw.toLowerCase();
-      if (lower.includes(kwLower)) {
-        score += kwLower.split(" ").length;
+      const kwWords = kw.toLowerCase().split(/\s+/);
+      if (kwWords.length === 1) {
+        if (words.includes(kwWords[0])) score += 1;
+      } else {
+        if (wordsContainPhrase(words, kw)) score += kwWords.length;
       }
     }
     if (score > 0 && (!best || score > best.score)) {
-      best = { intent, score };
+      best = { answer: intent.answer, score };
     }
   }
 
-  return best?.intent.answer ?? null;
+  return best?.answer ?? null;
+}
+
+function randomItem<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+let fallbackIndex = 0;
+function nextFallback(): string {
+  const msg = FALLBACKS[fallbackIndex % FALLBACKS.length];
+  fallbackIndex++;
+  return msg;
+}
+
+let greetingIndex = 0;
+function nextGreeting(): string {
+  const msg = GREETINGS[greetingIndex % GREETINGS.length];
+  greetingIndex++;
+  return msg;
 }
 
 export default function ChatBot() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([{ text: GREETING, isUser: false }]);
+  const [messages, setMessages] = useState<Message[]>([{ text: nextGreeting(), isUser: false }]);
   const [input, setInput] = useState("");
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -53,9 +103,13 @@ export default function ChatBot() {
       setTimeout(() => {
         setMessages((m) => [...m, { text: answer.text, isUser: false, link: answer.link }]);
       }, 400);
+    } else if (isGreeting(text)) {
+      setTimeout(() => {
+        setMessages((m) => [...m, { text: nextGreeting(), isUser: false }]);
+      }, 400);
     } else {
       setTimeout(() => {
-        setMessages((m) => [...m, { text: FALLBACK, isUser: false }]);
+        setMessages((m) => [...m, { text: nextFallback(), isUser: false }]);
       }, 400);
     }
   };

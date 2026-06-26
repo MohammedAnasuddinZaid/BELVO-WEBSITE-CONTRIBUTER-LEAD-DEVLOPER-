@@ -10,15 +10,15 @@ export interface Intent {
 
 export const INTENTS: Intent[] = [
   {
-    keywords: ["who are you", "what is belvo", "about", "tell me about", "company", "agency"],
+    keywords: ["who are you", "what is belvo", "tell me about", "about company", "about agency"],
     answer: { text: "BELVO is a premium full-service creative agency founded by Hrishikesh Mishra. We help businesses scale globally by building brands from scratch — covering everything from branding and web development to performance marketing and influencer outreach. Our motto: 'We build brands that dominate.' We've worked with 100+ clients across 13 industries." },
   },
   {
-    keywords: ["service", "what do you do", "offer", "capability"],
+    keywords: ["services", "what do you do", "what you offer", "service", "capabilities"],
     answer: { text: "We offer 14 services: SEO Digital Marketing, Brand Outreach & PR, Branding, Social Media Management, 3D & CGI, Animation & VFX, Graphics Designing, Web Development, E-Commerce Management, Performance Marketing, Influencer Marketing, App Development, Software Development, and CRM & Automation. Whatever your brand needs, we've got you covered." },
   },
   {
-    keywords: ["web development", "website", "web dev"],
+    keywords: ["web development", "website", "web dev", "web design"],
     answer: { text: "Our Web Development team builds fast, responsive websites and web apps using modern stacks (React, Next.js, Tailwind, and more). We handle everything from brand websites to SaaS dashboards to e-commerce platforms." },
   },
   {
@@ -30,15 +30,15 @@ export const INTENTS: Intent[] = [
     answer: { text: "Our branding service covers naming, logo design, complete brand identity systems, brand guides, and visual language. We craft brands that stop people mid-scroll." },
   },
   {
-    keywords: ["social media", "smm", "content", "instagram", "linkedin"],
+    keywords: ["social media", "smm", "content strategy", "instagram", "linkedin"],
     answer: { text: "We offer data-driven social media strategy, content creation, community management, and platform-specific tactics across Instagram, LinkedIn, and more. Our team helps brands build real engagement." },
   },
   {
-    keywords: ["seo", "digital marketing", "search engine", "organic"],
+    keywords: ["seo", "digital marketing", "search engine", "organic traffic"],
     answer: { text: "Our SEO & Digital Marketing service optimizes your digital presence to rank higher on search engines and drive sustainable organic traffic — through keyword strategy, on-page/off-page SEO, and content marketing." },
   },
   {
-    keywords: ["performance marketing", "paid ads", "google ads", "meta ads", "ppc", "roi"],
+    keywords: ["performance marketing", "paid ads", "google ads", "meta ads", "ppc", "roas"],
     answer: { text: "We run data-driven paid media campaigns across Google, Meta, and other platforms to maximize your ROI and ROAS. Every dollar is optimized for results." },
   },
   {
@@ -46,7 +46,7 @@ export const INTENTS: Intent[] = [
     answer: { text: "We connect brands with macro to micro influencers and UGC creators for authentic campaigns that drive real engagement and conversions." },
   },
   {
-    keywords: ["ecommerce", "e-commerce", "shopify", "woocommerce"],
+    keywords: ["ecommerce", "e commerce", "shopify", "woocommerce"],
     answer: { text: "We offer end-to-end e-commerce management — from store setup and product listings to conversion rate optimization and scaling strategies." },
   },
   {
@@ -54,15 +54,15 @@ export const INTENTS: Intent[] = [
     answer: { text: "We implement and optimize CRM systems and workflow automation (Zapier, HubSpot, etc.) to streamline your operations and improve customer retention." },
   },
   {
-    keywords: ["graphic design", "graphics", "visual", "creative"],
+    keywords: ["graphic design", "graphics", "visual"],
     answer: { text: "Our graphics team creates marketing creatives, social graphics, packaging designs, print materials, and UI graphics that make your brand stand out." },
   },
   {
-    keywords: ["3d", "cgi", "animation", "vfx", "motion"],
+    keywords: ["3d", "cgi", "animation", "vfx", "motion graphics"],
     answer: { text: "We produce hyper-realistic 3D visuals, CGI for products and architecture, motion graphics, visual effects, and 2D/3D explainer videos." },
   },
   {
-    keywords: ["software", "saas", "custom software", "api"],
+    keywords: ["software development", "saas", "custom software", "api"],
     answer: { text: "We build custom software, SaaS platforms, enterprise solutions, APIs, and backend systems tailored to your business needs." },
   },
   {
@@ -70,11 +70,11 @@ export const INTENTS: Intent[] = [
     answer: { text: "Our Brand Outreach & PR service crafts compelling narratives and pitches to publications and media houses to get your brand the coverage it deserves." },
   },
   {
-    keywords: ["team", "who works", "founder", "hrishikesh", "people"],
+    keywords: ["team", "who works", "founder", "hrishikesh"],
     answer: { text: "BELVO is led by founder & CEO Hrishikesh Mishra. Our team spans Web Development (10), App Development (7), Business & Data Analytics (5), Graphic Design (4), and Administration. We're a hungry, creative crew that's worked with 100+ clients." },
   },
   {
-    keywords: ["contact", "email", "reach", "get in touch"],
+    keywords: ["contact", "email", "reach", "get in touch", "contact us"],
     answer: { text: "You can reach us at contact.belvo@gmail.com or info.belvo@gmail.com. We're active on Instagram (@belvo_official) and LinkedIn (belvo.buzz). Expect a reply within 24 hours." },
   },
   {
@@ -98,11 +98,11 @@ export const INTENTS: Intent[] = [
     answer: { text: "We're hiring! Open positions: Social Media Management, Digital Marketing, Business Analyst, Web Developers, App Developers, HR, and Software Developers. Apply through our Careers page." },
   },
   {
-    keywords: ["portfolio", "client", "work", "project", "brands worked"],
+    keywords: ["portfolio", "client", "project", "brands worked", "clients"],
     answer: { text: "We've worked with 96+ brands across 13 industries including skincare, fashion, food & beverage, cafes, edtech, fintech, tech startups, jewellery, interior design, travel, healthcare, and salon/spa. Notable clients include Bewakoof, The Habitat Cafe, Fasset, Masia School, and many more." },
   },
   {
-    keywords: ["blog", "article", "read", "content"],
+    keywords: ["blog", "article", "read", "blogs"],
     answer: { text: "Our blog covers Marketing, Branding, Tech, Agency Life, and Case Studies. Founder-approved posts will appear soon — stay tuned!" },
   },
   {
@@ -118,23 +118,26 @@ export const INTENTS: Intent[] = [
     answer: { text: "Our process section is coming soon (section 04). Generally, we start with a deep discovery call, then move to strategy, creative execution, review, and launch — with you involved every step of the way." },
   },
   {
-    keywords: ["testimonial", "review", "feedback"],
+    keywords: ["testimonial", "review", "feedback", "reviews"],
     answer: { text: "Client testimonials are coming soon (section 06). In the meantime, 100+ clients trust us — and our portfolio speaks for itself." },
-  },
-  {
-    keywords: ["hello", "hi", "hey", "greetings", "good morning", "good evening"],
-    answer: { text: "Hey there! 👋 Welcome to BELVO. I'm your virtual assistant. Ask me anything about our services, team, portfolio, careers, or how we can help your brand grow." },
   },
   {
     keywords: ["thank", "thanks", "appreciate"],
     answer: { text: "You're welcome! 😊 Feel free to ask if you have any more questions. We'd love to help your brand grow." },
   },
-  {
-    keywords: ["software developer", "software development"],
-    answer: { text: "Our Software Development team builds custom software, SaaS platforms, enterprise solutions, APIs, and backend systems. We use modern frameworks and best practices to deliver scalable, maintainable code." },
-  },
 ];
 
-export const FALLBACK = "I'm not sure I understand. Could you rephrase your question? You can ask me about our services, team, portfolio, careers, pricing, or anything about BELVO!";
+export const FALLBACKS = [
+  "I'm not sure I understand. Could you rephrase your question? You can ask me about our services, team, portfolio, careers, pricing, or anything about BELVO!",
+  "Hmm, I don't have an answer for that yet. Try asking about our services, team, portfolio, or how we can help your brand grow.",
+  "I didn't quite catch that. I can help with questions about BELVO's services, team, pricing, careers, or portfolio. What would you like to know?",
+  "Sorry, I'm not able to answer that. Feel free to ask about our 14 services, team members, client portfolio, or how to get in touch with us!",
+];
 
-export const GREETING = "👋 Hi! I'm BELVO's virtual assistant. Ask me anything about our agency — services, team, portfolio, careers, or how we can help your brand grow.";
+export const GREETINGS = [
+  "Hey there! 👋 Welcome to BELVO. I'm your virtual assistant. Ask me anything about our services, team, portfolio, careers, or how we can help your brand grow.",
+  "Hi! 👋 Great to have you here. I can answer questions about BELVO — our services, team, portfolio, and more. What can I help you with?",
+  "Hello! 👋 Welcome to BELVO. I'm here to help! Ask me about our agency, what we do, or how we can take your brand to the next level.",
+];
+
+export const GREETING_KEYWORDS = ["hello", "hi ", "hey", "greetings", "good morning", "good evening", "howdy", "whatsup", "sup "];
