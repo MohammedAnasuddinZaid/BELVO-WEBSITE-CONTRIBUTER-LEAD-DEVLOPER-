@@ -7,7 +7,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 const NAV_LINKS = [
   { name: "Home",     href: "/" },
   { name: "About",    href: "/#about" },
-  { name: "Services", href: "/services" },
+  { name: "Services", href: "/#services" },
   { name: "Works",    href: "/#works" },
   { name: "Careers",  href: "/careers" },
   { name: "Blogs",    href: "/blogs" },
@@ -35,6 +35,21 @@ export default function Navbar() {
       navigate("/");
       setTimeout(() => {
         document.getElementById("book-a-call")?.scrollIntoView({ behavior: "smooth" });
+      }, 400);
+    }
+  };
+
+  const handleNavClick = (e: React.MouseEvent, href: string) => {
+    if (!href.startsWith("/#")) return;
+    e.preventDefault();
+    setIsOpen(false);
+    const id = href.slice(2);
+    if (location === "/") {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      navigate("/");
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
       }, 400);
     }
   };
@@ -106,6 +121,7 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
+                onClick={(e) => handleNavClick(e, link.href)}
                 data-testid={`link-desktop-${link.name.toLowerCase()}`}
                 className="relative group flex flex-col items-center"
               >
@@ -248,6 +264,7 @@ export default function Navbar() {
                   >
                     <Link
                       href={link.href}
+                      onClick={(e) => handleNavClick(e, link.href)}
                       data-testid={`link-mobile-${link.name.toLowerCase()}`}
                       className="text-3xl font-light tracking-[0.2em] uppercase"
                       style={{
