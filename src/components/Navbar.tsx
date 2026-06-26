@@ -26,6 +26,8 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
   const handleBookCall = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsOpen(false);
@@ -40,17 +42,32 @@ export default function Navbar() {
   };
 
   const handleNavClick = (e: React.MouseEvent, href: string) => {
-    if (!href.startsWith("/#")) return;
     e.preventDefault();
     setIsOpen(false);
-    const id = href.slice(2);
-    if (location === "/") {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    } else {
-      navigate("/");
-      setTimeout(() => {
+    if (href.startsWith("/#")) {
+      const id = href.slice(2);
+      if (location === "/") {
         document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-      }, 400);
+      } else {
+        navigate("/");
+        setTimeout(() => {
+          document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+        }, 400);
+      }
+    } else {
+      if (location === href) {
+        scrollToTop();
+      } else {
+        navigate(href);
+        setTimeout(scrollToTop, 50);
+      }
+    }
+  };
+
+  const handleLogoClick = (e: React.MouseEvent) => {
+    if (location === "/") {
+      e.preventDefault();
+      scrollToTop();
     }
   };
 
@@ -104,7 +121,7 @@ export default function Navbar() {
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 h-[68px] flex items-center justify-between">
 
-        <Link href="/" className="flex items-center gap-2.5" data-testid="link-logo">
+        <Link href="/" onClick={handleLogoClick} className="flex items-center gap-2.5" data-testid="link-logo">
           <img src="/belvo-logo-transparent.png" alt="BELVO" className="h-8 w-auto" />
           <span
             className="font-semibold text-lg tracking-widest"

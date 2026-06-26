@@ -95,7 +95,7 @@ function getLogoPath(categoryName: string, url: string): string | undefined {
   if (!folder || !url) return undefined;
   const handle = url.replace(/\/+$/, "").split("/").pop();
   if (!handle) return undefined;
-  return `/PortfolioLogos/${folder}/${handle}.jpg`;
+  return `/PortfoilioLogos/${folder}/${handle}.jpg`;
 }
 
 function hexToRgb(hex: string): string {
@@ -180,7 +180,7 @@ function BrandRow({ catName, brands, color, isIvory }: { catName: string; brands
           const initial = brand.name.replace(/['"]/g, "").charAt(0).toUpperCase();
           const logoSrc = getLogoPath(catName, brand.url) || undefined;
           const badge = <BrandBadge logoSrc={logoSrc} initial={initial} color={color} rgb={rgb} />;
-          return (
+          return brand.url ? (
             <a
               key={`${brand.name}-${i}`}
               href={brand.url}
@@ -213,6 +213,26 @@ function BrandRow({ catName, brands, color, isIvory }: { catName: string; brands
               {badge}
               {brand.name}
             </a>
+          ) : (
+            <span
+              key={`${brand.name}-${i}`}
+              title={brand.name}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: "10px",
+                padding: "10px 18px",
+                background: `rgba(${rgb},0.06)`,
+                border: `1px solid rgba(${rgb},0.1)`,
+                borderRadius: "100px",
+                fontFamily: "'Inter',sans-serif", fontSize: "0.85rem", fontWeight: 500,
+                color: "var(--belvo-text-1)",
+                whiteSpace: "nowrap",
+                flexShrink: 0,
+                boxShadow: isIvory ? `0 1px 4px rgba(${rgb},0.06)` : "none",
+              }}
+            >
+              {badge}
+              {brand.name}
+            </span>
           );
         })}
       </div>

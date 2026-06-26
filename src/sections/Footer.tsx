@@ -1,7 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Mail, Download } from "lucide-react";
-import { CONTACT_TARGETS } from "@/lib/contact";
+import { CONTACT_TARGETS, COMPANY_EMAIL } from "@/lib/contact";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -26,8 +26,8 @@ const SOCIAL_LINKS = [
   },
   {
     id: "email",
-    label: "info.belvo@gmail.com",
-    href: "mailto:info.belvo@gmail.com",
+    label: COMPANY_EMAIL,
+    href: `mailto:${COMPANY_EMAIL}`,
     icon: <Mail size={18} />,
   },
   {
