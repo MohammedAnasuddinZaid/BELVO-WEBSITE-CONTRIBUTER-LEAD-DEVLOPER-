@@ -1,0 +1,406 @@
+import { useRef, useState } from "react";
+import { motion, useInView, useAnimationFrame } from "framer-motion";
+import { useTheme } from "@/contexts/ThemeContext";
+
+interface Props {
+  id: string;
+}
+
+interface Brand {
+  name: string;
+  url: string;
+  logo?: string;
+}
+
+interface Category {
+  name: string;
+  count: number;
+  color: string;
+  brands: Brand[];
+}
+
+const CATEGORIES: Category[] = [
+  { name: "Skincare, Beauty & Wellness", count: 17, color: "#E11D48", brands: [
+    { name: "Ghar Soaps", url: "https://www.instagram.com/gharsoaps/" },{ name: "Clayco Beauty", url: "https://www.instagram.com/claycobeauty/" },{ name: "Prowlactive", url: "https://www.instagram.com/prowlactive/" },{ name: "Skinvest Skincare", url: "https://www.instagram.com/skinvestskincare/" },{ name: "Grovya Organics", url: "https://www.instagram.com/grovyaorganics/" },{ name: "Proskire", url: "https://www.instagram.com/proskire.in/" },{ name: "Bentica Skincare", url: "https://www.instagram.com/bentica_skincare/" },{ name: "Mancode", url: "https://www.instagram.com/mancodeofficial/" },{ name: "Skin Story", url: "https://www.instagram.com/skinstory.in/" },{ name: "Beard Story", url: "https://www.instagram.com/beardstoryofficial/" },{ name: "Arotatvika", url: "https://www.instagram.com/arotatvika/" },{ name: "Yess Skincare", url: "https://www.instagram.com/yessskincare/" },{ name: "Cure Glow", url: "https://www.instagram.com/cureglow/" },{ name: "Take2Care", url: "https://www.instagram.com/take2care.in/" },{ name: "MyTwacha", url: "https://www.instagram.com/mytwacha/" },{ name: "Sen-Z by FDNH", url: "https://www.instagram.com/senzbyfdnh.co/" },{ name: "Illume Skincare", url: "https://www.instagram.com/illumeskincare/" },
+  ]},
+  { name: "Fashion, Apparel & Lifestyle", count: 20, color: "#F97316", brands: [
+    { name: "Bewakoof", url: "https://www.instagram.com/bewakoofofficial/" },{ name: "Vasa Indica", url: "https://www.instagram.com/vasaindica/" },{ name: "Ahankar Wear", url: "https://www.instagram.com/ahankarwear/" },{ name: "Oje Living", url: "https://www.instagram.com/ojeliving/" },{ name: "ILK", url: "https://www.instagram.com/ilk_india/" },{ name: "Goodhand", url: "https://www.instagram.com/goodhand.in/" },{ name: "Pironi", url: "https://www.instagram.com/pironi.in/" },{ name: "Nakhrali Roots", url: "https://www.instagram.com/nakhraliroots/" },{ name: "Shop Sagel", url: "https://www.instagram.com/shop.sagel/" },{ name: "Better Basics", url: "https://www.instagram.com/betterbasics_in/" },{ name: "Modern Saheli", url: "https://www.instagram.com/modernsaheli/" },{ name: "Northstory", url: "https://www.instagram.com/northstory.in/" },{ name: "Fib Swags", url: "https://www.instagram.com/fibswags/" },{ name: "R Drama", url: "https://www.instagram.com/rdramaofficial/" },{ name: "Mosambee", url: "https://www.instagram.com/mosambee/" },{ name: "Veidor", url: "https://www.instagram.com/veidor.in/" },{ name: "Eknaami", url: "https://www.instagram.com/eknaami/" },{ name: "Bongzi", url: "https://www.instagram.com/bongzi.in/" },{ name: "Tarinah", url: "https://www.instagram.com/tarinahofficial/" },{ name: "KSHM", url: "https://www.instagram.com/kshmstudio/" },
+  ]},
+  { name: "Food, Snacks & FMCG", count: 9, color: "#F59E0B", brands: [
+    { name: "Chakki Peesing", url: "https://www.instagram.com/chakkipeesing/" },{ name: "Beyond Snacks", url: "https://www.instagram.com/beyondsnacks/" },{ name: "Rewynd Snacks", url: "https://www.instagram.com/rewyndsnacks/" },{ name: "The 1970 Shop", url: "https://www.instagram.com/the1970shop/" },{ name: "Greenify Food", url: "https://www.instagram.com/greenifyfoods/" },{ name: "SIL Foods", url: "https://www.instagram.com/silfoodsindia/" },{ name: "Zaman India", url: "https://www.instagram.com/zamanindia/" },{ name: "Mangalam Organic Food", url: "https://www.instagram.com/mangalamorganic/" },{ name: "Oh! Nuts", url: "https://www.instagram.com/ohnuts.in/" },
+  ]},
+  { name: "Cafés, Restaurants & Hospitality", count: 20, color: "#0D9488", brands: [
+    { name: "The Habitat Café", url: "https://www.instagram.com/thehabitatcafe/" },{ name: "The Nines Mumbai", url: "https://www.instagram.com/theninesmumbai/" },{ name: "Cincin India", url: "https://www.instagram.com/cincinindia/" },{ name: "Meltado", url: "https://www.instagram.com/meltado/" },{ name: "Kathha Katte", url: "https://www.instagram.com/kathhakatte/" },{ name: "Postiano Mumbai", url: "https://www.instagram.com/postiano.mumbai/" },{ name: "Haome Café", url: "https://www.instagram.com/haomecafe/" },{ name: "Cacao Love", url: "https://www.instagram.com/cacaoloveindia/" },{ name: "307 Bakehouse", url: "https://www.instagram.com/307bakehouse/" },{ name: "Orami Café", url: "https://www.instagram.com/oramicafe/" },{ name: "Liora Café", url: "https://www.instagram.com/lioracafe/" },{ name: "Timber Cafe Delhi", url: "https://www.instagram.com/timbercafedelhi/" },{ name: "Afterdunes", url: "https://www.instagram.com/afterdunes/" },{ name: "San Churro Bandra", url: "https://www.instagram.com/sanchurroindia/" },{ name: "Space Shope", url: "" },{ name: "6 Degree North", url: "https://www.instagram.com/6degreesnorthindia/" },{ name: "Kapibar", url: "https://www.instagram.com/kapibarindia/" },{ name: "Socio Uppu", url: "https://www.instagram.com/sociouppu/" },{ name: "Portal Mumbai", url: "https://www.instagram.com/portalmumbai/" },{ name: "Aamaru Mumbai", url: "https://www.instagram.com/aamarumumbai/" },
+  ]},
+  { name: "EdTech", count: 5, color: "#2563EB", brands: [
+    { name: "Masia School", url: "https://www.instagram.com/masiaschool/" },{ name: "The Class of Tone", url: "https://www.instagram.com/theclassoftone/" },{ name: "Frogs School", url: "https://www.instagram.com/frogsschool/" },{ name: "Trigr Exam", url: "https://www.instagram.com/trigrexam/" },{ name: "Educurria", url: "https://www.instagram.com/educurria/" },
+  ]},
+  { name: "FinTech", count: 3, color: "#059669", brands: [
+    { name: "Fasset Official", url: "https://www.instagram.com/fassetofficial/" },{ name: "Cready", url: "https://www.instagram.com/cready.in/" },{ name: "Getepay", url: "https://www.instagram.com/getepay/" },
+  ]},
+  { name: "Technology & Startups", count: 2, color: "#06B6D4", brands: [
+    { name: "Pluto", url: "https://www.instagram.com/plutocard/" },{ name: "Foundarly", url: "https://www.instagram.com/foundarly/" },
+  ]},
+  { name: "Modeling, Creative & Entertainment", count: 4, color: "#EC4899", brands: [
+    { name: "Feet Artists", url: "https://www.instagram.com/feetartists/" },{ name: "72 MG Studio", url: "https://www.instagram.com/72mgstudio/" },{ name: "Venera Workshops", url: "https://www.instagram.com/veneraworkshops/" },{ name: "Ella Models", url: "https://www.instagram.com/ellamodelsindia/" },
+  ]},
+  { name: "Jewellery & Luxury Accessories", count: 4, color: "#D97706", brands: [
+    { name: "Sutra Fine Jewellery", url: "https://www.instagram.com/sutrafinejewellery/" },{ name: "Aamosh", url: "https://www.instagram.com/aamoshjewellery/" },{ name: "Qlumsi Jewellery", url: "" },{ name: "Pirohaa", url: "https://www.instagram.com/pirohaa/" },
+  ]},
+  { name: "Interior Design & Architecture", count: 2, color: "#6366F1", brands: [
+    { name: "Karan Desai (KDAK)", url: "https://www.instagram.com/kdak.in/" },{ name: "Desarch Design", url: "https://www.instagram.com/desarch.design/" },
+  ]},
+  { name: "Travel & Tourism", count: 4, color: "#0284C7", brands: [
+    { name: "Hopaya Travels", url: "https://www.instagram.com/hopayatravels/" },{ name: "Safarnama", url: "https://www.instagram.com/safarnamatravels/" },{ name: "Air Time Vacations", url: "https://www.instagram.com/airtimevacations/" },{ name: "SortYourTrips", url: "https://www.instagram.com/sortyourtrips/" },
+  ]},
+  { name: "Healthcare, Hospitals & Clinics", count: 3, color: "#DC2626", brands: [
+    { name: "AK Clinics", url: "https://www.instagram.com/akclinicsindia/" },{ name: "Narayana One Health", url: "https://www.instagram.com/narayanaonehealth/" },{ name: "Royal Dental Clinics", url: "https://www.instagram.com/royaldentalclinics/" },
+  ]},
+  { name: "Salon, Spa & Aesthetics", count: 3, color: "#8B5CF6", brands: [
+    { name: "Envi Salons", url: "https://www.instagram.com/envisalons/" },{ name: "Daisy House", url: "https://www.instagram.com/daisyhouseindia/" },{ name: "Keynu Aesthetics", url: "https://www.instagram.com/keynuaesthetics/" },
+  ]},
+];
+
+const SERVICES_DELIVERED = [
+  "Public Relations (PR) & Outreach", "Influencer Marketing", "Social Media Management",
+  "Graphic Design", "Website Design & Development", "Research & Competitor Analysis",
+  "Analytics & Performance Reporting", "Brand Strategy", "Community Management",
+  "Direct Marketing (DM Campaigns)", "Content Strategy", "Growth Marketing",
+  "Brand Positioning", "E-commerce Support", "Lead Generation",
+];
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 36 },
+  visible: (i: number) => ({ opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.08 + i * 0.05, ease: [0.16, 1, 0.3, 1] } }),
+};
+
+const CATEGORY_FOLDERS: Record<string, string> = {
+  "Skincare, Beauty & Wellness": "SKINCARE, BEAUTY & WELLNESS (17)",
+  "Fashion, Apparel & Lifestyle": "FASHION, APPAREL & LIFESTYLE (20)",
+  "Cafés, Restaurants & Hospitality": "CAFÉS, RESTAURANTS & HOSPITALITY (20)",
+  "Food, Snacks & FMCG": "FOOD & BEVERAGES (9)",
+};
+
+function getLogoPath(categoryName: string, url: string): string | undefined {
+  const folder = CATEGORY_FOLDERS[categoryName];
+  if (!folder || !url) return undefined;
+  const handle = url.replace(/\/+$/, "").split("/").pop();
+  if (!handle) return undefined;
+  return `/PortfoilioLogos/${folder}/${handle}.jpg`;
+}
+
+function hexToRgb(hex: string): string {
+  const v = parseInt(hex.replace("#", ""), 16);
+  return `${(v >> 16) & 255},${(v >> 8) & 255},${v & 255}`;
+}
+
+function BrandBadge({ logoSrc, initial, color, rgb }: { logoSrc: string | undefined; initial: string; color: string; rgb: string }) {
+  const [showLetter, setShowLetter] = useState(false);
+  const containerStyle: React.CSSProperties = {
+    width: "60px", height: "60px", borderRadius: "14px",
+    flexShrink: 0, overflow: "hidden",
+    background: `linear-gradient(135deg,rgba(${rgb},0.22),rgba(${rgb},0.08))`,
+    border: `1px solid rgba(${rgb},0.2)`,
+    display: "inline-flex", alignItems: "center", justifyContent: "center",
+  };
+
+  if (logoSrc && !showLetter) {
+    return (
+      <span style={containerStyle}>
+        <img
+          src={logoSrc}
+          alt={initial}
+          style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "14px" }}
+          onError={() => setShowLetter(true)}
+        />
+      </span>
+    );
+  }
+
+  return (
+    <span style={{
+      ...containerStyle,
+      fontFamily: "'Inter',sans-serif", fontWeight: 700, fontSize: "1.1rem",
+      color: color,
+    }}>
+      {initial}
+    </span>
+  );
+}
+
+function BrandRow({ catName, brands, color, isIvory }: { catName: string; brands: Brand[]; color: string; isIvory: boolean }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [paused, setPaused] = useState(false);
+  const xRef = useRef(0);
+
+  useAnimationFrame((time, delta) => {
+    if (paused || !trackRef.current) return;
+    const speed = 0.2;
+    xRef.current -= speed * (delta / 16);
+    const halfW = trackRef.current.scrollWidth / 2;
+    if (Math.abs(xRef.current) >= halfW) {
+      xRef.current = 0;
+    }
+    trackRef.current.style.transform = `translateX(${xRef.current}px)`;
+  });
+
+  const rgb = hexToRgb(color);
+
+  return (
+    <div
+      style={{ overflow: "hidden", width: "100%", position: "relative" }}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div style={{
+        position: "absolute", left: 0, top: 0, bottom: 0, width: "60px", zIndex: 2,
+        background: `linear-gradient(to right, var(--belvo-bg), transparent)`,
+        pointerEvents: "none",
+      }} />
+      <div style={{
+        position: "absolute", right: 0, top: 0, bottom: 0, width: "60px", zIndex: 2,
+        background: `linear-gradient(to left, var(--belvo-bg), transparent)`,
+        pointerEvents: "none",
+      }} />
+
+      <div
+        ref={trackRef}
+        style={{ display: "flex", gap: "12px", willChange: "transform", width: "fit-content" }}
+      >
+        {[...brands, ...brands].map((brand, i) => {
+          const initial = brand.name.replace(/['"]/g, "").charAt(0).toUpperCase();
+          const logoSrc = getLogoPath(catName, brand.url) || undefined;
+          const badge = <BrandBadge logoSrc={logoSrc} initial={initial} color={color} rgb={rgb} />;
+          return (
+            <a
+              key={`${brand.name}-${i}`}
+              href={brand.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={brand.name}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: "10px",
+                padding: "10px 18px",
+                background: `rgba(${rgb},0.06)`,
+                border: `1px solid rgba(${rgb},0.1)`,
+                borderRadius: "100px",
+                textDecoration: "none",
+                fontFamily: "'Inter',sans-serif", fontSize: "0.85rem", fontWeight: 500,
+                color: "var(--belvo-text-1)",
+                whiteSpace: "nowrap",
+                transition: "background 0.2s, border-color 0.2s",
+                flexShrink: 0,
+                boxShadow: isIvory ? `0 1px 4px rgba(${rgb},0.06)` : "none",
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLElement).style.background = `rgba(${rgb},0.12)`;
+                (e.currentTarget as HTMLElement).style.borderColor = `rgba(${rgb},0.25)`;
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLElement).style.background = `rgba(${rgb},0.06)`;
+                (e.currentTarget as HTMLElement).style.borderColor = `rgba(${rgb},0.1)`;
+              }}
+            >
+              {badge}
+              {brand.name}
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+export default function PortfolioSection({ id }: Props) {
+  const { theme } = useTheme();
+  const isIvory = theme === "ivory";
+  const headerRef = useRef(null);
+  const headerInView = useInView(headerRef, { once: true, margin: "-80px" });
+
+  return (
+    <section
+      id={id}
+      style={{
+        background: "var(--belvo-bg)",
+        padding: "120px 0 140px",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <div style={{
+        position: "absolute", top: "10%", left: "5%", width: "50vw", height: "60vh",
+        background: isIvory
+          ? "radial-gradient(ellipse at center, rgba(123,47,190,0.05) 0%, transparent 70%)"
+          : "radial-gradient(ellipse at center, rgba(80,15,140,0.10) 0%, transparent 70%)",
+        filter: "blur(100px)", pointerEvents: "none",
+      }} />
+      <div style={{
+        position: "absolute", bottom: "15%", right: "0%", width: "40vw", height: "50vh",
+        background: isIvory
+          ? "radial-gradient(ellipse at center, rgba(157,78,221,0.04) 0%, transparent 70%)"
+          : "radial-gradient(ellipse at center, rgba(157,78,221,0.06) 0%, transparent 70%)",
+        filter: "blur(100px)", pointerEvents: "none",
+      }} />
+      <div style={{
+        position: "absolute", inset: 0,
+        backgroundImage: `radial-gradient(rgba(130,40,200,${isIvory ? "0.04" : "0.06"}) 1px, transparent 1px)`,
+        backgroundSize: "28px 28px",
+        pointerEvents: "none",
+      }} />
+
+      <div ref={headerRef} style={{ padding: "0 24px", maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+        <motion.div
+          custom={0}
+          variants={fadeUp}
+          initial="hidden"
+          animate={headerInView ? "visible" : "hidden"}
+          style={{ textAlign: "center", marginBottom: "64px" }}
+        >
+          <span style={{
+            display: "inline-block",
+            fontFamily: "'Inter',sans-serif", fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            color: "#9D4EDD",
+            padding: "6px 16px",
+            borderRadius: "100px",
+            background: `rgba(157,78,221,${isIvory ? "0.08" : "0.1"})`,
+            border: `1px solid rgba(157,78,221,${isIvory ? "0.15" : "0.18"})`,
+            marginBottom: "20px",
+          }}>
+            Our Portfolio
+          </span>
+          <h2 style={{
+            fontFamily: "'Cormorant Garamond',serif", fontWeight: 700,
+            fontSize: "clamp(2.4rem,5.5vw,4rem)",
+            lineHeight: 1.08,
+            color: "var(--belvo-text-1)",
+            margin: "0 0 16px",
+          }}>
+            <span style={{ color: "#9D4EDD" }}>96 Brands</span>{" "}
+            <span style={{ color: isIvory ? "rgba(0,0,0,0.25)" : "rgba(255,255,255,0.15)", fontWeight: 300 }}>×</span>{" "}
+            13 Industries
+          </h2>
+          <p style={{
+            fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", lineHeight: 1.8,
+            color: "var(--belvo-text-6)", maxWidth: "540px", margin: "0 auto",
+          }}>
+            From skincare to startups — brands we've helped scale across every industry.
+          </p>
+        </motion.div>
+      </div>
+
+      {/* ── CATEGORY ROWS ── */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "40px", position: "relative", zIndex: 1 }}>
+        {CATEGORIES.map((cat, ci) => (
+          <motion.div
+            key={cat.name}
+            custom={ci + 1}
+            variants={fadeUp}
+            initial="hidden"
+            animate={headerInView ? "visible" : "hidden"}
+          >
+            {/* Category heading */}
+            <div style={{ padding: "0 24px", maxWidth: "1200px", margin: "0 auto 16px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <span style={{
+                  width: "5px", height: "20px", borderRadius: "3px",
+                  background: cat.color, flexShrink: 0,
+                }} />
+                <h3 style={{
+                  fontFamily: "'Inter',sans-serif", fontWeight: 700,
+                  fontSize: "0.85rem", color: "var(--belvo-text-1)", margin: 0,
+                  letterSpacing: "0.02em",
+                }}>
+                  {cat.name}
+                </h3>
+                <span style={{
+                  fontFamily: "'Inter',sans-serif", fontSize: "0.65rem", fontWeight: 600,
+                  color: cat.color,
+                  background: `rgba(${hexToRgb(cat.color)},0.1)`,
+                  border: `1px solid rgba(${hexToRgb(cat.color)},0.18)`,
+                  borderRadius: "100px", padding: "2px 10px",
+                  whiteSpace: "nowrap",
+                }}>
+                  {cat.count}
+                </span>
+              </div>
+            </div>
+            <BrandRow catName={cat.name} brands={cat.brands} color={cat.color} isIvory={isIvory} />
+          </motion.div>
+        ))}
+      </div>
+
+      {/* ── SERVICES DELIVERED ── */}
+      <div style={{ padding: "0 24px", maxWidth: "1200px", margin: "72px auto 0", position: "relative", zIndex: 1 }}>
+        <motion.div
+          custom={CATEGORIES.length + 1}
+          variants={fadeUp}
+          initial="hidden"
+          animate={headerInView ? "visible" : "hidden"}
+          style={{
+            background: isIvory
+              ? "linear-gradient(135deg, rgba(157,78,221,0.04), rgba(123,47,190,0.02))"
+              : "linear-gradient(135deg, rgba(157,78,221,0.06), rgba(80,15,140,0.04))",
+            border: `1px solid rgba(157,78,221,${isIvory ? "0.1" : "0.12"})`,
+            borderRadius: "18px",
+            padding: "32px",
+            marginBottom: "48px",
+            backdropFilter: "blur(4px)",
+          }}
+        >
+          <h3 style={{
+            fontFamily: "'Inter',sans-serif", fontWeight: 700, fontSize: "0.8rem",
+            color: "#9D4EDD", margin: "0 0 20px",
+            letterSpacing: "0.12em", textTransform: "uppercase",
+          }}>
+            Services Delivered
+          </h3>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+            {SERVICES_DELIVERED.map((svc) => (
+              <span key={svc} style={{
+                padding: "6px 14px",
+                background: isIvory ? `rgba(157,78,221,0.06)` : `rgba(157,78,221,0.08)`,
+                border: `1px solid rgba(157,78,221,${isIvory ? "0.1" : "0.12"})`,
+                borderRadius: "8px",
+                fontFamily: "'Inter',sans-serif", fontSize: "0.75rem", fontWeight: 500,
+                color: "var(--belvo-text-1)",
+              }}>
+                {svc}
+              </span>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div
+          custom={CATEGORIES.length + 2}
+          variants={fadeUp}
+          initial="hidden"
+          animate={headerInView ? "visible" : "hidden"}
+          style={{ textAlign: "center" }}
+        >
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: "20px",
+            padding: "14px 32px",
+            background: isIvory
+              ? "linear-gradient(135deg, rgba(157,78,221,0.06), rgba(123,47,190,0.03))"
+              : "linear-gradient(135deg, rgba(157,78,221,0.08), rgba(80,15,140,0.05))",
+            border: `1px solid rgba(157,78,221,${isIvory ? "0.12" : "0.15"})`,
+            borderRadius: "100px",
+            backdropFilter: "blur(4px)",
+          }}>
+            <span style={{
+              fontFamily: "'Inter',sans-serif", fontWeight: 700, fontSize: "0.7rem",
+              letterSpacing: "0.15em", textTransform: "uppercase", color: "#9D4EDD",
+            }}>
+              Total Reach
+            </span>
+            <span style={{ width: "1px", height: "14px", background: `rgba(157,78,221,${isIvory ? "0.15" : "0.2"})` }} />
+            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: "0.78rem", color: "var(--belvo-text-1)" }}>96 Brands</span>
+            <span style={{ width: "1px", height: "14px", background: `rgba(157,78,221,${isIvory ? "0.15" : "0.2"})` }} />
+            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: "0.78rem", color: "var(--belvo-text-1)" }}>13 Industries</span>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
