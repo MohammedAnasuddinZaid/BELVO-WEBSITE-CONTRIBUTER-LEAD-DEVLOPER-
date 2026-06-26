@@ -171,17 +171,6 @@ export default function ServicesSection({ id }: Props) {
             From SEO and branding to web development and performance marketing — we offer
             14 specialised services designed to take your brand from zero to dominate.
           </motion.p>
-
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.5 }}>
-            <button
-              onClick={() => document.getElementById("services-grid")?.scrollIntoView({ behavior: "smooth" })}
-              style={{ display: "inline-flex", alignItems: "center", gap: "10px", padding: "14px 36px", background: "linear-gradient(135deg,#7B2FBE,#9D4EDD)", border: "none", borderRadius: "8px", color: "#ffffff", fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: "0.82rem", letterSpacing: "0.18em", textTransform: "uppercase", cursor: "pointer", boxShadow: "0 0 32px rgba(130,40,200,0.38)", transition: "box-shadow 0.3s, transform 0.2s" }}
-              onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 0 52px rgba(157,78,221,0.55)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 0 32px rgba(130,40,200,0.38)"; e.currentTarget.style.transform = "translateY(0)"; }}
-            >
-              Explore Services <ArrowUpRight size={14} strokeWidth={2.5} />
-            </button>
-          </motion.div>
         </div>
 
         {/* Scroll indicator */}
