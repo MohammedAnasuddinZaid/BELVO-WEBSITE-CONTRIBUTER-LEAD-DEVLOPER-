@@ -13,6 +13,7 @@ import About from "@/sections/About";
 import ComingSoon from "@/pages/ComingSoon";
 import Navbar from "@/components/Navbar";
 import ScrollToTop from "@/components/ScrollToTop";
+import ChatBot from "@/components/ChatBot";
 
 const queryClient = new QueryClient();
 
@@ -76,6 +77,7 @@ function App() {
             <Router />
           </WouterRouter>
           <ScrollToTop />
+          <ChatBot />
           <Toaster />
         </ThemeProvider>
       </TooltipProvider>
