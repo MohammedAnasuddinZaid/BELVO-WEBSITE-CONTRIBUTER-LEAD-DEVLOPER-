@@ -140,7 +140,7 @@ function BrandBadge({ logoSrc, initial, color, rgb }: { logoSrc: string | undefi
 function BrandRow({ catName, brands, color, isIvory, speed = 1 }: { catName: string; brands: Brand[]; color: string; isIvory: boolean; speed?: number }) {
   const [paused, setPaused] = useState(false);
   const rgb = hexToRgb(color);
-  const dur = 20 / speed;
+  const dur = 60 / speed;
 
   return (
     <div
