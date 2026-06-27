@@ -2,12 +2,12 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, Play } from "lucide-react";
 import BookACall from "@/sections/BookACall";
 import Footer from "@/sections/Footer";
-import UnderConstruction from "@/sections/UnderConstruction";
 import ServicesSection from "@/sections/ServicesSection";
 import TeamSection from "@/sections/TeamSection";
 import About from "@/sections/About";
 import Testimonials from "@/sections/Testimonials";
 import PortfolioSection from "@/sections/PortfolioSection";
+import UpcomingEvents from "@/sections/UpcomingEvents";
 
 function AuroraWaves() {
   return (
@@ -203,11 +203,11 @@ export default function Home() {
       <About />
       <ServicesSection id="services" />
       <PortfolioSection id="portfolio" />
+      <UpcomingEvents />
       <Testimonials />
       <TeamSection />
       <BookACall />
       <Footer />
-
     </>
-  )
+  );
 }
