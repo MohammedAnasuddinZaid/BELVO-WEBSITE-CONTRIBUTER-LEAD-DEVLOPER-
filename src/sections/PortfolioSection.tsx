@@ -302,7 +302,6 @@ export default function PortfolioSection({ id }: Props) {
             fontFamily: "'Cormorant Garamond',serif", fontWeight: 700,
             fontSize: "clamp(2rem,4.5vw,3.4rem)",
             lineHeight: 1.08,
-            whiteSpace: "nowrap",
             color: "var(--belvo-text-1)",
             margin: "0 0 16px",
           }}>
