@@ -9,7 +9,6 @@ import PortfolioSection from "@/sections/PortfolioSection";
 import Works from "@/sections/Works";
 import TeamSection from "@/sections/TeamSection";
 import About from "@/sections/About";
-import FAQ from "@/sections/FAQ";
 
 function AuroraWaves() {
   return (
@@ -204,11 +203,10 @@ export default function Home() {
 
       <About />
       <ServicesSection id="services" />
-      <UnderConstruction id="why-belvo"    number="03" title="Why Choose BELVO"          glowSide="center" />
-      <UnderConstruction id="process"      number="04" title="Our Process"               glowSide="right"  />
+      <UnderConstruction id="why-belvo"    number="03" title="Why Choose BELVO"    glowSide="center" />
+      <UnderConstruction id="process"      number="04" title="Our Process"         glowSide="right"  />
       <PortfolioSection id="portfolio" />
-      <UnderConstruction id="testimonials" number="06" title="Client Testimonials"       glowSide="center" />
-      <FAQ />
+      <UnderConstruction id="testimonials" number="06" title="Client Testimonials" glowSide="center" />
       <Works />
       <TeamSection />
       <BookACall />
