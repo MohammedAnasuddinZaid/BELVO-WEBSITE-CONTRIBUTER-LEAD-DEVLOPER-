@@ -34,23 +34,27 @@ export default function Navbar() {
 
   React.useEffect(() => {
     if (location !== "/") return;
-    const sections = ["about", "services", "portfolio"];
-    const observers: IntersectionObserver[] = [];
 
-    sections.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveSection(id);
-        },
-        { threshold: 0.1, rootMargin: "-68px 0px 0px 0px" }
-      );
-      observer.observe(el);
-      observers.push(observer);
-    });
+    const onScroll = () => {
+      const scrollY = window.scrollY;
+      const about = document.getElementById("about");
+      const services = document.getElementById("services");
+      const portfolio = document.getElementById("portfolio");
 
-    return () => observers.forEach((o) => o.disconnect());
+      if (portfolio && scrollY >= portfolio.offsetTop - 100) {
+        setActiveSection("portfolio");
+      } else if (services && scrollY >= services.offsetTop - 100) {
+        setActiveSection("services");
+      } else if (about && scrollY >= about.offsetTop - 100) {
+        setActiveSection("about");
+      } else {
+        setActiveSection("");
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
   }, [location]);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
