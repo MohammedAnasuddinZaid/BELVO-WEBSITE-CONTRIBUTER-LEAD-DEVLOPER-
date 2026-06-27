@@ -11,9 +11,11 @@ import Blogs from "@/pages/Blogs";
 import Services from "@/pages/Services";
 import About from "@/sections/About";
 import ComingSoon from "@/pages/ComingSoon";
+import Works from "@/pages/works";
 import Navbar from "@/components/Navbar";
 import ScrollToTop from "@/components/ScrollToTop";
 import ChatBot from "@/components/ChatBot";
+import React from "react";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +40,11 @@ function AnimatedPage({ children }: { children: React.ReactNode }) {
 
 function Router() {
   const [location] = useLocation();
+
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+  }, [location]);
+
   return (
     <div
       className="min-h-[100dvh] flex flex-col"
@@ -53,6 +60,7 @@ function Router() {
               <Route path="/services" component={Services} />
               <Route path="/careers" component={Careers} />
               <Route path="/blogs" component={Blogs} />
+              <Route path="/works" component={Works} />
               <Route path="/contact">
                 <ComingSoon title="Contact Us" />
               </Route>
