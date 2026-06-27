@@ -268,7 +268,6 @@ export default function FAQ() {
         padding: "80px 24px 80px",
       }}
     >
-      {/* Top divider line */}
       <div
         style={{
           position: "absolute",
@@ -281,7 +280,6 @@ export default function FAQ() {
         }}
       />
 
-      {/* Ambient glow */}
       <div
         style={{
           position: "absolute",
@@ -297,7 +295,6 @@ export default function FAQ() {
         }}
       />
 
-      {/* Ghost section number */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={inView ? { opacity: 1 } : { opacity: 0 }}
@@ -317,7 +314,7 @@ export default function FAQ() {
           whiteSpace: "nowrap",
         }}
       >
-        09
+        08
       </motion.div>
 
       <div
@@ -328,7 +325,6 @@ export default function FAQ() {
           zIndex: 1,
         }}
       >
-        {/* Heading */}
         <motion.div
           custom={0}
           variants={fadeUp}
@@ -400,7 +396,6 @@ export default function FAQ() {
           </p>
         </motion.div>
 
-        {/* Accordion Items */}
         <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           {FAQ_ITEMS.map((item, index) => (
             <FAQItem
