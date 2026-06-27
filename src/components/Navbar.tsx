@@ -7,12 +7,11 @@ import { useTheme } from "@/contexts/ThemeContext";
 const NAV_LINKS = [
   { name: "Home",     href: "/" },
   { name: "About",    href: "/#about" },
-  { name: "Services", href: "/#services" },  // /services → /#services
+  { name: "Services", href: "/#services" },
   { name: "Works",    href: "/#portfolio" },
   { name: "Careers",  href: "/careers" },
   { name: "Blogs",    href: "/blogs" },
 ];
-
 
 export default function Navbar() {
   const [location, navigate] = useLocation();
@@ -50,7 +49,7 @@ export default function Navbar() {
       scrollToId("book-a-call");
     } else {
       navigate("/");
-      setTimeout(() => scrollToId("book-a-call"), 100);
+      setTimeout(() => scrollToId("book-a-call"), 300);
     }
   };
 
@@ -63,7 +62,7 @@ export default function Navbar() {
         scrollToId(id);
       } else {
         navigate("/");
-        setTimeout(() => scrollToId(id), 100);
+        setTimeout(() => scrollToId(id), 300);
       }
     } else {
       if (location === href) {
@@ -82,7 +81,10 @@ export default function Navbar() {
     }
   };
 
-  React.useEffect(() => { setIsOpen(false); }, [location]);
+  React.useEffect(() => {
+    setIsOpen(false);
+    setActiveSection("");
+  }, [location]);
 
   const navBg = scrolled
     ? isIvory ? "rgba(248,245,239,0.96)" : "rgba(4,0,14,0.88)"
@@ -101,7 +103,7 @@ export default function Navbar() {
         ([entry]) => {
           if (entry.isIntersecting) setActiveSection(id);
         },
-        { threshold: 0.4 }
+        { threshold: 0.3 }
       );
       observer.observe(el);
       observers.push(observer);
