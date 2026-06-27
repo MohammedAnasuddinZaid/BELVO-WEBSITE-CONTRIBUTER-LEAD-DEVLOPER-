@@ -600,8 +600,9 @@ export default function TeamSection() {
             >Our Team</motion.span>
 
             <motion.h2
-              custom={1} variants={fadeUp} initial="hidden"
-              animate={headerInView ? "visible" : "hidden"}
+              initial={{ opacity: 0 }}
+              animate={headerInView ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
               style={{
                 fontFamily: "'Inter', sans-serif", fontWeight: 900,
                 fontSize: "clamp(2rem, 5vw, 3.8rem)", lineHeight: 1.05,
