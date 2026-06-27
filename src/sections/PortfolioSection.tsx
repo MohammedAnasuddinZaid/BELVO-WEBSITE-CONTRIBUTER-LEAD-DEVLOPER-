@@ -21,40 +21,40 @@ interface Category {
 
 const CATEGORIES: Category[] = [
   { name: "Skincare, Beauty & Personal Care", count: 12, color: "#E11D48", brands: [
-    { name: "Ghar Soaps", url: "https://www.instagram.com/gharsoaps/" },{ name: "Clayco Beauty", url: "https://www.instagram.com/claycobeauty/" },{ name: "Prowlactive", url: "https://www.instagram.com/prowlactive/" },{ name: "Skinvest Skincare", url: "https://www.instagram.com/skinvest.skincare/" },{ name: "Grovya Organics", url: "https://www.instagram.com/grovyaorganics/" },{ name: "Bentica Skincare", url: "https://www.instagram.com/bentica.skincare/" },{ name: "Mancode", url: "https://www.instagram.com/mancode.official/" },{ name: "The Skin Story", url: "https://www.instagram.com/theskinstory_official/" },{ name: "Beard Story", url: "https://www.instagram.com/beardstory_official/" },{ name: "Arotatvika", url: "https://www.instagram.com/arotatvika/" },{ name: "Sen-Z by FDNH", url: "https://www.instagram.com/senzbyfdnh.co/" },{ name: "Illume Skin Care", url: "https://www.instagram.com/illumeskin.care/" },
+    { name: "Ghar Soaps", url: "https://www.instagram.com/gharsoaps?igsh=MW9rMm1hOWNxMG9yYw==" },{ name: "Clayco Beauty", url: "https://www.instagram.com/claycobeauty?igsh=MXU0OHV1ZG0ybXl0bw==" },{ name: "Prowlactive", url: "https://www.instagram.com/prowlactive?igsh=MTAyMTlxNXJxaXh0bw==" },{ name: "Skinvest Skincare", url: "https://www.instagram.com/skinvest.skincare?igsh=eTAwNWhpa3F4dDhy" },{ name: "Grovya Organics", url: "https://www.instagram.com/grovyaorganics?igsh=MTVpN2J0MmljMWR0MA==" },{ name: "Bentica Skincare", url: "https://www.instagram.com/bentica.skincare?igsh=anR0aHhmNXJrbmZi" },{ name: "Mancode", url: "https://www.instagram.com/mancode.official?igsh=MWcxaXpyN2puaWE0YQ==" },{ name: "The Skin Story", url: "https://www.instagram.com/theskinstory_official?igsh=MTUxcTMwcGR0cnBjbQ==" },{ name: "Beard Story", url: "https://www.instagram.com/beardstory_official?igsh=MXczczEzano4OHRpdQ==" },{ name: "Arotatvika", url: "https://www.instagram.com/arotatvika?igsh=dmUyYzhodTBjN200" },{ name: "Sen-Z by FDNH", url: "https://www.instagram.com/senzbyfdnh.co?igsh=dmVxb3BveDFkOHpw" },{ name: "Illume Skin Care", url: "https://www.instagram.com/illumeskin.care?igsh=MWxjNnNwMXF1dHVnaw==" },
   ]},
   { name: "Fashion, Apparel & Lifestyle", count: 11, color: "#F97316", brands: [
-    { name: "Bewakoof", url: "https://www.instagram.com/bewakoofofficial/" },{ name: "Vasa Indica", url: "https://www.instagram.com/vasaindica/" },{ name: "Ahankar Wear", url: "https://www.instagram.com/ahankarwear/" },{ name: "Oje Living", url: "https://www.instagram.com/oje.living/" },{ name: "Goodhand Jaipur", url: "https://www.instagram.com/goodhand_jaipur/" },{ name: "Pironi", url: "https://www.instagram.com/pironi.official/" },{ name: "Shop Sagel", url: "https://www.instagram.com/shop.sagel/" },{ name: "Better Basics", url: "https://www.instagram.com/betterbasics_in/" },{ name: "Modern Saheli", url: "https://www.instagram.com/modernsaheli/" },{ name: "Northstory", url: "https://www.instagram.com/northstory.shop/" },{ name: "KSHM Earth", url: "https://www.instagram.com/kshm.earth/" },
+    { name: "Bewakoof", url: "https://www.instagram.com/bewakoofofficial?igsh=eXB2dDllbXM2dXVo" },{ name: "Vasa Indica", url: "https://www.instagram.com/vasaindica?igsh=aDBiZHloZmphdTVq" },{ name: "Ahankar Wear", url: "https://www.instagram.com/ahankarwear?igsh=MWNlODVzamhzNzVscg==" },{ name: "Oje Living", url: "https://www.instagram.com/oje.living?igsh=MjdycjEwczd3eTE2" },{ name: "Goodhand Jaipur", url: "https://www.instagram.com/goodhand_jaipur?igsh=MTh6d3dxMmZ1bXl0cw==" },{ name: "Pironi", url: "https://www.instagram.com/pironi.official?igsh=MWc4czQxb3ZidmswdQ==" },{ name: "Shop Sagel", url: "https://www.instagram.com/shop.sagel?igsh=Mm1sZHJ0M3I1enMz" },{ name: "Better Basics", url: "https://www.instagram.com/betterbasics_in?igsh=MXFzcGVtNWNycTNsMw==" },{ name: "Modern Saheli", url: "https://www.instagram.com/modernsaheli?igsh=MThoaTdwM2xncXM1Zw==" },{ name: "Northstory", url: "https://www.instagram.com/northstory.shop?igsh=Y3lzejB6OGt3cWpp" },{ name: "KSHM Earth", url: "https://www.instagram.com/kshm.earth?igsh=YWN0M2ViOHFydnNw" },
   ]},
   { name: "Food, Snacks & FMCG", count: 7, color: "#F59E0B", brands: [
-    { name: "Chakki Peesing", url: "https://www.instagram.com/chakki.peesing/" },{ name: "Beyond Snacks", url: "https://www.instagram.com/beyondsnacks/" },{ name: "The 1970 Shop", url: "https://www.instagram.com/the1970shop/" },{ name: "Greenify Foods", url: "https://www.instagram.com/greenifyfoods_jaipur/" },{ name: "SIL Foods", url: "https://www.instagram.com/silfoods/" },{ name: "Mangalam Homemade", url: "https://www.instagram.com/___mangalamhomemade_/" },{ name: "Oh! Nuts", url: "https://www.instagram.com/ohnuts/" },
+    { name: "Chakki Peesing", url: "https://www.instagram.com/chakki.peesing?igsh=Z28zaXc1a2x1cTV5" },{ name: "Beyond Snacks", url: "https://www.instagram.com/beyondsnacks?igsh=dWxjejJqcGI4YW96" },{ name: "The 1970 Shop", url: "https://www.instagram.com/the1970shop?igsh=MWxvMml4eTZlNTUzdg==" },{ name: "Greenify Foods", url: "https://www.instagram.com/greenifyfoods_jaipur?igsh=ZmplczNkY3NkcWp2" },{ name: "SIL Foods", url: "https://www.instagram.com/silfoods?igsh=MWphMnNlNnlsMXdicQ==" },{ name: "Mangalam Homemade", url: "https://www.instagram.com/___mangalamhomemade_?igsh=Z2pneXgxbHg2ODU2" },{ name: "Oh! Nuts", url: "https://www.instagram.com/ohnuts?igsh=NXlmdnZiaXhoM3Uw" },
   ]},
   { name: "Cafés, Restro & Hospitality", count: 15, color: "#0D9488", brands: [
-    { name: "The Habitat Café", url: "https://www.instagram.com/thehabitatcafe/" },{ name: "The Nine Cafe", url: "https://www.instagram.com/theninecafe/" },{ name: "Cincin India", url: "https://www.instagram.com/cincinindia/" },{ name: "Meltado", url: "https://www.instagram.com/meltado_/" },{ name: "Kathha Katte", url: "https://www.instagram.com/katthakatte/" },{ name: "Positano Mumbai", url: "https://www.instagram.com/positano_mumbai/" },{ name: "Cacao Love by Ashrita", url: "https://www.instagram.com/cacaolovebyashrita/" },{ name: "307 Bakehouse", url: "https://www.instagram.com/307bakehouse/" },{ name: "Timber Cafe", url: "https://www.instagram.com/timber_cafe/" },{ name: "Afterdunes Cafe", url: "https://www.instagram.com/afterdunescafe/" },{ name: "San Churro Bandra", url: "https://www.instagram.com/sanchurro_bandra/" },{ name: "6 Degree North", url: "https://www.instagram.com/6degreenorth/" },{ name: "Kapi Barr", url: "https://www.instagram.com/kapi.barr/" },{ name: "Portal Mumbai", url: "https://www.instagram.com/portal.mumbai/" },{ name: "Amaru Mumbai", url: "https://www.instagram.com/amaru_mumbai/" },
+    { name: "The Habitat Café", url: "https://www.instagram.com/thehabitatcafe?igsh=NDJieWgya3FydnB1" },{ name: "The Nine Cafe", url: "https://www.instagram.com/theninecafe?igsh=dGVtejF0emowZmlw" },{ name: "Cincin India", url: "https://www.instagram.com/cincinindia?igsh=MTBpaDh6NTFvMzBlNw==" },{ name: "Meltado", url: "https://www.instagram.com/meltado_?igsh=M3Y5d3BoamV2dXBh" },{ name: "Kathha Katte", url: "https://www.instagram.com/katthakatte?igsh=eHpuMWt5dG8xYzE0" },{ name: "Positano Mumbai", url: "https://www.instagram.com/positano_mumbai?igsh=aTA0aWFrcmtyejhw" },{ name: "Cacao Love by Ashrita", url: "https://www.instagram.com/cacaolovebyashrita?igsh=N2QybXF3YnlrZTR4" },{ name: "307 Bakehouse", url: "https://www.instagram.com/307bakehouse?igsh=ZHhvM2pia3I2aWJq" },{ name: "Timber Cafe", url: "https://www.instagram.com/timber_cafe?igsh=MTBsZWNrZWZ6OHo0aw==" },{ name: "Afterdunes Cafe", url: "https://www.instagram.com/afterdunescafe?igsh=MThyZnc0cDRmMjFnOQ==" },{ name: "San Churro Bandra", url: "https://www.instagram.com/sanchurro_bandra?igsh=YmZ3dGdjZnhqZXN0" },{ name: "6 Degree North", url: "https://www.instagram.com/6degreenorth?igsh=MTdkZTJremoycjBiZQ==" },{ name: "Kapi Barr", url: "https://www.instagram.com/kapi.barr?igsh=Y2Y5OXNjdGFpenQz" },{ name: "Portal Mumbai", url: "https://www.instagram.com/portal.mumbai?igsh=cWpsaWZ0MXF2eGZh" },{ name: "Amaru Mumbai", url: "https://www.instagram.com/amaru_mumbai?igsh=MTliZ2R1c3NrMDZ6Nw==" },
   ]},
   { name: "EdTech", count: 3, color: "#2563EB", brands: [
-    { name: "Leaping Frogs", url: "https://www.instagram.com/leapingfrogs.theschool/" },{ name: "Trigr Exam", url: "https://www.instagram.com/trigrexam/" },{ name: "Educurria", url: "https://www.instagram.com/educuria/" },
+    { name: "Leaping Frogs", url: "https://www.instagram.com/leapingfrogs.theschool?igsh=" },{ name: "Trigr Exam", url: "https://www.instagram.com/trigrexam?igsh=MXF3ZTF5Y3Fka3Jydg==" },{ name: "Educurria", url: "https://www.instagram.com/educuria?igsh=MzBoZDRtZWM4NDh6" },
   ]},
   { name: "FinTech", count: 3, color: "#059669", brands: [
-    { name: "Fasset", url: "https://www.instagram.com/fasset_official/" },{ name: "Cready", url: "https://www.instagram.com/cready_official/" },{ name: "Getepay", url: "https://www.instagram.com/getepay.in/" },
+    { name: "Fasset", url: "https://www.instagram.com/fasset_official?igsh=MXZ2dGZwbGlzdmc1cw==" },{ name: "Cready", url: "https://www.instagram.com/cready_official?igsh=aXBqdGpjd2t3cmhz" },{ name: "Getepay", url: "https://www.instagram.com/getepay.in?igsh=MW0ycmd1MDFrZDUydw==" },
   ]},
   { name: "Modeling", count: 3, color: "#EC4899", brands: [
-    { name: "72 MG Studio", url: "https://www.instagram.com/72mgstudio/" },{ name: "Venera Workshops", url: "https://www.instagram.com/venera_workshops/" },{ name: "Ella Models India", url: "https://www.instagram.com/ellamodelsindia/" },
+    { name: "72 MG Studio", url: "https://www.instagram.com/72mgstudio?igsh=MWk2ZTBtMmlleWMyaA==" },{ name: "Venera Workshops", url: "https://www.instagram.com/venera_workshops?igsh=MXNubGZuMmlzcDhmMA==" },{ name: "Ella Models India", url: "https://www.instagram.com/ellamodelsindia?igsh=MXUxaWhrazNhanM0bw==" },
   ]},
   { name: "Jewellery & Luxury Accessories", count: 3, color: "#D97706", brands: [
-    { name: "Sutra Fine Jewellery", url: "https://www.instagram.com/sutrafinejewellery/" },{ name: "Qlumsi Jewelry", url: "https://www.instagram.com/qlumsi.jewelry/" },{ name: "Pirohaa Jewellery", url: "https://www.instagram.com/pirohaa_jewellery/" },
+    { name: "Sutra Fine Jewellery", url: "https://www.instagram.com/sutrafinejewellery?igsh=bWZ2aDM5N3l2bHVs" },{ name: "Qlumsi Jewelry", url: "https://www.instagram.com/qlumsi.jewelry?igsh=MTF0aDBwYXRzaXR0Mg==" },{ name: "Pirohaa Jewellery", url: "https://www.instagram.com/pirohaa_jewellery?igsh=MXJ1NjA2aWd6NDhkZw==" },
   ]},
   { name: "Interior Design & Architecture", count: 2, color: "#6366F1", brands: [
-    { name: "Karan Desai A.D.", url: "https://www.instagram.com/karandesai_a.d/" },{ name: "Karan Desai Home", url: "https://www.instagram.com/karandesaihome/" },
+    { name: "Karan Desai A.D.", url: "https://www.instagram.com/karandesai_a.d?igsh=MTN1c3phaDY5OWdoNQ==" },{ name: "Karan Desai Home", url: "https://www.instagram.com/karandesaihome?igsh=MXQ4aThiaHprc28wbg==" },
   ]},
   { name: "Travels & Tourism", count: 2, color: "#0284C7", brands: [
-    { name: "The Safarnama", url: "https://www.instagram.com/thesafarnama/" },{ name: "Air Time Vacations", url: "https://www.instagram.com/airtimevacations/" },
+    { name: "The Safarnama", url: "https://www.instagram.com/thesafarnama?igsh=MXRrMnppMmp4MGhvZA==" },{ name: "Air Time Vacations", url: "https://www.instagram.com/airtimevacations?igsh=b2ZrNXE3dWg1a2Y=" },
   ]},
   { name: "Healthcare, Hospitals & Clinics", count: 3, color: "#DC2626", brands: [
-    { name: "AK Clinics", url: "https://www.instagram.com/ak.clinics/" },{ name: "Narayana One Health", url: "https://www.instagram.com/narayanaonehealth/" },{ name: "Royal Dental Clinics", url: "https://www.instagram.com/royaldentalclinics/" },
+    { name: "AK Clinics", url: "https://www.instagram.com/ak.clinics?igsh=dDJnMWhoYnZlN256" },{ name: "Narayana One Health", url: "https://www.instagram.com/narayanaonehealth?igsh=Nnp1cnAxMDMzMmw4" },{ name: "Royal Dental Clinics", url: "https://www.instagram.com/royaldentalclinics?igsh=MXBieXJyNXkwbHNzcg==" },
   ]},
   { name: "Salon, Spa & Aesthetics", count: 2, color: "#8B5CF6", brands: [
-    { name: "Envi Salon Spa", url: "https://www.instagram.com/envisalonspa/" },{ name: "Daisy House", url: "https://www.instagram.com/daisyhouseofficial_/" },
+    { name: "Envi Salon Spa", url: "https://www.instagram.com/envisalonspa?igsh=MWMyZDBubjduaHpibQ==" },{ name: "Daisy House", url: "https://www.instagram.com/daisyhouseofficial_?igsh=MTY5Nnlnd3ptamU0dg==" },
   ]},
 ];
 
@@ -72,24 +72,24 @@ const fadeUp = {
 };
 
 const CATEGORY_FOLDERS: Record<string, string> = {
-  "Skincare, Beauty & Personal Care": "SKINCARE, BEAUTY & WELLNESS (17)",
-  "Fashion, Apparel & Lifestyle": "FASHION, APPAREL & LIFESTYLE (20)",
-  "Cafés, Restro & Hospitality": "CAFÉS, RESTAURANTS & HOSPITALITY (20)",
-  "Food, Snacks & FMCG": "FOOD & BEVERAGES (9)",
-  "EdTech": "EDTECH (5)",
-  "FinTech": "FINTECH (3)",
-  "Modeling": "MODELING, CREATIVE & ENTERTAINMENT (4)",
-  "Jewellery & Luxury Accessories": "JEWELLERY & LUXURY ACCESSORIES (4)",
-  "Interior Design & Architecture": "INTERIOR DESIGN & ARCHITECTURE (2)",
-  "Travels & Tourism": "TRAVEL & TOURISM (4)",
-  "Healthcare, Hospitals & Clinics": "HEALTHCARE, HOSPITALS & CLINICS (3)",
-  "Salon, Spa & Aesthetics": "SALON, SPA & AESTHETICS (3)",
+  "Skincare, Beauty & Personal Care": "SKINCARE, BEAUTY & WELLNESS",
+  "Fashion, Apparel & Lifestyle": "Fahion",
+  "Cafés, Restro & Hospitality": "Cafe",
+  "Food, Snacks & FMCG": "Food",
+  "EdTech": "EdTech",
+  "FinTech": "Fintech",
+  "Modeling": "Model",
+  "Jewellery & Luxury Accessories": "Jwel",
+  "Interior Design & Architecture": "Interior",
+  "Travels & Tourism": "Tour",
+  "Healthcare, Hospitals & Clinics": "Health",
+  "Salon, Spa & Aesthetics": "Spa",
 };
 
 function getLogoPath(categoryName: string, url: string): string | undefined {
   const folder = CATEGORY_FOLDERS[categoryName];
   if (!folder || !url) return undefined;
-  let handle = url.replace(/\/+$/, "").split("/").pop();
+  let handle = url.replace(/\/+$/, "").split("/").pop()?.split("?")[0];
   if (!handle) return undefined;
   const FIXES: Record<string, string> = {};
   if (handle in FIXES) {
