@@ -1,4 +1,5 @@
 export const COMPANY_EMAIL = "contact.belvo@gmail.com";
+import { supabase } from "./supabase";
 
 type ContactTargets = {
   founderWhatsappNumber: string;
@@ -41,27 +42,32 @@ function normalizePayload(payload: Record<string, unknown>) {
   );
 }
 
-export function saveSubmission(type: SubmissionKind, payload: Record<string, unknown>) {
-  if (typeof window === "undefined") {
-    return null;
-  }
-
-  const record: SubmissionRecord = {
-    id: createSubmissionId(),
+export async function saveSubmission(
+  type: SubmissionKind,
+  payload: Record<string, unknown>
+) {
+  const record = {
     type,
-    createdAt: new Date().toISOString(),
-    payload: normalizePayload(payload),
+    created_at: new Date().toISOString(),
+
+    full_name: String(payload.fullName ?? ""),
+    email: String(payload.email ?? ""),
+    company: String(payload.company ?? ""),
+    budget: String(payload.budget ?? ""),
+    project_type: String(payload.projectType ?? ""),
+    message: String(payload.message ?? ""),
   };
 
-  try {
-    const existing = JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? "[]");
-    const submissions = Array.isArray(existing) ? existing : [];
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify([record, ...submissions].slice(0, 75)));
-  } catch {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify([record]));
+  const { data, error } = await supabase
+    .from("book_calls")
+    .insert([record]);
+
+  if (error) {
+    console.error(error);
+    throw error;
   }
 
-  return record.id;
+  return data;
 }
 
 export function composeMailto(subject: string, bodyLines: string[]) {

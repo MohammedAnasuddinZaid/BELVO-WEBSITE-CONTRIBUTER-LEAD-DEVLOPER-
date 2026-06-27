@@ -122,7 +122,18 @@ export default function BookACall() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   const { register, handleSubmit, formState: { errors, isSubmitSuccessful }, reset } = useForm<FormData>();
-  const onSubmit = (data: FormData) => { saveSubmission("free-call", { ...data }); setTimeout(() => reset(), 3000); };
+  const onSubmit = async (data: FormData) => {
+    try {
+        await saveSubmission("free-call", { ...data });
+
+        alert("Booking submitted successfully!");
+
+        reset();
+    } catch (error) {
+        console.error(error);
+        alert("Something went wrong.");
+    }
+};
 
   return (
     <section
