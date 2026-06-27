@@ -20,44 +20,41 @@ interface Category {
 }
 
 const CATEGORIES: Category[] = [
-  { name: "Skincare, Beauty & Wellness", count: 17, color: "#E11D48", brands: [
-    { name: "Ghar Soaps", url: "https://www.instagram.com/gharsoaps/" },{ name: "Clayco Beauty", url: "https://www.instagram.com/claycobeauty/" },{ name: "Prowlactive", url: "https://www.instagram.com/prowlactive/" },{ name: "Skinvest Skincare", url: "https://www.instagram.com/skinvestskincare/" },{ name: "Grovya Organics", url: "https://www.instagram.com/grovyaorganics/" },{ name: "Proskire", url: "https://www.instagram.com/proskire.in/" },{ name: "Bentica Skincare", url: "https://www.instagram.com/bentica_skincare/" },{ name: "Mancode", url: "https://www.instagram.com/mancodeofficial/" },{ name: "Skin Story", url: "https://www.instagram.com/skinstory.in/" },{ name: "Beard Story", url: "https://www.instagram.com/beardstoryofficial/" },{ name: "Arotatvika", url: "https://www.instagram.com/arotatvika/" },{ name: "Yess Skincare", url: "https://www.instagram.com/yessskincare/" },{ name: "Cure Glow", url: "https://www.instagram.com/cureglow/" },{ name: "Take2Care", url: "https://www.instagram.com/take2care.in/" },{ name: "MyTwacha", url: "https://www.instagram.com/mytwacha/" },{ name: "Sen-Z by FDNH", url: "https://www.instagram.com/senzbyfdnh.co/" },{ name: "Illume Skincare", url: "https://www.instagram.com/illumeskincare/" },
+  { name: "Skincare, Beauty & Personal Care", count: 12, color: "#E11D48", brands: [
+    { name: "Ghar Soaps", url: "https://www.instagram.com/gharsoaps/" },{ name: "Clayco Beauty", url: "https://www.instagram.com/claycobeauty/" },{ name: "Prowlactive", url: "https://www.instagram.com/prowlactive/" },{ name: "Skinvest Skincare", url: "https://www.instagram.com/skinvest.skincare/" },{ name: "Grovya Organics", url: "https://www.instagram.com/grovyaorganics/" },{ name: "Bentica Skincare", url: "https://www.instagram.com/bentica.skincare/" },{ name: "Mancode", url: "https://www.instagram.com/mancode.official/" },{ name: "The Skin Story", url: "https://www.instagram.com/theskinstory_official/" },{ name: "Beard Story", url: "https://www.instagram.com/beardstory_official/" },{ name: "Arotatvika", url: "https://www.instagram.com/arotatvika/" },{ name: "Sen-Z by FDNH", url: "https://www.instagram.com/senzbyfdnh.co/" },{ name: "Illume Skin Care", url: "https://www.instagram.com/illumeskin.care/" },
   ]},
-  { name: "Fashion, Apparel & Lifestyle", count: 20, color: "#F97316", brands: [
-    { name: "Bewakoof", url: "https://www.instagram.com/bewakoofofficial/" },{ name: "Vasa Indica", url: "https://www.instagram.com/vasaindica/" },{ name: "Ahankar Wear", url: "https://www.instagram.com/ahankarwear/" },{ name: "Oje Living", url: "https://www.instagram.com/ojeliving/" },{ name: "ILK", url: "https://www.instagram.com/ilk_india/" },{ name: "Goodhand", url: "https://www.instagram.com/goodhand.in/" },{ name: "Pironi", url: "https://www.instagram.com/pironi.in/" },{ name: "Nakhrali Roots", url: "https://www.instagram.com/nakhraliroots/" },{ name: "Shop Sagel", url: "https://www.instagram.com/shop.sagel/" },{ name: "Better Basics", url: "https://www.instagram.com/betterbasics_in/" },{ name: "Modern Saheli", url: "https://www.instagram.com/modernsaheli/" },{ name: "Northstory", url: "https://www.instagram.com/northstory.in/" },{ name: "Fib Swags", url: "https://www.instagram.com/fibswags/" },{ name: "R Drama", url: "https://www.instagram.com/rdramaofficial/" },{ name: "Mosambee", url: "https://www.instagram.com/mosambee/" },{ name: "Veidor", url: "https://www.instagram.com/veidor.in/" },{ name: "Eknaami", url: "https://www.instagram.com/eknaami/" },{ name: "Bongzi", url: "https://www.instagram.com/bongzi.in/" },{ name: "Tarinah", url: "https://www.instagram.com/tarinahofficial/" },{ name: "KSHM", url: "https://www.instagram.com/kshmstudio/" },
+  { name: "Fashion, Apparel & Lifestyle", count: 11, color: "#F97316", brands: [
+    { name: "Bewakoof", url: "https://www.instagram.com/bewakoofofficial/" },{ name: "Vasa Indica", url: "https://www.instagram.com/vasaindica/" },{ name: "Ahankar Wear", url: "https://www.instagram.com/ahankarwear/" },{ name: "Oje Living", url: "https://www.instagram.com/oje.living/" },{ name: "Goodhand Jaipur", url: "https://www.instagram.com/goodhand_jaipur/" },{ name: "Pironi", url: "https://www.instagram.com/pironi.official/" },{ name: "Shop Sagel", url: "https://www.instagram.com/shop.sagel/" },{ name: "Better Basics", url: "https://www.instagram.com/betterbasics_in/" },{ name: "Modern Saheli", url: "https://www.instagram.com/modernsaheli/" },{ name: "Northstory", url: "https://www.instagram.com/northstory.shop/" },{ name: "KSHM Earth", url: "https://www.instagram.com/kshm.earth/" },
   ]},
-  { name: "Food, Snacks & FMCG", count: 9, color: "#F59E0B", brands: [
-    { name: "Chakki Peesing", url: "https://www.instagram.com/chakkipeesing/" },{ name: "Beyond Snacks", url: "https://www.instagram.com/beyondsnacks/" },{ name: "Rewynd Snacks", url: "https://www.instagram.com/rewyndsnacks/" },{ name: "The 1970 Shop", url: "https://www.instagram.com/the1970shop/" },{ name: "Greenify Food", url: "https://www.instagram.com/greenifyfoods/" },{ name: "SIL Foods", url: "https://www.instagram.com/silfoodsindia/" },{ name: "Zaman India", url: "https://www.instagram.com/zamanindia/" },{ name: "Mangalam Organic Food", url: "https://www.instagram.com/mangalamorganic/" },{ name: "Oh! Nuts", url: "https://www.instagram.com/ohnuts.in/" },
+  { name: "Food, Snacks & FMCG", count: 7, color: "#F59E0B", brands: [
+    { name: "Chakki Peesing", url: "https://www.instagram.com/chakki.peesing/" },{ name: "Beyond Snacks", url: "https://www.instagram.com/beyondsnacks/" },{ name: "The 1970 Shop", url: "https://www.instagram.com/the1970shop/" },{ name: "Greenify Foods", url: "https://www.instagram.com/greenifyfoods_jaipur/" },{ name: "SIL Foods", url: "https://www.instagram.com/silfoods/" },{ name: "Mangalam Homemade", url: "https://www.instagram.com/___mangalamhomemade_/" },{ name: "Oh! Nuts", url: "https://www.instagram.com/ohnuts/" },
   ]},
-  { name: "Cafés, Restaurants & Hospitality", count: 20, color: "#0D9488", brands: [
-    { name: "The Habitat Café", url: "https://www.instagram.com/thehabitatcafe/" },{ name: "The Nines Mumbai", url: "https://www.instagram.com/theninesmumbai/" },{ name: "Cincin India", url: "https://www.instagram.com/cincinindia/" },{ name: "Meltado", url: "https://www.instagram.com/meltado/" },{ name: "Kathha Katte", url: "https://www.instagram.com/kathhakatte/" },{ name: "Postiano Mumbai", url: "https://www.instagram.com/postiano.mumbai/" },{ name: "Haome Café", url: "https://www.instagram.com/haomecafe/" },{ name: "Cacao Love", url: "https://www.instagram.com/cacaoloveindia/" },{ name: "307 Bakehouse", url: "https://www.instagram.com/307bakehouse/" },{ name: "Orami Café", url: "https://www.instagram.com/oramicafe/" },{ name: "Liora Café", url: "https://www.instagram.com/lioracafe/" },{ name: "Timber Cafe Delhi", url: "https://www.instagram.com/timbercafedelhi/" },{ name: "Afterdunes", url: "https://www.instagram.com/afterdunes/" },{ name: "San Churro Bandra", url: "https://www.instagram.com/sanchurroindia/" },{ name: "Space Shope", url: "" },{ name: "6 Degree North", url: "https://www.instagram.com/6degreesnorthindia/" },{ name: "Kapibar", url: "https://www.instagram.com/kapibarindia/" },{ name: "Socio Uppu", url: "https://www.instagram.com/sociouppu/" },{ name: "Portal Mumbai", url: "https://www.instagram.com/portalmumbai/" },{ name: "Aamaru Mumbai", url: "https://www.instagram.com/aamarumumbai/" },
+  { name: "Cafés, Restro & Hospitality", count: 15, color: "#0D9488", brands: [
+    { name: "The Habitat Café", url: "https://www.instagram.com/thehabitatcafe/" },{ name: "The Nine Cafe", url: "https://www.instagram.com/theninecafe/" },{ name: "Cincin India", url: "https://www.instagram.com/cincinindia/" },{ name: "Meltado", url: "https://www.instagram.com/meltado_/" },{ name: "Kathha Katte", url: "https://www.instagram.com/katthakatte/" },{ name: "Positano Mumbai", url: "https://www.instagram.com/positano_mumbai/" },{ name: "Cacao Love by Ashrita", url: "https://www.instagram.com/cacaolovebyashrita/" },{ name: "307 Bakehouse", url: "https://www.instagram.com/307bakehouse/" },{ name: "Timber Cafe", url: "https://www.instagram.com/timber_cafe/" },{ name: "Afterdunes Cafe", url: "https://www.instagram.com/afterdunescafe/" },{ name: "San Churro Bandra", url: "https://www.instagram.com/sanchurro_bandra/" },{ name: "6 Degree North", url: "https://www.instagram.com/6degreenorth/" },{ name: "Kapi Barr", url: "https://www.instagram.com/kapi.barr/" },{ name: "Portal Mumbai", url: "https://www.instagram.com/portal.mumbai/" },{ name: "Amaru Mumbai", url: "https://www.instagram.com/amaru_mumbai/" },
   ]},
-  { name: "EdTech", count: 5, color: "#2563EB", brands: [
-    { name: "Masia School", url: "https://www.instagram.com/masiaschool/" },{ name: "The Class of Tone", url: "https://www.instagram.com/theclassoftone/" },{ name: "Frogs School", url: "https://www.instagram.com/frogsschool/" },{ name: "Trigr Exam", url: "https://www.instagram.com/trigrexam/" },{ name: "Educurria", url: "https://www.instagram.com/educurria/" },
+  { name: "EdTech", count: 3, color: "#2563EB", brands: [
+    { name: "Leaping Frogs", url: "https://www.instagram.com/leapingfrogs.theschool/" },{ name: "Trigr Exam", url: "https://www.instagram.com/trigrexam/" },{ name: "Educurria", url: "https://www.instagram.com/educuria/" },
   ]},
   { name: "FinTech", count: 3, color: "#059669", brands: [
-    { name: "Fasset Official", url: "https://www.instagram.com/fassetofficial/" },{ name: "Cready", url: "https://www.instagram.com/cready.in/" },{ name: "Getepay", url: "https://www.instagram.com/getepay/" },
+    { name: "Fasset", url: "https://www.instagram.com/fasset_official/" },{ name: "Cready", url: "https://www.instagram.com/cready_official/" },{ name: "Getepay", url: "https://www.instagram.com/getepay.in/" },
   ]},
-  { name: "Technology & Startups", count: 2, color: "#06B6D4", brands: [
-    { name: "Pluto", url: "https://www.instagram.com/plutocard/" },{ name: "Foundarly", url: "https://www.instagram.com/foundarly/" },
+  { name: "Modeling", count: 3, color: "#EC4899", brands: [
+    { name: "72 MG Studio", url: "https://www.instagram.com/72mgstudio/" },{ name: "Venera Workshops", url: "https://www.instagram.com/venera_workshops/" },{ name: "Ella Models India", url: "https://www.instagram.com/ellamodelsindia/" },
   ]},
-  { name: "Modeling, Creative & Entertainment", count: 4, color: "#EC4899", brands: [
-    { name: "Feet Artists", url: "https://www.instagram.com/feetartists/" },{ name: "72 MG Studio", url: "https://www.instagram.com/72mgstudio/" },{ name: "Venera Workshops", url: "https://www.instagram.com/veneraworkshops/" },{ name: "Ella Models", url: "https://www.instagram.com/ellamodelsindia/" },
-  ]},
-  { name: "Jewellery & Luxury Accessories", count: 4, color: "#D97706", brands: [
-    { name: "Sutra Fine Jewellery", url: "https://www.instagram.com/sutrafinejewellery/" },{ name: "Aamosh", url: "https://www.instagram.com/aamoshjewellery/" },{ name: "Qlumsi Jewellery", url: "" },{ name: "Pirohaa", url: "https://www.instagram.com/pirohaa/" },
+  { name: "Jewellery & Luxury Accessories", count: 3, color: "#D97706", brands: [
+    { name: "Sutra Fine Jewellery", url: "https://www.instagram.com/sutrafinejewellery/" },{ name: "Qlumsi Jewelry", url: "https://www.instagram.com/qlumsi.jewelry/" },{ name: "Pirohaa Jewellery", url: "https://www.instagram.com/pirohaa_jewellery/" },
   ]},
   { name: "Interior Design & Architecture", count: 2, color: "#6366F1", brands: [
-    { name: "Karan Desai (KDAK)", url: "https://www.instagram.com/kdak.in/" },{ name: "Desarch Design", url: "https://www.instagram.com/desarch.design/" },
+    { name: "Karan Desai A.D.", url: "https://www.instagram.com/karandesai_a.d/" },{ name: "Karan Desai Home", url: "https://www.instagram.com/karandesaihome/" },
   ]},
-  { name: "Travel & Tourism", count: 4, color: "#0284C7", brands: [
-    { name: "Hopaya Travels", url: "https://www.instagram.com/hopayatravels/" },{ name: "Safarnama", url: "https://www.instagram.com/safarnamatravels/" },{ name: "Air Time Vacations", url: "https://www.instagram.com/airtimevacations/" },{ name: "SortYourTrips", url: "https://www.instagram.com/sortyourtrips/" },
+  { name: "Travels & Tourism", count: 2, color: "#0284C7", brands: [
+    { name: "The Safarnama", url: "https://www.instagram.com/thesafarnama/" },{ name: "Air Time Vacations", url: "https://www.instagram.com/airtimevacations/" },
   ]},
   { name: "Healthcare, Hospitals & Clinics", count: 3, color: "#DC2626", brands: [
-    { name: "AK Clinics", url: "https://www.instagram.com/akclinicsindia/" },{ name: "Narayana One Health", url: "https://www.instagram.com/narayanaonehealth/" },{ name: "Royal Dental Clinics", url: "https://www.instagram.com/royaldentalclinics/" },
+    { name: "AK Clinics", url: "https://www.instagram.com/ak.clinics/" },{ name: "Narayana One Health", url: "https://www.instagram.com/narayanaonehealth/" },{ name: "Royal Dental Clinics", url: "https://www.instagram.com/royaldentalclinics/" },
   ]},
-  { name: "Salon, Spa & Aesthetics", count: 3, color: "#8B5CF6", brands: [
-    { name: "Envi Salons", url: "https://www.instagram.com/envisalons/" },{ name: "Daisy House", url: "https://www.instagram.com/daisyhouseindia/" },{ name: "Keynu Aesthetics", url: "https://www.instagram.com/keynuaesthetics/" },
+  { name: "Salon, Spa & Aesthetics", count: 2, color: "#8B5CF6", brands: [
+    { name: "Envi Salon Spa", url: "https://www.instagram.com/envisalonspa/" },{ name: "Daisy House", url: "https://www.instagram.com/daisyhouseofficial_/" },
   ]},
 ];
 
@@ -75,17 +72,16 @@ const fadeUp = {
 };
 
 const CATEGORY_FOLDERS: Record<string, string> = {
-  "Skincare, Beauty & Wellness": "SKINCARE, BEAUTY & WELLNESS (17)",
+  "Skincare, Beauty & Personal Care": "SKINCARE, BEAUTY & WELLNESS (17)",
   "Fashion, Apparel & Lifestyle": "FASHION, APPAREL & LIFESTYLE (20)",
-  "Cafés, Restaurants & Hospitality": "CAFÉS, RESTAURANTS & HOSPITALITY (20)",
+  "Cafés, Restro & Hospitality": "CAFÉS, RESTAURANTS & HOSPITALITY (20)",
   "Food, Snacks & FMCG": "FOOD & BEVERAGES (9)",
   "EdTech": "EDTECH (5)",
   "FinTech": "FINTECH (3)",
-  "Technology & Startups": "TECHNOLOGY & STARTUPS (2)",
-  "Modeling, Creative & Entertainment": "MODELING, CREATIVE & ENTERTAINMENT (4)",
+  "Modeling": "MODELING, CREATIVE & ENTERTAINMENT (4)",
   "Jewellery & Luxury Accessories": "JEWELLERY & LUXURY ACCESSORIES (4)",
   "Interior Design & Architecture": "INTERIOR DESIGN & ARCHITECTURE (2)",
-  "Travel & Tourism": "TRAVEL & TOURISM (4)",
+  "Travels & Tourism": "TRAVEL & TOURISM (4)",
   "Healthcare, Hospitals & Clinics": "HEALTHCARE, HOSPITALS & CLINICS (3)",
   "Salon, Spa & Aesthetics": "SALON, SPA & AESTHETICS (3)",
 };
@@ -95,33 +91,7 @@ function getLogoPath(categoryName: string, url: string): string | undefined {
   if (!folder || !url) return undefined;
   let handle = url.replace(/\/+$/, "").split("/").pop();
   if (!handle) return undefined;
-  const FIXES: Record<string, string> = {
-    "cready.in": "cready",
-    "fassetofficial": "fasset_official",
-    "getepay": "getepay.in",
-    "masiaschool": "masia",
-    "theclassoftone": "tcot",
-    "frogsschool": "frogschool",
-    "educurria": "educuria",
-    "veneraworkshops": "venera_workshops",
-    "akclinicsindia": "ak.clinics",
-    "envisalons": "envisalon",
-    "plutocard": "pluto",
-    "kdak.in": "kdak",
-    "sortyourtrips": "sortyourtrip",
-    "fibswags": "",
-    "rdramaofficial": "",
-    "kshmstudio": "",
-    "aamoshjewellery": "",
-    "haomecafe": "",
-    "kathhakatte": "",
-    "kapibarindia": "",
-    "postiano.mumbai": "",
-    "hopayatravels": "",
-    "daisyhouseindia": "",
-    "desarch.design": "",
-    "illumeskincare": "",
-  };
+  const FIXES: Record<string, string> = {};
   if (handle in FIXES) {
     if (!FIXES[handle]) return undefined;
     handle = FIXES[handle];
@@ -338,9 +308,9 @@ export default function PortfolioSection({ id }: Props) {
           }}>
             From skincare to startups —{" "}
             <span style={{ color: "#9D4EDD" }}>
-              <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 750, fontSize: "90%" }}>100+ Brands, </span> 
+              <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 750, fontSize: "90%" }}>60+ Brands, </span> 
             </span>{" "}
-            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 750, fontSize: "90%", color: "#9D4EDD" }}>15+ Industries</span> 
+            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 750, fontSize: "90%", color: "#9D4EDD" }}>12+ Industries</span> 
           </h2>
           <p style={{
             fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", lineHeight: 1.8,
@@ -457,9 +427,9 @@ export default function PortfolioSection({ id }: Props) {
               Total Reach
             </span>
             <span style={{ width: "1px", height: "14px", background: `rgba(157,78,221,${isIvory ? "0.15" : "0.2"})` }} />
-            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: "0.78rem", color: "var(--belvo-text-1)" }}>100+ Brands</span>
+            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: "0.78rem", color: "var(--belvo-text-1)" }}>60+ Brands</span>
             <span style={{ width: "1px", height: "14px", background: `rgba(157,78,221,${isIvory ? "0.15" : "0.2"})` }} />
-            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: "0.78rem", color: "var(--belvo-text-1)" }}>15+ Industries</span>
+            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: "0.78rem", color: "var(--belvo-text-1)" }}>12+ Industries</span>
           </div>
         </motion.div>
       </div>
