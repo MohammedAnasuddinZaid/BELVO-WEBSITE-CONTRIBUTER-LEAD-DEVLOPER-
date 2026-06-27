@@ -13,14 +13,6 @@ const fadeUp = {
   }),
 };
 
-function formatDate(date: string) {
-  return new Intl.DateTimeFormat("en", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(new Date(date));
-}
-
 export default function Blogs() {
   const postsRef = useRef(null);
   const postsInView = useInView(postsRef, { once: true, margin: "-80px" });
@@ -168,18 +160,6 @@ export default function Blogs() {
                         letterSpacing: "0.06em",
                       }}>
                         🔥 {post.category}
-                      </span>
-                      <span style={{
-                        padding: "3px 8px",
-                        background: "rgba(0,0,0,0.6)",
-                        backdropFilter: "blur(8px)",
-                        borderRadius: "6px",
-                        fontFamily: "'Inter',sans-serif",
-                        fontSize: "0.55rem",
-                        fontWeight: 600,
-                        color: "#fff",
-                      }}>
-                        📅 {formatDate(post.date)}
                       </span>
                     </div>
                   </div>
