@@ -210,3 +210,181 @@ export default function Navbar() {
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.94 }}
             aria-label="Toggle theme"
+            title={isIvory ? "Switch to Midnight" : "Switch to Ivory"}
+            style={{
+              width: "36px", height: "36px", borderRadius: "50%",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              background: isIvory ? "rgba(123,47,190,0.08)" : "rgba(255,255,255,0.06)",
+              border: `1px solid ${isIvory ? "rgba(123,47,190,0.2)" : "rgba(255,255,255,0.12)"}`,
+              color: isIvory ? "#7B2FBE" : "rgba(255,255,255,0.65)",
+              cursor: "pointer",
+              transition: "background 0.25s, border-color 0.25s, color 0.25s",
+              flexShrink: 0,
+            }}
+            onMouseEnter={e => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.background = isIvory ? "rgba(123,47,190,0.14)" : "rgba(255,255,255,0.10)";
+              el.style.color = isIvory ? "#7B2FBE" : "#ffffff";
+            }}
+            onMouseLeave={e => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.background = isIvory ? "rgba(123,47,190,0.08)" : "rgba(255,255,255,0.06)";
+              el.style.color = isIvory ? "#7B2FBE" : "rgba(255,255,255,0.65)";
+            }}
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={theme}
+                initial={{ rotate: -30, opacity: 0, scale: 0.7 }}
+                animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                exit={{ rotate: 30, opacity: 0, scale: 0.7 }}
+                transition={{ duration: 0.22 }}
+                style={{ display: "flex" }}
+              >
+                {isIvory ? <Sun size={15} strokeWidth={2} /> : <Moon size={15} strokeWidth={2} />}
+              </motion.span>
+            </AnimatePresence>
+          </motion.button>
+
+          <motion.button
+            onClick={handleBookCall}
+            whileHover={{ y: -1 }}
+            whileTap={{ scale: 0.97 }}
+            data-testid="button-desktop-contact"
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold tracking-[0.18em] uppercase"
+            style={{
+              border: `1px solid var(--belvo-border-nav)`,
+              borderRadius: "100px",
+              color: "var(--belvo-text-1)",
+              background: "transparent",
+              cursor: "pointer",
+              fontFamily: "'Inter', sans-serif",
+              transition: "border-color 0.25s, background 0.25s, color 0.25s",
+            }}
+            onMouseEnter={e => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.borderColor = "rgba(130,40,200,0.8)";
+              el.style.background = "rgba(130,40,200,0.12)";
+            }}
+            onMouseLeave={e => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.borderColor = "var(--belvo-border-nav)";
+              el.style.background = "transparent";
+            }}
+          >
+            Book A Free Call
+            <ArrowUpRight size={13} />
+          </motion.button>
+        </div>
+
+        <button
+          className="lg:hidden p-2 relative z-50"
+          style={{ color: "var(--belvo-text-1)" }}
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle menu"
+          data-testid="button-mobile-menu-toggle"
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={isOpen ? "close" : "open"}
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.18 }}
+            >
+              {isOpen ? <X size={22} /> : <Menu size={22} />}
+            </motion.span>
+          </AnimatePresence>
+        </button>
+
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.28 }}
+              className="fixed inset-0 z-40 flex flex-col items-center justify-center"
+              style={{ background: "var(--belvo-bg)" }}
+            >
+              <div className="flex flex-col items-center gap-9">
+                {NAV_LINKS.map((link, i) => (
+                  <motion.div
+                    key={link.name}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ delay: i * 0.06 + 0.04 }}
+                  >
+                    <Link
+                      href={link.href}
+                      onClick={(e) => handleNavClick(e, link.href)}
+                      data-testid={`link-mobile-${link.name.toLowerCase()}`}
+                      className="text-3xl font-light tracking-[0.2em] uppercase"
+                      style={{
+                        fontFamily: "'Inter', sans-serif",
+                        color: isLinkActive(link.href) ? "#9D4EDD" : "var(--belvo-text-1)",
+                        opacity: isLinkActive(link.href) ? 1 : 0.8,
+                      }}
+                    >
+                      {link.name}
+                    </Link>
+                  </motion.div>
+                ))}
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.48 }}
+                  style={{ display: "flex", alignItems: "center", gap: "10px" }}
+                >
+                  <button
+                    onClick={toggleTheme}
+                    style={{
+                      display: "flex", alignItems: "center", gap: "8px",
+                      padding: "8px 18px",
+                      background: isIvory ? "rgba(123,47,190,0.1)" : "rgba(255,255,255,0.06)",
+                      border: `1px solid ${isIvory ? "rgba(123,47,190,0.25)" : "rgba(255,255,255,0.15)"}`,
+                      borderRadius: "100px",
+                      color: "var(--belvo-text-2)",
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: "0.75rem",
+                      letterSpacing: "0.15em",
+                      textTransform: "uppercase",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {isIvory ? <Sun size={13} /> : <Moon size={13} />}
+                    {isIvory ? "Midnight" : "Ivory"}
+                  </button>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.58 }}
+                >
+                  <button
+                    onClick={handleBookCall}
+                    data-testid="button-mobile-contact"
+                    className="inline-flex items-center gap-2 px-8 py-3 text-sm font-medium tracking-[0.18em] uppercase"
+                    style={{
+                      border: "1px solid rgba(130,40,200,0.7)",
+                      borderRadius: "100px",
+                      color: "#9D4EDD",
+                      background: "transparent",
+                      cursor: "pointer",
+                      fontFamily: "'Inter', sans-serif",
+                    }}
+                  >
+                    Book A Free Call <ArrowUpRight size={14} />
+                  </button>
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </header>
+  );
+}
