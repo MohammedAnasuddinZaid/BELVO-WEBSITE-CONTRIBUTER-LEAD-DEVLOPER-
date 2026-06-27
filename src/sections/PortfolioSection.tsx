@@ -308,9 +308,9 @@ export default function PortfolioSection({ id }: Props) {
           }}>
             From skincare to startups —{" "}
             <span style={{ color: "#9D4EDD" }}>
-              <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 750, fontSize: "90%" }}>60+ Brands, </span> 
+              <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 750, fontSize: "90%" }}>100+ Brands, </span> 
             </span>{" "}
-            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 750, fontSize: "90%", color: "#9D4EDD" }}>12+ Industries</span> 
+            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 750, fontSize: "90%", color: "#9D4EDD" }}>15+ Industries</span> 
           </h2>
           <p style={{
             fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", lineHeight: 1.8,
@@ -427,9 +427,9 @@ export default function PortfolioSection({ id }: Props) {
               Total Reach
             </span>
             <span style={{ width: "1px", height: "14px", background: `rgba(157,78,221,${isIvory ? "0.15" : "0.2"})` }} />
-            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: "0.78rem", color: "var(--belvo-text-1)" }}>60+ Brands</span>
+            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: "0.78rem", color: "var(--belvo-text-1)" }}>100+ Brands</span>
             <span style={{ width: "1px", height: "14px", background: `rgba(157,78,221,${isIvory ? "0.15" : "0.2"})` }} />
-            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: "0.78rem", color: "var(--belvo-text-1)" }}>12+ Industries</span>
+            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: "0.78rem", color: "var(--belvo-text-1)" }}>15+ Industries</span>
           </div>
         </motion.div>
       </div>
