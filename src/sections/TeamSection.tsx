@@ -44,19 +44,27 @@ const TEAMS = [
     members: ["Anurag khushwaha", "Rimi gosh", "Sanskruti akare", "Deepak Sharma"],
   },
   {
+    id: "hr",
+    name: "Human Resource",
+    color: "#7B2FBE",
+    lightColor: "#9D4EDD",
+    members: ["Raavula Vaibhav", "Mohd Anasuddin Zaid", "Mohd Usaid Ali Khan"],
+    responsibilities: ["HR"],
+  },
+  {
     id: "admin",
     name: "Administration",
-    color: "#C9A341",
-    lightColor: "#E0B84A",
+    color: "#007BFF",
+    lightColor: "#0056b3",
     members: ["Mohammad Ali"],
     responsibilities: ["Operations", "Team Coordination", "Client Communication", "Internal Management"] as readonly string[],
   },
   {
     id: "coadmin",
     name: "Co-Administration",
-    color: "#C9A341",
-    lightColor: "#E0B84A",
-    members: ["Jashwanth"],
+    color: "#007BFF",
+    lightColor: "#0056b3",
+    members: ["Ajintya Gurba"],
     responsibilities: ["Operations", "Team Coordination", "Client Communication", "Internal Management"] as readonly string[],
 
   }
@@ -342,12 +350,20 @@ function AdminGroup({ adminTeam, coadminTeam }: { adminTeam: any; coadminTeam: a
       >
         <div style={{ flex: 1, height: 1, background: "var(--belvo-border-card)" }} />
         <span style={{
-          fontFamily: "'Inter', sans-serif", fontSize: "0.62rem", fontWeight: 600,
-          letterSpacing: "0.22em", textTransform: "uppercase", color: "#E0B84A",
-          background: "rgba(201,163,65,0.1)", border: "0.5px solid rgba(201,163,65,0.3)",
-          borderRadius: "100px", padding: "5px 16px", margin: "0 16px"
+          fontFamily: "'Inter', sans-serif",
+          fontSize: "0.62rem",
+          fontWeight: 600,
+          letterSpacing: "0.22em",
+          textTransform: "uppercase",
+          color: "#007BFF", // The blue text color
+          // Background and border updated to blue-tinted transparency
+          background: "rgba(0, 123, 255, 0.1)",
+          border: "0.5px solid rgba(0, 123, 255, 0.3)",
+          borderRadius: "100px",
+          padding: "5px 16px",
+          margin: "0 16px"
         }}>
-          Administration
+          ADMINISTRATION
         </span>
         <div style={{ flex: 1, height: 1, background: "var(--belvo-border-card)" }} />
       </motion.div>
