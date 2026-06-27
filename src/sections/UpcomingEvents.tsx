@@ -4,14 +4,14 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { Calendar, Globe, Mail, MapPin, Phone, Wifi } from "lucide-react";
 import { EVENTS } from "@/lib/events";
 
-const easeOut = [0.16, 1, 0.3, 1] as const;
+const easeSmooth = [0.22, 1, 0.36, 1] as const;
 
 const fadeUp = {
   hidden: { opacity: 0, y: 36 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, delay: i * 0.14, ease: easeOut },
+    transition: { duration: 0.9, delay: i * 0.15, ease: easeSmooth },
   }),
 };
 
@@ -28,12 +28,6 @@ function EventCard({ event, index }: { event: typeof EVENTS[0]; index: number })
       animate={inView ? "visible" : "hidden"}
     >
       <motion.div
-        whileHover={{
-          y: -6,
-          borderColor: "rgba(157,78,221,0.45)",
-          boxShadow: "0 16px 48px rgba(100,20,180,0.18), 0 2px 8px rgba(100,20,180,0.10)",
-          transition: { duration: 0.28, ease: easeOut },
-        }}
         style={{
           background: "var(--belvo-bg-card)",
           border: "1px solid var(--belvo-border-card)",

@@ -1,7 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
-const easeOut = [0.16, 1, 0.3, 1] as const;
+const easeSmooth = [0.22, 1, 0.36, 1] as const;
 
 const imageModules = import.meta.glob<{ default: string }>("/src/Collective/*", { eager: true, import: "default" });
 
@@ -131,11 +131,11 @@ function getInitials(name: string): string {
 }
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 30 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.65, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] as const },
+    transition: { duration: 0.9, delay: i * 0.15, ease: easeSmooth },
   }),
 };
 
@@ -159,7 +159,6 @@ function CeoCard({ inView }: { inView: boolean }) {
       }}
     >
       <motion.div
-        whileHover={{ y: -6, transition: { duration: 0.22, ease: "easeOut" } }}
         style={{
           display: "flex",
           alignItems: "center",
@@ -168,7 +167,7 @@ function CeoCard({ inView }: { inView: boolean }) {
           width: "100%",
           padding: "48px 56px",
           background: "var(--belvo-bg-card)",
-          border: `1px solid ${gold}44`, // Gold border
+          border: `1px solid ${gold}44`,
           borderRadius: "20px",
           position: "relative",
           overflow: "hidden",
@@ -332,7 +331,6 @@ function MemberCard({
       variants={fadeUp}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
-      whileHover={{ y: -6, borderColor: `${color}55`, boxShadow: `0 16px 56px rgba(123,47,190,0.18), 0 0 0 1px ${color}22`, transition: { duration: 0.25, ease: easeOut } }}
       style={{
         display: "flex", flexDirection: "column", alignItems: "center",
         padding: "28px 20px 24px",
@@ -343,7 +341,6 @@ function MemberCard({
         backdropFilter: "blur(14px)",
         transition: "border-color 0.3s ease, box-shadow 0.3s ease",
       }}
-      layout
     >
       <div style={{
         position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)",

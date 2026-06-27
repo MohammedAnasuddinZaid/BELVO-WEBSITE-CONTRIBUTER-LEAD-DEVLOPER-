@@ -46,11 +46,13 @@ const TEAMS = [
   },
 ] as const;
 
+const easeSmooth = [0.22, 1, 0.36, 1] as const;
+
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
   visible: (i: number) => ({
     opacity: 1, y: 0,
-    transition: { duration: 0.7, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] as const },
+    transition: { duration: 0.9, delay: i * 0.15, ease: easeSmooth },
   }),
 };
 
@@ -60,12 +62,11 @@ function ProjectCard({ title, tag, gradient, accent, inView, i }: {
   return (
     <motion.div
       custom={i} variants={fadeUp} initial="hidden" animate={inView ? "visible" : "hidden"}
-      whileHover={{ y: -6, transition: { duration: 0.22, ease: "easeOut" } }}
       style={{
         background: "var(--belvo-bg-card)",
         border: "1px solid var(--belvo-border-card)",
         borderRadius: "14px", overflow: "hidden",
-        transition: "border-color 0.3s, box-shadow 0.3s",
+        transition: "border-color 0.3s ease, box-shadow 0.3s ease",
       }}
       onMouseEnter={e => {
         const el = e.currentTarget as HTMLElement;
