@@ -102,9 +102,13 @@ export default function Navbar() {
   };
 
   const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     if (location === "/") {
-      e.preventDefault();
       scrollToTop();
+      setActiveSection("");
+    } else {
+      navigate("/");
+      setTimeout(scrollToTop, 50);
     }
   };
 
