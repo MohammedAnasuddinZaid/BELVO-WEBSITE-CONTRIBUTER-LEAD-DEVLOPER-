@@ -12,8 +12,6 @@ import About from "@/sections/About";
 import ComingSoon from "@/pages/ComingSoon";
 import EventRegistration from "@/pages/EventRegistration";
 import Works from "@/pages/works";
-import AdminLogin from "@/pages/AdminLogin";
-import AdminDashboard from "@/pages/AdminDashboard";
 import Navbar from "@/components/Navbar";
 import ScrollToTop from "@/components/ScrollToTop";
 import ChatBot from "@/components/ChatBot";
@@ -42,16 +40,6 @@ function AnimatedPage({ children }: { children: React.ReactNode }) {
 
 function Router() {
   const [location] = useLocation();
-
-  // Admin routes — no chrome, standalone pages
-  if (location.startsWith("/admin")) {
-    return (
-      <Switch>
-        <Route path="/admin/dashboard" component={AdminDashboard} />
-        <Route path="/admin" component={AdminLogin} />
-      </Switch>
-    );
-  }
 
   return (
     <div
