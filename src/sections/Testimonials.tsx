@@ -12,7 +12,7 @@ const AVATAR_6 = new URL("../Images/WhatsApp Image 2026-06-27 at 6.42.56 PM.jpeg
 const AVATAR_7 = new URL("../Images/WhatsApp Image 2026-06-27 at 6.44.30 PM.jpeg", import.meta.url).href;
 const AVATAR_8 = new URL("../Images/WhatsApp Image 2026-06-27 at 6.46.15 PM.jpeg", import.meta.url).href;
 const AVATAR_9 = new URL("../Images/ChatGPT Image Jun 27, 2026, 07_21_16 PM.png", import.meta.url).href;
-const AVATAR_10 = new URL("C:\\Users\\GLOBAL\\Belvo2\\Belvo\\src\\Images\\ChatGPT Image Jun 27, 2026, 07_29_17 PM.png", import.meta.url).href;
+const AVATAR_10 = new URL("../Images/ChatGPT Image Jun 27, 2026, 07_45_48 PM.png", import.meta.url).href;
 
 const DEFAULT_TESTIMONIAL_IMAGE = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80";
 
