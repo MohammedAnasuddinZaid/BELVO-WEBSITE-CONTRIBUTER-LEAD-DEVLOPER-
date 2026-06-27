@@ -7,11 +7,12 @@ import { useTheme } from "@/contexts/ThemeContext";
 const NAV_LINKS = [
   { name: "Home",     href: "/" },
   { name: "About",    href: "/#about" },
-  { name: "Services", href: "/services" },
+  { name: "Services", href: "/#services" },  // /services → /#services
   { name: "Works",    href: "/#portfolio" },
   { name: "Careers",  href: "/careers" },
   { name: "Blogs",    href: "/blogs" },
 ];
+
 
 export default function Navbar() {
   const [location, navigate] = useLocation();
