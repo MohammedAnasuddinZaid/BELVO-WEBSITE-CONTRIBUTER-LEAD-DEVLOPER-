@@ -1,6 +1,6 @@
-import { useRef, useCallback } from "react";
+import { useRef } from "react";
 import { Link } from "wouter";
-import { motion, useInView, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { Calendar, Globe, Mail, MapPin, Phone, Wifi } from "lucide-react";
 import { EVENTS } from "@/lib/events";
 
@@ -18,24 +18,6 @@ const fadeUp = {
 function EventCard({ event, index }: { event: typeof EVENTS[0]; index: number }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-  const cardRef = useRef<HTMLDivElement>(null);
-  const rawX = useMotionValue(0);
-  const rawY = useMotionValue(0);
-  const tiltX = useSpring(rawX, { stiffness: 200, damping: 25 });
-  const tiltY = useSpring(rawY, { stiffness: 200, damping: 25 });
-
-  const handleMove = useCallback((e: React.MouseEvent) => {
-    const el = cardRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    rawX.set(((e.clientY - rect.top) / rect.height - 0.5) * -4);
-    rawY.set(((e.clientX - rect.left) / rect.width - 0.5) * 4);
-  }, [rawX, rawY]);
-
-  const handleLeave = useCallback(() => {
-    rawX.set(0);
-    rawY.set(0);
-  }, [rawX, rawY]);
 
   return (
     <motion.div
@@ -46,15 +28,12 @@ function EventCard({ event, index }: { event: typeof EVENTS[0]; index: number })
       animate={inView ? "visible" : "hidden"}
     >
       <motion.div
-        ref={cardRef}
-        onMouseMove={handleMove}
-        onMouseLeave={handleLeave}
-        whileHover={{ y: -6, transition: { duration: 0.28, ease: easeOut } }}
-        onMouseEnter={useCallback((e: React.MouseEvent) => {
-          const el = e.currentTarget as HTMLElement;
-          el.style.borderColor = "rgba(157,78,221,0.45)";
-          el.style.boxShadow = "0 16px 48px rgba(100,20,180,0.18), 0 2px 8px rgba(100,20,180,0.10)";
-        }, [])}
+        whileHover={{
+          y: -6,
+          borderColor: "rgba(157,78,221,0.45)",
+          boxShadow: "0 16px 48px rgba(100,20,180,0.18), 0 2px 8px rgba(100,20,180,0.10)",
+          transition: { duration: 0.28, ease: easeOut },
+        }}
         style={{
           background: "var(--belvo-bg-card)",
           border: "1px solid var(--belvo-border-card)",
@@ -64,10 +43,6 @@ function EventCard({ event, index }: { event: typeof EVENTS[0]; index: number })
           flexDirection: "column",
           transition: "border-color 0.3s ease, box-shadow 0.3s ease",
           cursor: "default",
-          transformStyle: "preserve-3d",
-          perspective: 600,
-          rotateX: tiltX,
-          rotateY: tiltY,
         }}
       >
       {/* Top accent bar */}

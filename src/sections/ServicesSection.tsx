@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { motion, useInView, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -41,25 +41,6 @@ const staggerCard = {
 
 function ServiceCard({ svc, i, isIvory }: { svc: typeof SERVICES[0]; i: number; isIvory: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
-  const rawX = useMotionValue(0);
-  const rawY = useMotionValue(0);
-  const rotateX = useSpring(rawX, { stiffness: 200, damping: 25 });
-  const rotateY = useSpring(rawY, { stiffness: 200, damping: 25 });
-
-  const handleMove = (e: React.MouseEvent) => {
-    const el = ref.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    rawX.set(-y * 8);
-    rawY.set(x * 8);
-  };
-
-  const handleLeave = () => {
-    rawX.set(0);
-    rawY.set(0);
-  };
 
   return (
     <motion.div
@@ -69,13 +50,16 @@ function ServiceCard({ svc, i, isIvory }: { svc: typeof SERVICES[0]; i: number; 
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}
-      onMouseMove={handleMove}
-      onMouseLeave={handleLeave}
-      style={{
-        perspective: 1000,
-      }}
     >
       <motion.div
+        whileHover={{
+          y: -6,
+          borderColor: "rgba(157,78,221,0.4)",
+          boxShadow: isIvory
+            ? "0 8px 32px rgba(100,20,180,0.10)"
+            : "0 8px 40px rgba(100,20,180,0.18)",
+          transition: { duration: 0.25, ease: easeOut },
+        }}
         style={{
           background: "var(--belvo-bg-card)",
           border: "1px solid var(--belvo-border-card)",
@@ -86,18 +70,7 @@ function ServiceCard({ svc, i, isIvory }: { svc: typeof SERVICES[0]; i: number; 
           gap: "14px",
           cursor: "default",
           boxShadow: isIvory ? "0 2px 12px rgba(0,0,0,0.04)" : "none",
-          transformStyle: "preserve-3d",
-          rotateX,
-          rotateY,
           transition: "border-color 0.3s, box-shadow 0.3s",
-        }}
-        whileHover={{
-          borderColor: "rgba(157,78,221,0.4)",
-          boxShadow: isIvory
-            ? "0 8px 32px rgba(100,20,180,0.10)"
-            : "0 8px 40px rgba(100,20,180,0.18)",
-          y: -4,
-          transition: { duration: 0.25, ease: easeOut },
         }}
       >
         <motion.div

@@ -1,5 +1,5 @@
-import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
-import { useRef, useCallback } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 import { Quote } from "lucide-react";
 
 // Resolve local images in src/Images via import.meta.url so Vite handles them correctly
@@ -111,24 +111,6 @@ const fadeUp = {
 function TestimonialCard({ testimonial, index }: { testimonial: typeof TESTIMONIALS[0]; index: number }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-  const cardRef = useRef<HTMLDivElement>(null);
-  const rawX = useMotionValue(0);
-  const rawY = useMotionValue(0);
-  const tiltX = useSpring(rawX, { stiffness: 200, damping: 25 });
-  const tiltY = useSpring(rawY, { stiffness: 200, damping: 25 });
-
-  const handleMove = useCallback((e: React.MouseEvent) => {
-    const el = cardRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    rawX.set(((e.clientY - rect.top) / rect.height - 0.5) * -5);
-    rawY.set(((e.clientX - rect.left) / rect.width - 0.5) * 5);
-  }, [rawX, rawY]);
-
-  const handleLeave = useCallback(() => {
-    rawX.set(0);
-    rawY.set(0);
-  }, [rawX, rawY]);
 
   return (
     <motion.div
@@ -139,9 +121,12 @@ function TestimonialCard({ testimonial, index }: { testimonial: typeof TESTIMONI
       animate={inView ? "visible" : "hidden"}
     >
       <motion.div
-        ref={cardRef}
-        onMouseMove={handleMove}
-        onMouseLeave={handleLeave}
+        whileHover={{
+          y: -4,
+          borderColor: "rgba(157,78,221,0.38)",
+          boxShadow: "0 8px 40px rgba(100,20,180,0.14)",
+          transition: { duration: 0.25, ease: easeOut },
+        }}
         style={{
           border: "1px solid var(--belvo-border-card)",
           borderRadius: "16px",
@@ -153,14 +138,6 @@ function TestimonialCard({ testimonial, index }: { testimonial: typeof TESTIMONI
           position: "relative",
           overflow: "hidden",
           transition: "border-color 0.3s ease, box-shadow 0.3s ease",
-          transformStyle: "preserve-3d",
-          perspective: 600,
-          rotateX: tiltX,
-          rotateY: tiltY,
-        }}
-        whileHover={{
-          borderColor: "rgba(157,78,221,0.38)",
-          boxShadow: "0 8px 40px rgba(100,20,180,0.14)",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "18px", paddingBottom: "18px", minHeight: "120px", flexShrink: 0 }}>

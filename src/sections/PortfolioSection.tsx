@@ -1,5 +1,5 @@
-import { useRef, useState, useCallback } from "react";
-import { motion, useInView, useAnimationFrame, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { useRef, useState } from "react";
+import { motion, useInView, useAnimationFrame, useScroll, useTransform } from "framer-motion";
 import { useTheme } from "@/contexts/ThemeContext";
 
 interface Props {
@@ -160,23 +160,6 @@ function BrandRow({ catName, brands, color, isIvory }: { catName: string; brands
     const initial = brand.name.replace(/['"]/g, "").charAt(0).toUpperCase();
     const logoSrc = getLogoPath(catName, brand.url) || undefined;
     const badge = <BrandBadge logoSrc={logoSrc} initial={initial} color={color} rgb={rgb} />;
-    const itemRef = useRef<HTMLAnchorElement>(null);
-
-    const handleMove = useCallback((e: React.MouseEvent) => {
-      const el = e.currentTarget as HTMLElement;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const x = ((e.clientY - rect.top) / rect.height - 0.5) * -6;
-      const y = ((e.clientX - rect.left) / rect.width - 0.5) * 6;
-      el.style.setProperty('--tilt-x', `${x}deg`);
-      el.style.setProperty('--tilt-y', `${y}deg`);
-    }, []);
-
-    const handleLeave = useCallback((e: React.MouseEvent) => {
-      const el = e.currentTarget as HTMLElement;
-      el.style.setProperty('--tilt-x', '0deg');
-      el.style.setProperty('--tilt-y', '0deg');
-    }, []);
 
     const baseStyle: React.CSSProperties = {
       display: "inline-flex", alignItems: "center", gap: "10px",
@@ -190,8 +173,7 @@ function BrandRow({ catName, brands, color, isIvory }: { catName: string; brands
       color: "var(--belvo-text-1)",
       whiteSpace: "nowrap",
       flexShrink: 0,
-      transition: "background 0.2s, border-color 0.2s, transform 0.15s ease-out",
-      transform: 'perspective(300px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg))',
+      transition: "background 0.2s, border-color 0.2s",
     };
     const inner = (
       <>
@@ -202,29 +184,30 @@ function BrandRow({ catName, brands, color, isIvory }: { catName: string; brands
     if (brand.url) {
       return (
         <a
-          ref={itemRef as any}
           key={`${brand.name}-${i}`}
           href={brand.url}
           target="_blank"
           rel="noopener noreferrer"
           title={brand.name}
           style={{ ...baseStyle, textDecoration: "none" }}
-          onMouseMove={handleMove}
-          onMouseLeave={(e) => { handleLeave(); const el = e.currentTarget as HTMLElement; el.style.background = isIvory
-              ? `linear-gradient(135deg, rgba(${rgb},0.07), rgba(${rgb},0.03))`
-              : `linear-gradient(135deg, rgba(${rgb},0.09), rgba(${rgb},0.03))`; el.style.borderColor = `rgba(${rgb},0.12)`; }}
           onMouseEnter={e => {
             const el = e.currentTarget as HTMLElement;
             el.style.background = `rgba(${rgb},0.15)`;
             el.style.borderColor = `rgba(${rgb},0.35)`;
+          }}
+          onMouseLeave={e => {
+            const el = e.currentTarget as HTMLElement;
+            el.style.background = isIvory
+              ? `linear-gradient(135deg, rgba(${rgb},0.07), rgba(${rgb},0.03))`
+              : `linear-gradient(135deg, rgba(${rgb},0.09), rgba(${rgb},0.03))`;
+            el.style.borderColor = `rgba(${rgb},0.12)`;
           }}
         >
           {inner}
         </a>
       );
     }
-    return <span key={`${brand.name}-${i}`} title={brand.name} style={baseStyle}
-      onMouseMove={handleMove} onMouseLeave={handleLeave}>{inner}</span>;
+    return <span key={`${brand.name}-${i}`} title={brand.name} style={baseStyle}>{inner}</span>;
   }
 
   return (

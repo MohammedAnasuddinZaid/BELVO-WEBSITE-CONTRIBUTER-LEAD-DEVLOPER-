@@ -1,5 +1,5 @@
-import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
-import { useRef, useState, useCallback } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
 const imageModules = import.meta.glob<{ default: string }>("/src/Collective/*", { eager: true, import: "default" });
 
@@ -322,37 +322,6 @@ function MemberCard({
   const initials = getInitials(name);
   const img = getImageUrl(name);
   const cardRef = useRef<HTMLDivElement>(null);
-  const rawX = useMotionValue(0);
-  const rawY = useMotionValue(0);
-  const rotateX = useSpring(rawX, { stiffness: 200, damping: 25 });
-  const rotateY = useSpring(rawY, { stiffness: 200, damping: 25 });
-
-  const handleMove = useCallback((e: React.MouseEvent) => {
-    const el = cardRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    rawX.set(-y * 6);
-    rawY.set(x * 6);
-  }, [rawX, rawY]);
-
-  const handleLeave = useCallback(() => {
-    rawX.set(0);
-    rawY.set(0);
-  }, [rawX, rawY]);
-
-  const handleEnter = useCallback((e: React.MouseEvent) => {
-    const el = e.currentTarget as HTMLElement;
-    el.style.borderColor = `${color}55`;
-    el.style.boxShadow = `0 16px 56px rgba(123,47,190,0.18), 0 0 0 1px ${color}22`;
-  }, [color]);
-
-  const handleCardLeave = useCallback((e: React.MouseEvent) => {
-    const el = e.currentTarget as HTMLElement;
-    el.style.borderColor = "var(--belvo-border-card)";
-    el.style.boxShadow = "none";
-  }, []);
 
   return (
     <motion.div
@@ -361,9 +330,7 @@ function MemberCard({
       variants={fadeUp}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
-      onMouseMove={handleMove}
-      onMouseLeave={(e) => { handleLeave(); handleCardLeave(e); }}
-      onMouseEnter={handleEnter}
+      whileHover={{ y: -6, borderColor: `${color}55`, boxShadow: `0 16px 56px rgba(123,47,190,0.18), 0 0 0 1px ${color}22`, transition: { duration: 0.25, ease: easeOut } }}
       style={{
         display: "flex", flexDirection: "column", alignItems: "center",
         padding: "28px 20px 24px",
@@ -372,11 +339,7 @@ function MemberCard({
         borderRadius: "18px",
         cursor: "default", position: "relative", overflow: "hidden",
         backdropFilter: "blur(14px)",
-        transition: "border-color 0.3s, box-shadow 0.3s",
-        perspective: 800,
-        transformStyle: "preserve-3d",
-        rotateX,
-        rotateY,
+        transition: "border-color 0.3s ease, box-shadow 0.3s ease",
       }}
       layout
     >
