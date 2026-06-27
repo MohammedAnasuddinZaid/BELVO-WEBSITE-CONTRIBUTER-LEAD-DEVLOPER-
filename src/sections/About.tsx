@@ -1,6 +1,5 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Users } from "lucide-react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -122,40 +121,86 @@ export default function About() {
               <span style={{ color: "#9D4EDD" }}>Countless Stories.</span>
             </motion.h2>
 
-            {/* Stats Block */}
+            {/* Text below heading */}
             <motion.div
-              custom={2}
+              custom={3}
               variants={fadeUp}
               initial="hidden"
               animate={inView ? "visible" : "hidden"}
               style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
+                fontFamily: "'Inter', sans-serif",
+                fontSize: "1rem",
+                lineHeight: "1.85",
+                color: "var(--belvo-text-2)",
+                display: "flex",
+                flexDirection: "column",
                 gap: "20px",
                 marginTop: "40px",
               }}
             >
+              <p style={{ margin: 0 }}>
+                {"Over the years, Belvo has had the privilege of working with over 100+ clients — and every single one of them has taught us something new, pushed us to think differently, and reminded us why we do what we do. From scrappy startups with big dreams and bigger ambitions, to established brands ready to break through their next ceiling, we've sat across the table from founders, visionaries, risk-takers, and dreamers — and we've rolled up our sleeves and built something incredible with every single one of them."}
+              </p>
+              <p style={{ margin: 0 }}>
+                {"We've crafted brand identities that made people stop mid-scroll and say \"who is that?\" We've run performance campaigns that turned modest budgets into jaw-dropping returns. We've built websites that don't just look beautiful but actually work — pulling in traffic, holding attention, and converting visitors into loyal customers. We've managed social media accounts that went from ghost towns to buzzing communities. We've launched e-commerce stores that sold out. We've written code that scaled. We've generated leads that closed. We've delivered research that changed the direction of entire businesses."}
+              </p>
+              <p style={{ margin: 0 }}>
+                {"But beyond the numbers, the campaigns, and the deliverables — what we're most proud of is the relationships. Because behind every brief is a person who bet on their idea, and behind every project at Belvo is a team that refused to let them down."}
+              </p>
+              <p style={{ margin: 0 }}>
+                {"100+ clients later, our hunger hasn't changed — if anything, it's only grown stronger. Because for us, every new client isn't just a project. It's a new story. And at Belvo, we intend to make every single one worth telling."}
+              </p>
+            </motion.div>
+          </div>
+
+          {/* Right Column - Stats + Office Images Card */}
+          <motion.div
+            custom={4}
+            variants={fadeUp}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
+            style={{
+              background: "var(--belvo-bg-card)",
+              border: "1px solid var(--belvo-border-card)",
+              borderRadius: "16px",
+              padding: "clamp(20px, 3vw, 32px)",
+              backdropFilter: "blur(12px)",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              height: "100%",
+            }}
+          >
+            {/* Stats */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "12px",
+              }}
+            >
               <div
                 style={{
-                  background: "var(--belvo-bg-card)",
+                  background: "var(--belvo-bg)",
                   border: "1px solid var(--belvo-border-bottom)",
                   borderRadius: "12px",
-                  padding: "20px",
+                  padding: "16px",
                 }}
               >
                 <div
                   style={{
-                    fontSize: "2.5rem",
+                    fontSize: "clamp(2.2rem, 5vw, 3.8rem)",
                     fontWeight: 900,
                     color: "#9D4EDD",
                     fontFamily: "'Inter', sans-serif",
+                    lineHeight: 1,
                   }}
                 >
                   100+
                 </div>
                 <div
                   style={{
-                    fontSize: "0.75rem",
+                    fontSize: "0.8rem",
                     textTransform: "uppercase",
                     letterSpacing: "0.1em",
                     color: "var(--belvo-text-2)",
@@ -168,74 +213,86 @@ export default function About() {
 
               <div
                 style={{
-                  background: "var(--belvo-bg-card)",
+                  background: "var(--belvo-bg)",
                   border: "1px solid var(--belvo-border-bottom)",
                   borderRadius: "12px",
-                  padding: "20px",
+                  padding: "16px",
                 }}
               >
                 <div
                   style={{
-                    fontSize: "2.5rem",
+                    fontSize: "clamp(2.2rem, 5vw, 3.8rem)",
                     fontWeight: 900,
                     color: "var(--belvo-text-1)",
                     fontFamily: "'Inter', sans-serif",
+                    lineHeight: 1,
                   }}
                 >
                   100%
                 </div>
                 <div
                   style={{
-                    fontSize: "0.75rem",
+                    fontSize: "0.7rem",
                     textTransform: "uppercase",
                     letterSpacing: "0.1em",
                     color: "var(--belvo-text-2)",
-                    marginTop: "4px",
+                    marginTop: "2px",
                   }}
                 >
                   Commitment
                 </div>
               </div>
-            </motion.div>
-          </div>
+            </div>
 
-          {/* Right Column - Text Description in Glassmorphism Card */}
-          <motion.div
-            custom={3}
-            variants={fadeUp}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            style={{
-              background: "var(--belvo-bg-card)",
-              border: "1px solid var(--belvo-border-card)",
-              borderRadius: "16px",
-              padding: "clamp(24px, 4vw, 40px)",
-              backdropFilter: "blur(12px)",
-            }}
-          >
-            <div
+            <p
               style={{
                 fontFamily: "'Inter', sans-serif",
-                fontSize: "1.05rem",
-                lineHeight: "1.85",
+                fontSize: "0.85rem",
+                lineHeight: "1.7",
                 color: "var(--belvo-text-2)",
-                display: "flex",
-                flexDirection: "column",
-                gap: "24px",
+                margin: "20px 0 0 0",
               }}
             >
-              <p>
-                {"Over the years, Belvo has had the privilege of working with over 100+ clients — and every single one of them has taught us something new, pushed us to think differently, and reminded us why we do what we do. From scrappy startups with big dreams and bigger ambitions, to established brands ready to break through their next ceiling, we've sat across the table from founders, visionaries, risk-takers, and dreamers — and we've rolled up our sleeves and built something incredible with every single one of them."}
-              </p>
-              <p>
-                {"We've crafted brand identities that made people stop mid-scroll and say \"who is that?\" We've run performance campaigns that turned modest budgets into jaw-dropping returns. We've built websites that don't just look beautiful but actually work — pulling in traffic, holding attention, and converting visitors into loyal customers. We've managed social media accounts that went from ghost towns to buzzing communities. We've launched e-commerce stores that sold out. We've written code that scaled. We've generated leads that closed. We've delivered research that changed the direction of entire businesses."}
-              </p>
-              <p>
-                {"But beyond the numbers, the campaigns, and the deliverables — what we're most proud of is the relationships. Because behind every brief is a person who bet on their idea, and behind every project at Belvo is a team that refused to let them down."}
-              </p>
-              <p style={{ margin: 0 }}>
-                {"100+ clients later, our hunger hasn't changed — if anything, it's only grown stronger. Because for us, every new client isn't just a project. It's a new story. And at Belvo, we intend to make every single one worth telling."}
-              </p>
+              From our creative studio to yours — every space at Belvo is built for collaboration, craft, and breakthrough ideas.
+            </p>
+
+            {/* Images */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "12px",
+              }}
+            >
+              {["Office1", "Office2", "Office3"].map((img) => (
+                <div
+                  key={img}
+                  style={{
+                    borderRadius: "12px",
+                    overflow: "hidden",
+                    aspectRatio: "16/9",
+                    position: "relative",
+                  }}
+                >
+                  <img
+                    src={`/OfficeImages/${img}.jpeg`}
+                    alt="Office"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
+                      transition: "transform 0.5s ease",
+                    }}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.transform = "scale(1.06)";
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.transform = "scale(1)";
+                    }}
+                  />
+                </div>
+              ))}
             </div>
           </motion.div>
         </div>
