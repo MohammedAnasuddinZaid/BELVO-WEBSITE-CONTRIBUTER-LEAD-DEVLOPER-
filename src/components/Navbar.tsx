@@ -17,6 +17,7 @@ export default function Navbar() {
   const [location, navigate] = useLocation();
   const [isOpen, setIsOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
+  const [activeSection, setActiveSection] = React.useState("");
   const { theme, toggleTheme } = useTheme();
   const isIvory = theme === "ivory";
 
@@ -25,6 +26,32 @@ export default function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  React.useEffect(() => {
+    setIsOpen(false);
+    setActiveSection("");
+  }, [location]);
+
+  React.useEffect(() => {
+    if (location !== "/") return;
+    const sections = ["about", "services", "portfolio"];
+    const observers: IntersectionObserver[] = [];
+
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveSection(id);
+        },
+        { threshold: 0.1, rootMargin: "-68px 0px 0px 0px" }
+      );
+      observer.observe(el);
+      observers.push(observer);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
+  }, [location]);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
@@ -81,36 +108,9 @@ export default function Navbar() {
     }
   };
 
-  React.useEffect(() => {
-    setIsOpen(false);
-    setActiveSection("");
-  }, [location]);
-
   const navBg = scrolled
     ? isIvory ? "rgba(248,245,239,0.96)" : "rgba(4,0,14,0.88)"
     : "var(--belvo-bg-nav)";
-
-  const [activeSection, setActiveSection] = React.useState("");
-
-  React.useEffect(() => {
-    const sections = ["about", "services", "portfolio", "works"];
-    const observers: IntersectionObserver[] = [];
-
-    sections.forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveSection(id);
-        },
-        { threshold: 0.3 }
-      );
-      observer.observe(el);
-      observers.push(observer);
-    });
-
-    return () => observers.forEach((o) => o.disconnect());
-  }, [location]);
 
   const isLinkActive = (href: string) => {
     if (href === "/") return location === "/" && activeSection === "";
