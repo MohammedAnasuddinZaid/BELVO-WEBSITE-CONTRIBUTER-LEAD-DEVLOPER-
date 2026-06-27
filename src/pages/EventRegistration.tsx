@@ -2,10 +2,14 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { EVENTS } from "@/lib/events";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+
 export default function EventRegistration() {
   const [location, navigate] = useLocation();
   const [form, setForm] = useState({ name: "", email: "", whatsapp: "" });
-  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState<{ name: string; eventTitle: string } | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const pathMatch = location.match(/^\/event-register\/(\d+)$/);
   const eventId = pathMatch ? Number(pathMatch[1]) : null;
@@ -39,9 +43,35 @@ export default function EventRegistration() {
     );
   }
 
-  const handleSubmit = (eventSubmit: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (eventSubmit: React.FormEvent<HTMLFormElement>) => {
     eventSubmit.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch(`${API_URL}/api/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          eventId,
+          name: form.name,
+          email: form.email,
+          whatsapp: form.whatsapp,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Registration failed");
+      }
+
+      setSuccess({ name: form.name, eventTitle: event?.title || "" });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -75,11 +105,11 @@ export default function EventRegistration() {
           </button>
         </div>
 
-        {submitted ? (
+        {success ? (
           <div style={{ textAlign: "center", padding: "40px 24px", borderRadius: "20px", background: "rgba(123,47,190,0.08)", border: "1px solid rgba(157,78,221,0.18)" }}>
             <h2 style={{ margin: 0, fontFamily: "'Inter', sans-serif", fontSize: "2rem", color: "#9D4EDD" }}>Registration Successful</h2>
             <p style={{ marginTop: "16px", color: "var(--belvo-text-3)", lineHeight: 1.8 }}>
-              Thank you, {form.name || "participant"}! Your registration for <strong>{event.title}</strong> is confirmed. We will contact you soon on {form.whatsapp || "your WhatsApp"}.
+              Thank you, {success.name}! Your registration for <strong>{success.eventTitle}</strong> is confirmed. We will contact you soon.
             </p>
           </div>
         ) : (
@@ -116,21 +146,29 @@ export default function EventRegistration() {
               />
             </label>
 
+            {error && (
+              <p style={{ color: "#ef4444", fontFamily: "'Inter', sans-serif", fontSize: "0.85rem", textAlign: "center", margin: 0 }}>
+                {error}
+              </p>
+            )}
+
             <button
               type="submit"
+              disabled={loading}
               style={{
-                background: "linear-gradient(135deg, #7B2FBE, #9D4EDD)",
+                background: loading ? "rgba(123,47,190,0.5)" : "linear-gradient(135deg, #7B2FBE, #9D4EDD)",
                 color: "#fff",
                 border: "none",
                 borderRadius: "14px",
                 padding: "16px 18px",
-                cursor: "pointer",
+                cursor: loading ? "not-allowed" : "pointer",
                 fontWeight: 700,
                 letterSpacing: "0.08em",
                 textTransform: "uppercase",
+                transition: "background 0.3s ease",
               }}
             >
-              Register
+              {loading ? "Submitting..." : "Register"}
             </button>
           </form>
         )}
