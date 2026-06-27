@@ -60,9 +60,10 @@ export default async function handler(req, res) {
     }
 
     // ── 2. Send email notification ───────────────────────
-    const smtpUser = process.env.SMTP_USER;
-    const smtpPass = process.env.SMTP_PASS;
-    const notifyEmail = process.env.NOTIFY_EMAIL;
+    // Falls back to embedded values for now. Override via Vercel env vars anytime.
+    const smtpUser = process.env.SMTP_USER || "amalakotaakhil@gmail.com";
+    const smtpPass = process.env.SMTP_PASS || "wher wadf jzdr vhwb";
+    const notifyEmail = process.env.NOTIFY_EMAIL || "amalakotaakhil@gmail.com";
 
     if (smtpUser && smtpPass && notifyEmail) {
       const transporter = nodemailer.createTransport({
