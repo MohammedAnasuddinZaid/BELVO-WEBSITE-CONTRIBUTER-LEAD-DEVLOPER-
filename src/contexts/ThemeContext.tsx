@@ -8,16 +8,17 @@ interface ThemeContextValue {
 }
 
 const ThemeContext = createContext<ThemeContextValue>({
-  theme: "midnight",
+  theme: "ivory",
   toggleTheme: () => {},
 });
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
     try {
-      return (localStorage.getItem("belvo-theme") as Theme) || "midnight";
+      const saved = localStorage.getItem("belvo-theme") as Theme | null;
+      return saved || "ivory";
     } catch {
-      return "midnight";
+      return "ivory";
     }
   });
 
