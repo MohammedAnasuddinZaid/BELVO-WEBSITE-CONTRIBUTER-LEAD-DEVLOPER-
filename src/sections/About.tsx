@@ -282,13 +282,6 @@ export default function About() {
                       height: "100%",
                       objectFit: "cover",
                       display: "block",
-                      transition: "transform 0.5s ease",
-                    }}
-                    onMouseOver={(e) => {
-                      e.currentTarget.style.transform = "scale(1.06)";
-                    }}
-                    onMouseOut={(e) => {
-                      e.currentTarget.style.transform = "scale(1)";
                     }}
                   />
                 </div>
