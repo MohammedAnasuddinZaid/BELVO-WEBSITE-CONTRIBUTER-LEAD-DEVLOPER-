@@ -2,7 +2,10 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { EVENTS } from "@/lib/events";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+const API_URL = import.meta.env.VITE_API_URL
+  || (window.location.hostname.includes("belvo.buzz")
+    ? "https://belvo-backend.onrender.com"
+    : "http://localhost:3001");
 
 export default function EventRegistration() {
   const [location, navigate] = useLocation();
