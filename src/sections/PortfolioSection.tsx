@@ -1,4 +1,4 @@
-import { useRef, useCallback } from "react";
+import { useRef, useState, useCallback } from "react";
 import { motion, useInView, useAnimationFrame, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { useTheme } from "@/contexts/ThemeContext";
 

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
+import { useRef, useCallback } from "react";
+import { ArrowUpRight, Sparkles } from "lucide-react";
 import { saveSubmission } from "@/lib/contact";
 
 type FormData = {
@@ -23,11 +23,21 @@ const PROJECT_TYPES = [
   "Marketing & Growth", "Full Brand Build", "Other",
 ];
 
+const easeOut = [0.16, 1, 0.3, 1] as const;
+
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
   visible: (i: number) => ({
     opacity: 1, y: 0,
-    transition: { duration: 0.7, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] as const },
+    transition: { duration: 0.7, delay: i * 0.1, ease: easeOut },
+  }),
+};
+
+const fieldAnim = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1, y: 0,
+    transition: { duration: 0.5, delay: 0.4 + i * 0.06, ease: easeOut },
   }),
 };
 
@@ -42,7 +52,7 @@ const inputBase: React.CSSProperties = {
   fontSize: "0.875rem",
   letterSpacing: "0.01em",
   outline: "none",
-  transition: "border-color 0.2s, box-shadow 0.2s",
+  transition: "border-color 0.25s ease, box-shadow 0.25s ease",
 };
 
 const inputError: React.CSSProperties = {
@@ -55,9 +65,12 @@ function GlassInput({ error, ...props }: React.InputHTMLAttributes<HTMLInputElem
     <input
       {...props}
       style={error ? inputError : inputBase}
+      onMouseEnter={e => { if (!error) { e.currentTarget.style.borderColor = "rgba(157,78,221,0.4)"; } }}
+      onMouseLeave={e => { if (!error && document.activeElement !== e.currentTarget) { e.currentTarget.style.borderColor = "var(--belvo-border-input)"; } }}
       onFocus={e => {
         e.currentTarget.style.borderColor = "rgba(157,78,221,0.7)";
         e.currentTarget.style.boxShadow = "0 0 0 3px rgba(130,40,200,0.12)";
+        if (error) e.currentTarget.style.borderColor = "rgba(239,68,68,0.6)";
         props.onFocus?.(e);
       }}
       onBlur={e => {
@@ -82,6 +95,8 @@ function GlassSelect({ error, children, ...props }: React.SelectHTMLAttributes<H
         paddingRight: "40px",
         cursor: "pointer",
       }}
+      onMouseEnter={e => { if (!error) { e.currentTarget.style.borderColor = "rgba(157,78,221,0.4)"; } }}
+      onMouseLeave={e => { if (!error && document.activeElement !== e.currentTarget) { e.currentTarget.style.borderColor = "var(--belvo-border-input)"; } }}
       onFocus={e => {
         e.currentTarget.style.borderColor = "rgba(157,78,221,0.7)";
         e.currentTarget.style.boxShadow = "0 0 0 3px rgba(130,40,200,0.12)";
@@ -103,6 +118,8 @@ function GlassTextarea({ error, ...props }: React.TextareaHTMLAttributes<HTMLTex
     <textarea
       {...props}
       style={{ ...(error ? inputError : inputBase), resize: "none", minHeight: "130px" }}
+      onMouseEnter={e => { if (!error) { e.currentTarget.style.borderColor = "rgba(157,78,221,0.4)"; } }}
+      onMouseLeave={e => { if (!error && document.activeElement !== e.currentTarget) { e.currentTarget.style.borderColor = "var(--belvo-border-input)"; } }}
       onFocus={e => {
         e.currentTarget.style.borderColor = "rgba(157,78,221,0.7)";
         e.currentTarget.style.boxShadow = "0 0 0 3px rgba(130,40,200,0.12)";
@@ -146,12 +163,25 @@ export default function BookACall() {
         background: "linear-gradient(90deg, transparent, var(--belvo-border-divider), rgba(201,163,65,0.2), transparent)",
       }} />
 
-      <div style={{
+      {/* Glow blobs */}
+      <motion.div style={{
         position: "absolute", top: "0", left: "50%", transform: "translateX(-50%)",
         width: "70vw", height: "400px",
         background: "radial-gradient(ellipse at center, var(--belvo-glow-blob) 0%, transparent 70%)",
         filter: "blur(60px)", pointerEvents: "none",
-      }} />
+      }}
+        animate={{ opacity: [0.5, 0.8, 0.5] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div style={{
+        position: "absolute", bottom: "80px", right: "10%",
+        width: "200px", height: "200px",
+        background: "radial-gradient(circle, rgba(201,163,65,0.06) 0%, transparent 70%)",
+        filter: "blur(50px)", pointerEvents: "none",
+      }}
+        animate={{ y: [0, -20, 0], opacity: [0.3, 0.6, 0.3] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+      />
 
       <div style={{ maxWidth: "860px", margin: "0 auto", padding: "100px 24px 120px", position: "relative", zIndex: 1 }}>
 
@@ -160,28 +190,48 @@ export default function BookACall() {
           custom={0} variants={fadeUp} initial="hidden" animate={inView ? "visible" : "hidden"}
           style={{ textAlign: "center", marginBottom: "56px" }}
         >
-          <span style={{
-            display: "block", fontSize: "0.7rem", letterSpacing: "0.35em",
-            textTransform: "uppercase", color: "#9D4EDD",
-            fontFamily: "'Inter', sans-serif", marginBottom: "16px",
-          }}>
+          <motion.span
+            initial={{ opacity: 0, y: 10 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.1, ease: easeOut }}
+            style={{
+              display: "block", fontSize: "0.7rem", letterSpacing: "0.35em",
+              textTransform: "uppercase", color: "#9D4EDD",
+              fontFamily: "'Inter', sans-serif", marginBottom: "16px",
+            }}
+          >
             Let's Work Together
-          </span>
+          </motion.span>
           <h2 style={{
             fontFamily: "'Inter', sans-serif", fontWeight: 900,
             fontSize: "clamp(2rem, 5vw, 3.8rem)", lineHeight: 1.05,
             color: "var(--belvo-text-1)", margin: 0,
           }}>
             Book A{" "}
-            <span style={{ color: "#9D4EDD" }}>Free Call</span>
+            <span style={{ color: "#9D4EDD", position: "relative" }}>
+              Free Call
+              <motion.span style={{
+                position: "absolute", bottom: -2, left: 0, right: 0, height: "3px",
+                background: "linear-gradient(90deg, transparent, #9D4EDD, transparent)",
+                borderRadius: "2px",
+              }}
+                initial={{ scaleX: 0 }} animate={inView ? { scaleX: 1 } : {}}
+                transition={{ duration: 0.8, delay: 0.4, ease: easeOut }}
+              />
+            </span>
           </h2>
-          <p style={{
-            marginTop: "16px", color: "var(--belvo-text-3)",
-            fontSize: "0.95rem", letterSpacing: "0.01em", lineHeight: 1.7,
-            fontFamily: "'Inter', sans-serif",
-          }}>
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.25, ease: easeOut }}
+            style={{
+              marginTop: "16px", color: "var(--belvo-text-2)",
+              fontSize: "0.95rem", letterSpacing: "0.01em", lineHeight: 1.7,
+              fontFamily: "'Inter', sans-serif",
+            }}
+          >
             Tell us about your project and we'll get back to you within 24 hours.
-          </p>
+          </motion.p>
         </motion.div>
 
         {/* Form card */}
@@ -200,46 +250,65 @@ export default function BookACall() {
               initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
               style={{ textAlign: "center", padding: "40px 0" }}
             >
-              <div style={{
-                width: 56, height: 56, borderRadius: "50%",
-                background: "linear-gradient(135deg, #7B2FBE, #9D4EDD)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                margin: "0 auto 20px", fontSize: "1.4rem",
-              }}>✓</div>
+              <motion.div
+                initial={{ rotate: -180, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                transition={{ duration: 0.5, ease: easeOut }}
+                style={{
+                  width: 56, height: 56, borderRadius: "50%",
+                  background: "linear-gradient(135deg, #7B2FBE, #9D4EDD)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  margin: "0 auto 20px", fontSize: "1.4rem",
+                  boxShadow: "0 0 32px rgba(157,78,221,0.4)",
+                }}
+              >
+                <motion.span
+                  animate={{ scale: [1, 1.15, 1] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >✓</motion.span>
+              </motion.div>
               <h3 style={{
                 color: "var(--belvo-text-1)", fontFamily: "'Inter', sans-serif",
                 fontWeight: 700, fontSize: "1.3rem", marginBottom: 8,
               }}>We'll be in touch!</h3>
-              <p style={{ color: "var(--belvo-text-3)", fontSize: "0.9rem" }}>
+              <p style={{ color: "var(--belvo-text-2)", fontSize: "0.9rem" }}>
                 Your message has been received. Expect a reply within 24 hours.
               </p>
             </motion.div>
           ) : (
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "20px", marginBottom: "20px" }}>
-                <Field label="Full Name" error={errors.fullName?.message}>
-                  <GlassInput placeholder="John Smith" error={!!errors.fullName} data-testid="input-full-name"
-                    {...register("fullName", { required: "Full name is required" })} />
-                </Field>
-                <Field label="Email Address" error={errors.email?.message}>
-                  <GlassInput type="email" placeholder="john@company.com" error={!!errors.email} data-testid="input-email"
-                    {...register("email", { required: "Email is required", pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Enter a valid email" } })} />
-                </Field>
+                <motion.div custom={0} variants={fieldAnim} initial="hidden" animate={inView ? "visible" : "hidden"}>
+                  <Field label="Full Name" error={errors.fullName?.message}>
+                    <GlassInput placeholder="John Smith" error={!!errors.fullName} data-testid="input-full-name"
+                      {...register("fullName", { required: "Full name is required" })} />
+                  </Field>
+                </motion.div>
+                <motion.div custom={1} variants={fieldAnim} initial="hidden" animate={inView ? "visible" : "hidden"}>
+                  <Field label="Email Address" error={errors.email?.message}>
+                    <GlassInput type="email" placeholder="john@company.com" error={!!errors.email} data-testid="input-email"
+                      {...register("email", { required: "Email is required", pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Enter a valid email" } })} />
+                  </Field>
+                </motion.div>
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "20px", marginBottom: "20px" }}>
-                <Field label="Company Name" error={errors.company?.message}>
-                  <GlassInput placeholder="Acme Inc." error={!!errors.company} data-testid="input-company"
-                    {...register("company", { required: "Company name is required" })} />
-                </Field>
-                <Field label="Budget" error={errors.budget?.message}>
-                  <GlassSelect error={!!errors.budget} data-testid="select-budget"
-                    {...register("budget", { required: "Please select a budget" })}>
-                    <option value="" style={{ background: "var(--belvo-bg)" }}>Select budget range</option>
-                    {BUDGETS.map(b => <option key={b} value={b} style={{ background: "var(--belvo-bg)" }}>{b}</option>)}
-                  </GlassSelect>
-                </Field>
+                <motion.div custom={2} variants={fieldAnim} initial="hidden" animate={inView ? "visible" : "hidden"}>
+                  <Field label="Company Name" error={errors.company?.message}>
+                    <GlassInput placeholder="Acme Inc." error={!!errors.company} data-testid="input-company"
+                      {...register("company", { required: "Company name is required" })} />
+                  </Field>
+                </motion.div>
+                <motion.div custom={3} variants={fieldAnim} initial="hidden" animate={inView ? "visible" : "hidden"}>
+                  <Field label="Budget" error={errors.budget?.message}>
+                    <GlassSelect error={!!errors.budget} data-testid="select-budget"
+                      {...register("budget", { required: "Please select a budget" })}>
+                      <option value="" style={{ background: "var(--belvo-bg)" }}>Select budget range</option>
+                      {BUDGETS.map(b => <option key={b} value={b} style={{ background: "var(--belvo-bg)" }}>{b}</option>)}
+                    </GlassSelect>
+                  </Field>
+                </motion.div>
               </div>
-              <div style={{ marginBottom: "20px" }}>
+              <motion.div custom={4} variants={fieldAnim} initial="hidden" animate={inView ? "visible" : "hidden"} style={{ marginBottom: "20px" }}>
                 <Field label="Project Type" error={errors.projectType?.message}>
                   <GlassSelect error={!!errors.projectType} data-testid="select-project-type"
                     {...register("projectType", { required: "Please select a project type" })}>
@@ -247,41 +316,80 @@ export default function BookACall() {
                     {PROJECT_TYPES.map(t => <option key={t} value={t} style={{ background: "var(--belvo-bg)" }}>{t}</option>)}
                   </GlassSelect>
                 </Field>
-              </div>
-              <div style={{ marginBottom: "32px" }}>
+              </motion.div>
+              <motion.div custom={5} variants={fieldAnim} initial="hidden" animate={inView ? "visible" : "hidden"} style={{ marginBottom: "32px" }}>
                 <Field label="Message / Brief" error={errors.message?.message}>
                   <GlassTextarea
                     placeholder="Tell us about your project, goals, and timeline..."
                     error={!!errors.message} data-testid="textarea-message"
                     {...register("message", { required: "Please write a brief message", minLength: { value: 20, message: "At least 20 characters" } })} />
                 </Field>
-              </div>
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <motion.button
-                  type="submit"
-                  data-testid="button-submit-form"
-                  whileHover={{ y: -2, boxShadow: "0 0 56px rgba(157,78,221,0.55)" }}
-                  whileTap={{ scale: 0.97 }}
-                  style={{
-                    display: "inline-flex", alignItems: "center", gap: "10px",
-                    padding: "14px 40px",
-                    background: "linear-gradient(135deg, #7B2FBE, #9D4EDD)",
-                    border: "none", borderRadius: "8px", color: "#ffffff",
-                    fontFamily: "'Inter', sans-serif", fontWeight: 600,
-                    fontSize: "0.85rem", letterSpacing: "0.18em",
-                    textTransform: "uppercase", cursor: "pointer",
-                    boxShadow: "0 0 32px rgba(130,40,200,0.35)",
-                  }}
-                >
-                  Send Message
-                  <ArrowUpRight size={15} strokeWidth={2.5} />
-                </motion.button>
-              </div>
+              </motion.div>
+              <motion.div
+                custom={6} variants={fieldAnim} initial="hidden" animate={inView ? "visible" : "hidden"}
+                style={{ display: "flex", justifyContent: "center" }}
+              >
+                <MagneticButton />
+              </motion.div>
             </form>
           )}
         </motion.div>
       </div>
     </section>
+  );
+}
+
+function MagneticButton() {
+  const ref = useRef<HTMLButtonElement>(null);
+  const rawX = useMotionValue(0);
+  const rawY = useMotionValue(0);
+
+  const handleMove = useCallback((e: React.MouseEvent) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    const dist = Math.sqrt(x * x + y * y);
+    const strength = Math.max(0, 1 - dist / 180);
+    el.style.transform = `translate(${x * 0.2 * strength}px, ${y * 0.2 * strength}px) scale(${1 + 0.03 * strength})`;
+  }, []);
+
+  const handleLeave = useCallback((e: React.MouseEvent) => {
+    const el = e.currentTarget as HTMLElement;
+    el.style.transform = "translate(0,0) scale(1)";
+  }, []);
+
+  return (
+    <motion.button
+      ref={ref}
+      type="submit"
+      data-testid="button-submit-form"
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+      whileHover={{ boxShadow: "0 0 56px rgba(157,78,221,0.55)" }}
+      whileTap={{ scale: 0.97 }}
+      style={{
+        display: "inline-flex", alignItems: "center", gap: "10px",
+        padding: "14px 40px",
+        background: "linear-gradient(135deg, #7B2FBE, #9D4EDD)",
+        border: "none", borderRadius: "8px", color: "#ffffff",
+        fontFamily: "'Inter', sans-serif", fontWeight: 600,
+        fontSize: "0.85rem", letterSpacing: "0.18em",
+        textTransform: "uppercase", cursor: "pointer",
+        boxShadow: "0 0 32px rgba(130,40,200,0.35)",
+        transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease",
+      }}
+    >
+      Send Message
+      <motion.span
+        animate={{ x: [0, 3, 0] }}
+        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+        style={{ display: "inline-flex" }}
+      >
+        <ArrowUpRight size={15} strokeWidth={2.5} />
+      </motion.span>
+    </motion.button>
   );
 }
 
