@@ -15,6 +15,8 @@ import Works from "@/pages/works";
 import Navbar from "@/components/Navbar";
 import ScrollToTop from "@/components/ScrollToTop";
 import ChatBot from "@/components/ChatBot";
+import CursorFollower from "@/components/CursorFollower";
+import GrainOverlay from "@/components/GrainOverlay";
 import React from "react";
 
 const queryClient = new QueryClient();
@@ -79,6 +81,8 @@ function App() {
           </WouterRouter>
           <ScrollToTop />
           <ChatBot />
+          <CursorFollower />
+          <GrainOverlay opacity={0.02} blend="overlay" />
           <Toaster />
         </ThemeProvider>
       </TooltipProvider>

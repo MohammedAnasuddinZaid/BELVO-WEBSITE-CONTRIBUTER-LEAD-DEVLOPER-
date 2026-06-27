@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { motion, useInView, useAnimationFrame } from "framer-motion";
+import { motion, useInView, useAnimationFrame, useScroll, useTransform } from "framer-motion";
 import { useTheme } from "@/contexts/ThemeContext";
 
 interface Props {
@@ -160,6 +160,21 @@ function BrandRow({ catName, brands, color, isIvory }: { catName: string; brands
     const initial = brand.name.replace(/['"]/g, "").charAt(0).toUpperCase();
     const logoSrc = getLogoPath(catName, brand.url) || undefined;
     const badge = <BrandBadge logoSrc={logoSrc} initial={initial} color={color} rgb={rgb} />;
+    const itemRef = useRef<HTMLAnchorElement>(null);
+    const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+    const handleMove = (e: React.MouseEvent) => {
+      const el = itemRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      setTilt({
+        x: ((e.clientY - rect.top) / rect.height - 0.5) * -6,
+        y: ((e.clientX - rect.left) / rect.width - 0.5) * 6,
+      });
+    };
+
+    const handleLeave = () => setTilt({ x: 0, y: 0 });
+
     const baseStyle: React.CSSProperties = {
       display: "inline-flex", alignItems: "center", gap: "10px",
       padding: "8px 18px 8px 12px",
@@ -173,6 +188,7 @@ function BrandRow({ catName, brands, color, isIvory }: { catName: string; brands
       whiteSpace: "nowrap",
       flexShrink: 0,
       transition: "background 0.2s, border-color 0.2s",
+      transform: `perspective(300px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
     };
     const inner = (
       <>
@@ -183,30 +199,29 @@ function BrandRow({ catName, brands, color, isIvory }: { catName: string; brands
     if (brand.url) {
       return (
         <a
+          ref={itemRef as any}
           key={`${brand.name}-${i}`}
           href={brand.url}
           target="_blank"
           rel="noopener noreferrer"
           title={brand.name}
           style={{ ...baseStyle, textDecoration: "none" }}
+          onMouseMove={handleMove}
+          onMouseLeave={(e) => { handleLeave(); const el = e.currentTarget as HTMLElement; el.style.background = isIvory
+              ? `linear-gradient(135deg, rgba(${rgb},0.07), rgba(${rgb},0.03))`
+              : `linear-gradient(135deg, rgba(${rgb},0.09), rgba(${rgb},0.03))`; el.style.borderColor = `rgba(${rgb},0.12)`; }}
           onMouseEnter={e => {
             const el = e.currentTarget as HTMLElement;
             el.style.background = `rgba(${rgb},0.15)`;
             el.style.borderColor = `rgba(${rgb},0.35)`;
-          }}
-          onMouseLeave={e => {
-            const el = e.currentTarget as HTMLElement;
-            el.style.background = isIvory
-              ? `linear-gradient(135deg, rgba(${rgb},0.07), rgba(${rgb},0.03))`
-              : `linear-gradient(135deg, rgba(${rgb},0.09), rgba(${rgb},0.03))`;
-            el.style.borderColor = `rgba(${rgb},0.12)`;
           }}
         >
           {inner}
         </a>
       );
     }
-    return <span key={`${brand.name}-${i}`} title={brand.name} style={baseStyle}>{inner}</span>;
+    return <span key={`${brand.name}-${i}`} title={brand.name} style={baseStyle}
+      onMouseMove={handleMove} onMouseLeave={handleLeave}>{inner}</span>;
   }
 
   return (
@@ -243,10 +258,14 @@ export default function PortfolioSection({ id }: Props) {
   const isIvory = theme === "ivory";
   const headerRef = useRef(null);
   const headerInView = useInView(headerRef, { once: true, margin: "-80px" });
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
+  const sectionY = useTransform(scrollYProgress, [0, 1], [0, -30]);
 
   return (
     <section
       id={id}
+      ref={sectionRef}
       style={{
         background: "var(--belvo-bg)",
         padding: "120px 0 140px",
@@ -254,19 +273,19 @@ export default function PortfolioSection({ id }: Props) {
         overflow: "hidden",
       }}
     >
-      <div style={{
+      <motion.div style={{
         position: "absolute", top: "10%", left: "5%", width: "50vw", height: "60vh",
         background: isIvory
           ? "radial-gradient(ellipse at center, rgba(123,47,190,0.05) 0%, transparent 70%)"
           : "radial-gradient(ellipse at center, rgba(80,15,140,0.10) 0%, transparent 70%)",
-        filter: "blur(100px)", pointerEvents: "none",
+        filter: "blur(100px)", pointerEvents: "none", y: sectionY,
       }} />
-      <div style={{
+      <motion.div style={{
         position: "absolute", bottom: "15%", right: "0%", width: "40vw", height: "50vh",
         background: isIvory
           ? "radial-gradient(ellipse at center, rgba(157,78,221,0.04) 0%, transparent 70%)"
           : "radial-gradient(ellipse at center, rgba(157,78,221,0.06) 0%, transparent 70%)",
-        filter: "blur(100px)", pointerEvents: "none",
+        filter: "blur(100px)", pointerEvents: "none", y: sectionY,
       }} />
       <div style={{
         position: "absolute", inset: 0,
@@ -285,19 +304,23 @@ export default function PortfolioSection({ id }: Props) {
           animate={headerInView ? "visible" : "hidden"}
           style={{ textAlign: "center", marginBottom: "64px" }}
         >
-          <span style={{
-            display: "inline-block",
-            fontFamily: "'Inter',sans-serif", fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            color: "#9D4EDD",
-            padding: "6px 16px",
-            borderRadius: "100px",
-            background: `rgba(157,78,221,${isIvory ? "0.08" : "0.1"})`,
-            border: `1px solid rgba(157,78,221,${isIvory ? "0.15" : "0.18"})`,
-            marginBottom: "20px",
-          }}>
+          <motion.span
+            style={{
+              display: "inline-block",
+              fontFamily: "'Inter',sans-serif", fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: "#9D4EDD",
+              padding: "6px 16px",
+              borderRadius: "100px",
+              background: `rgba(157,78,221,${isIvory ? "0.08" : "0.1"})`,
+              border: `1px solid rgba(157,78,221,${isIvory ? "0.15" : "0.18"})`,
+              marginBottom: "20px",
+            }}
+            animate={{ opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+          >
             Our Portfolio
-          </span>
+          </motion.span>
           <h2 style={{
             fontFamily: "'Cormorant Garamond',serif", fontWeight: 700,
             fontSize: "clamp(2rem,4.5vw,3.4rem)",
@@ -306,10 +329,18 @@ export default function PortfolioSection({ id }: Props) {
             margin: "0 0 16px",
           }}>
             From skincare to startups —{" "}
-            <span style={{ color: "#9D4EDD" }}>
+            <motion.span
+              style={{ color: "#9D4EDD", display: "inline-block" }}
+              animate={{ y: [0, -2, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            >
               <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 750, fontSize: "90%" }}>100+ Brands, </span> 
-            </span>{" "}
-            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 750, fontSize: "90%", color: "#9D4EDD" }}>15+ Industries</span> 
+            </motion.span>{" "}
+            <motion.span
+              style={{ fontFamily: "'Inter',sans-serif", fontWeight: 750, fontSize: "90%", color: "#9D4EDD", display: "inline-block" }}
+              animate={{ y: [0, 2, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+            >15+ Industries</motion.span> 
           </h2>
           <p style={{
             fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", lineHeight: 1.8,
@@ -331,12 +362,20 @@ export default function PortfolioSection({ id }: Props) {
             animate={headerInView ? "visible" : "hidden"}
           >
             {/* Category heading */}
-            <div style={{ padding: "0 24px", maxWidth: "1200px", margin: "0 auto 16px" }}>
+            <motion.div
+              style={{ padding: "0 24px", maxWidth: "1200px", margin: "0 auto 16px" }}
+              animate={{ x: [0, 5, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: ci * 0.3 }}
+            >
               <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <span style={{
-                  width: "5px", height: "20px", borderRadius: "3px",
-                  background: cat.color, flexShrink: 0,
-                }} />
+                <motion.span
+                  style={{
+                    width: "5px", height: "20px", borderRadius: "3px",
+                    background: cat.color, flexShrink: 0,
+                  }}
+                  animate={{ height: [20, 24, 20] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: ci * 0.2 }}
+                />
                 <h3 style={{
                   fontFamily: "'Inter',sans-serif", fontWeight: 700,
                   fontSize: "0.85rem", color: "var(--belvo-text-1)", margin: 0,
@@ -344,18 +383,22 @@ export default function PortfolioSection({ id }: Props) {
                 }}>
                   {cat.name}
                 </h3>
-                <span style={{
-                  fontFamily: "'Inter',sans-serif", fontSize: "0.65rem", fontWeight: 600,
-                  color: cat.color,
-                  background: `rgba(${hexToRgb(cat.color)},0.1)`,
-                  border: `1px solid rgba(${hexToRgb(cat.color)},0.18)`,
-                  borderRadius: "100px", padding: "2px 10px",
-                  whiteSpace: "nowrap",
-                }}>
+                <motion.span
+                  style={{
+                    fontFamily: "'Inter',sans-serif", fontSize: "0.65rem", fontWeight: 600,
+                    color: cat.color,
+                    background: `rgba(${hexToRgb(cat.color)},0.1)`,
+                    border: `1px solid rgba(${hexToRgb(cat.color)},0.18)`,
+                    borderRadius: "100px", padding: "2px 10px",
+                    whiteSpace: "nowrap",
+                  }}
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: ci * 0.3 }}
+                >
                   {cat.count}
-                </span>
+                </motion.span>
               </div>
-            </div>
+            </motion.div>
             <BrandRow catName={cat.name} brands={cat.brands} color={cat.color} isIvory={isIvory} />
           </motion.div>
         ))}
@@ -377,8 +420,24 @@ export default function PortfolioSection({ id }: Props) {
             padding: "32px",
             marginBottom: "48px",
             backdropFilter: "blur(4px)",
+            position: "relative",
+            overflow: "hidden",
+          }}
+          whileHover={{
+            borderColor: "rgba(157,78,221,0.3)",
+            boxShadow: `0 0 40px rgba(157,78,221,0.1)`,
+            transition: { duration: 0.4 },
           }}
         >
+          <motion.div
+            style={{
+              position: "absolute", top: 0, left: "-100%",
+              width: "100%", height: "1px",
+              background: "linear-gradient(90deg, transparent, #9D4EDD, transparent)",
+            }}
+            animate={{ left: ["100%", "-100%"] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+          />
           <h3 style={{
             fontFamily: "'Inter',sans-serif", fontWeight: 700, fontSize: "0.8rem",
             color: "#9D4EDD", margin: "0 0 20px",
@@ -387,17 +446,28 @@ export default function PortfolioSection({ id }: Props) {
             Services Delivered
           </h3>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-            {SERVICES_DELIVERED.map((svc) => (
-              <span key={svc} style={{
-                padding: "6px 14px",
-                background: isIvory ? `rgba(157,78,221,0.06)` : `rgba(157,78,221,0.08)`,
-                border: `1px solid rgba(157,78,221,${isIvory ? "0.1" : "0.12"})`,
-                borderRadius: "8px",
-                fontFamily: "'Inter',sans-serif", fontSize: "0.75rem", fontWeight: 500,
-                color: "var(--belvo-text-1)",
-              }}>
+            {SERVICES_DELIVERED.map((svc, i) => (
+              <motion.span
+                key={svc}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={headerInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.3, delay: 0.3 + i * 0.03 }}
+                whileHover={{ scale: 1.05, borderColor: "rgba(157,78,221,0.4)" }}
+                style={{
+                  padding: "6px 14px",
+                  background: isIvory ? `rgba(157,78,221,0.06)` : `rgba(157,78,221,0.08)`,
+                  border: `1px solid rgba(157,78,221,${isIvory ? "0.1" : "0.12"})`,
+                  borderRadius: "8px",
+                  fontFamily: "'Inter',sans-serif", fontSize: "0.75rem", fontWeight: 500,
+                  color: "var(--belvo-text-1)",
+                  cursor: "default",
+                  transition: "border-color 0.2s, background 0.2s",
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = `rgba(157,78,221,0.15)`; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = isIvory ? `rgba(157,78,221,0.06)` : `rgba(157,78,221,0.08)`; }}
+              >
                 {svc}
-              </span>
+              </motion.span>
             ))}
           </div>
         </motion.div>
@@ -409,16 +479,21 @@ export default function PortfolioSection({ id }: Props) {
           animate={headerInView ? "visible" : "hidden"}
           style={{ textAlign: "center" }}
         >
-          <div style={{
-            display: "inline-flex", alignItems: "center", gap: "20px",
-            padding: "14px 32px",
-            background: isIvory
-              ? "linear-gradient(135deg, rgba(157,78,221,0.06), rgba(123,47,190,0.03))"
-              : "linear-gradient(135deg, rgba(157,78,221,0.08), rgba(80,15,140,0.05))",
-            border: `1px solid rgba(157,78,221,${isIvory ? "0.12" : "0.15"})`,
-            borderRadius: "100px",
-            backdropFilter: "blur(4px)",
-          }}>
+          <motion.div
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "20px",
+              padding: "14px 32px",
+              background: isIvory
+                ? "linear-gradient(135deg, rgba(157,78,221,0.06), rgba(123,47,190,0.03))"
+                : "linear-gradient(135deg, rgba(157,78,221,0.08), rgba(80,15,140,0.05))",
+              border: `1px solid rgba(157,78,221,${isIvory ? "0.12" : "0.15"})`,
+              borderRadius: "100px",
+              backdropFilter: "blur(4px)",
+            }}
+            whileHover={{ scale: 1.02, borderColor: "rgba(157,78,221,0.3)" }}
+            animate={{ y: [0, -3, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          >
             <span style={{
               fontFamily: "'Inter',sans-serif", fontWeight: 700, fontSize: "0.7rem",
               letterSpacing: "0.15em", textTransform: "uppercase", color: "#9D4EDD",
@@ -429,7 +504,7 @@ export default function PortfolioSection({ id }: Props) {
             <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: "0.78rem", color: "var(--belvo-text-1)" }}>100+ Brands</span>
             <span style={{ width: "1px", height: "14px", background: `rgba(157,78,221,${isIvory ? "0.15" : "0.2"})` }} />
             <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: "0.78rem", color: "var(--belvo-text-1)" }}>15+ Industries</span>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion, useInView, AnimatePresence, useScroll, useTransform } from "framer-motion";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -175,6 +175,21 @@ interface FAQItemProps {
 
 function FAQItem({ id, question, answer, isOpen, onToggle, index, inView }: FAQItemProps) {
   const panelId = `${id}-panel`;
+  const itemRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  const handleMove = (e: React.MouseEvent) => {
+    if (isOpen) return;
+    const el = itemRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    setTilt({
+      x: ((e.clientY - rect.top) / rect.height - 0.5) * -3,
+      y: ((e.clientX - rect.left) / rect.width - 0.5) * 3,
+    });
+  };
+
+  const handleLeave = () => setTilt({ x: 0, y: 0 });
 
   return (
     <motion.div
@@ -183,7 +198,10 @@ function FAQItem({ id, question, answer, isOpen, onToggle, index, inView }: FAQI
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
     >
-      <div
+      <motion.div
+        ref={itemRef}
+        onMouseMove={handleMove}
+        onMouseLeave={handleLeave}
         style={{
           background: isOpen ? "var(--belvo-bg-card-2)" : "var(--belvo-bg-card)",
           border: `1px solid ${isOpen ? "rgba(157,78,221,0.35)" : "var(--belvo-border-card)"}`,
@@ -195,6 +213,10 @@ function FAQItem({ id, question, answer, isOpen, onToggle, index, inView }: FAQI
           boxShadow: isOpen
             ? "0 0 32px rgba(130,40,200,0.12), 0 4px 24px rgba(0,0,0,0.25)"
             : "0 2px 12px rgba(0,0,0,0.15)",
+          transformStyle: "preserve-3d",
+          perspective: 500,
+          rotateX: tilt.x,
+          rotateY: tilt.y,
         }}
       >
         <button
@@ -333,7 +355,7 @@ function FAQItem({ id, question, answer, isOpen, onToggle, index, inView }: FAQI
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </motion.div>
     </motion.div>
   );
 }
@@ -385,37 +407,37 @@ export default function FAQ() {
         }}
       />
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 1.2, delay: 0.1 }}
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          fontSize: "clamp(8rem, 22vw, 18rem)",
-          fontFamily: "'Inter', sans-serif",
-          fontWeight: 900,
-          color: "var(--belvo-ghost-num)",
-          letterSpacing: "-0.06em",
-          userSelect: "none",
-          pointerEvents: "none",
-          whiteSpace: "nowrap",
-        }}
-      >
-        08
-      </motion.div>
-
-      <div
-        style={{
-          maxWidth: "780px",
-          margin: "0 auto",
-          position: "relative",
-          zIndex: 1,
-        }}
-      >
         <motion.div
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 1.2, delay: 0.1 }}
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            fontSize: "clamp(8rem, 22vw, 18rem)",
+            fontFamily: "'Inter', sans-serif",
+            fontWeight: 900,
+            color: "var(--belvo-ghost-num)",
+            letterSpacing: "-0.06em",
+            userSelect: "none",
+            pointerEvents: "none",
+            whiteSpace: "nowrap",
+          }}
+        >
+          08
+        </motion.div>
+
+        <div
+          style={{
+            maxWidth: "780px",
+            margin: "0 auto",
+            position: "relative",
+            zIndex: 1,
+          }}
+        >
+          <motion.div
           custom={0}
           variants={fadeUp}
           initial="hidden"

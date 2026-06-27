@@ -1,4 +1,4 @@
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { Mail, Download, Phone } from "lucide-react";
 import { CONTACT_TARGETS } from "@/lib/contact";
@@ -62,6 +62,8 @@ const SOCIAL_LINKS = [
 export default function Footer() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, -20]);
 
   return (
     <footer
@@ -76,12 +78,44 @@ export default function Footer() {
       }} />
 
       {/* Ambient glow blob */}
-      <div style={{
+      <motion.div style={{
         position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)",
         width: "60vw", height: "300px",
         background: "radial-gradient(ellipse at center bottom, var(--belvo-glow-blob) 0%, transparent 70%)",
         filter: "blur(50px)", pointerEvents: "none",
+        y: bgY,
       }} />
+      {/* Floating particles */}
+      <motion.div
+        style={{
+          position: "absolute", top: "20%", left: "10%",
+          width: 6, height: 6, borderRadius: "50%",
+          background: "rgba(157,78,221,0.3)",
+          filter: "blur(2px)",
+        }}
+        animate={{ y: [0, -20, 0], opacity: [0.3, 0.8, 0.3] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        style={{
+          position: "absolute", top: "45%", right: "15%",
+          width: 4, height: 4, borderRadius: "50%",
+          background: "rgba(201,163,65,0.2)",
+          filter: "blur(1px)",
+        }}
+        animate={{ y: [0, -15, 0], opacity: [0.2, 0.6, 0.2] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+      />
+      <motion.div
+        style={{
+          position: "absolute", bottom: "30%", left: "30%",
+          width: 8, height: 8, borderRadius: "50%",
+          background: "rgba(157,78,221,0.15)",
+          filter: "blur(3px)",
+        }}
+        animate={{ y: [0, -25, 0], opacity: [0.15, 0.5, 0.15] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+      />
 
       {/* ── FOOTER LINKS AREA ── */}
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "64px 24px 48px", position: "relative", zIndex: 1 }}>
