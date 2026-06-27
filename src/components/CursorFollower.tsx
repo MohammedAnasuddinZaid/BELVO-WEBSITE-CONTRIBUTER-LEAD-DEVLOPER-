@@ -1,29 +1,44 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export default function CursorFollower() {
   const [visible, setVisible] = useState(false);
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
-  const springX = useSpring(mouseX, { stiffness: 200, damping: 30 });
-  const springY = useSpring(mouseY, { stiffness: 200, damping: 30 });
+  const springX = useSpring(mouseX, { stiffness: 80, damping: 20 });
+  const springY = useSpring(mouseY, { stiffness: 80, damping: 20 });
+  const isScrolling = useRef(false);
+  const scrollTimer = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     const handle = (e: MouseEvent) => {
+      if (isScrolling.current) return;
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
       if (!visible) setVisible(true);
     };
     const leave = () => setVisible(false);
     const enter = () => setVisible(true);
+    const onScroll = () => {
+      isScrolling.current = true;
+      setVisible(false);
+      clearTimeout(scrollTimer.current);
+      scrollTimer.current = setTimeout(() => {
+        isScrolling.current = false;
+        setVisible(true);
+      }, 150);
+    };
 
     window.addEventListener("mousemove", handle, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     document.addEventListener("mouseleave", leave);
     document.addEventListener("mouseenter", enter);
     return () => {
       window.removeEventListener("mousemove", handle);
+      window.removeEventListener("scroll", onScroll);
       document.removeEventListener("mouseleave", leave);
       document.removeEventListener("mouseenter", enter);
+      clearTimeout(scrollTimer.current);
     };
   }, [mouseX, mouseY, visible]);
 

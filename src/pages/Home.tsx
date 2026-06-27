@@ -248,26 +248,20 @@ export default function Home() {
           className="relative z-10 flex flex-col items-center text-center px-4 w-full max-w-4xl mx-auto pt-20"
         >
           <motion.div custom={0} variants={itemUp} initial="hidden" animate="visible" className="mb-3">
-            <motion.img
+            <img
               src="/belvo-logo-transparent.png"
               alt="BELVO"
               className="w-auto object-contain"
               data-testid="img-hero-logo"
-              style={{ height: "clamp(7rem, 14vw, 12rem)", clipPath: "inset(0 0 38% 0)", marginBottom: "-2rem" }}
-              animate={{ filter: ["drop-shadow(0 0 20px rgba(157,78,221,0.3))", "drop-shadow(0 0 40px rgba(157,78,221,0.6))", "drop-shadow(0 0 20px rgba(157,78,221,0.3))"] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              style={{ height: "clamp(7rem, 14vw, 12rem)", clipPath: "inset(0 0 38% 0)", marginBottom: "-2rem", filter: "drop-shadow(0 0 20px rgba(157,78,221,0.3))" }}
             />
           </motion.div>
 
           <motion.div custom={1} variants={itemUp} initial="hidden" animate="visible" className="mb-1">
-            <motion.span
-              className="font-semibold tracking-[0.35em] text-xl md:text-2xl"
-              style={{ fontFamily: "'Inter', sans-serif", color: "var(--belvo-text-1)" }}
-              animate={{ letterSpacing: ["0.35em", "0.45em", "0.35em"] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            >
+            <span className="font-semibold tracking-[0.35em] text-xl md:text-2xl"
+              style={{ fontFamily: "'Inter', sans-serif", color: "var(--belvo-text-1)" }}>
               BELVO
-            </motion.span>
+            </span>
           </motion.div>
 
           <motion.div custom={2} variants={itemUp} initial="hidden" animate="visible" className="mb-10">
@@ -284,21 +278,12 @@ export default function Home() {
             className="leading-[1.05] font-black uppercase mb-5 w-full"
             style={{ fontFamily: "'Inter', sans-serif", fontSize: "clamp(2.2rem, 5.8vw, 5.8rem)", fontWeight: 900 }}
           >
-            <motion.span
-              className="block"
-              style={{ color: "var(--belvo-text-1)" }}
-              animate={{ y: [0, -3, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-            >
+            <span className="block" style={{ color: "var(--belvo-text-1)" }}>
               A Perfect Agency
-            </motion.span>
-            <motion.span
-              className="block shimmer-text"
-              animate={{ y: [0, 3, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-            >
+            </span>
+            <span className="block shimmer-text">
               For Your Brand.
-            </motion.span>
+            </span>
           </motion.h1>
 
           <motion.p

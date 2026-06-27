@@ -181,22 +181,14 @@ export default function About() {
                 textTransform: "uppercase",
               }}
             >
-              <motion.span
-                animate={{ y: [0, -2, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                style={{ display: "inline-block" }}
-              >
+              <span style={{ display: "inline" }}>
                 100+ Clients.
-              </motion.span>
+              </span>
               <br />
               <span style={{ color: "#9D4EDD" }}>
-                <motion.span
-                  animate={{ y: [0, 2, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                  style={{ display: "inline-block" }}
-                >
+                <span style={{ display: "inline" }}>
                   Countless Stories.
-                </motion.span>
+                </span>
               </span>
             </motion.h2>
 

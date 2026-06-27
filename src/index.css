@@ -188,19 +188,25 @@ html.ivory {
 }
 
 /* ─── Smooth theme transition ──────────────────────────────────────────────── */
-*, *::before, *::after {
-  transition-property: background-color, border-color, color, box-shadow, fill, stroke, opacity;
+/* Only apply to theme-aware elements, exclude framer-motion & animated elements */
+html.ivory,
+html.ivory * {
+  transition-property: background-color, border-color, color, box-shadow;
   transition-duration: 320ms;
   transition-timing-function: ease;
 }
-[motion], [style*="will-change"], [data-motion], .motion-div, [class*="motion-"] {
-  transition-property: none;
+/* Prevent transition conflicts with framer-motion animated elements */
+[style*="transform"], [style*="opacity"], [style*="will-change"] {
+  transition-property: none !important;
+  transition-duration: 0s !important;
 }
 
 /* ─── Smooth scrolling ─────────────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
   scrollbar-gutter: stable;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
 @media (prefers-reduced-motion: no-preference) {
   html {
@@ -209,6 +215,8 @@ html {
 }
 body {
   overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @layer base {
@@ -252,6 +260,8 @@ body {
 /* Smooth scroll reveal for all sections */
 section {
   scroll-margin-top: 80px;
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 500px;
 }
 
 /* Custom scrollbar */

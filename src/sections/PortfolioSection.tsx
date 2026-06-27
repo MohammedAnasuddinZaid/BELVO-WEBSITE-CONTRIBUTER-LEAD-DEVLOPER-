@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { motion, useInView, useAnimationFrame, useScroll, useTransform } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useTheme } from "@/contexts/ThemeContext";
 
 interface Props {
@@ -141,18 +141,6 @@ function BrandBadge({ logoSrc, initial, color, rgb }: { logoSrc: string | undefi
 function BrandRow({ catName, brands, color, isIvory }: { catName: string; brands: Brand[]; color: string; isIvory: boolean }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [paused, setPaused] = useState(false);
-  const xRef = useRef(0);
-
-  useAnimationFrame((time, delta) => {
-    if (paused || !trackRef.current) return;
-    const speed = 0.2;
-    xRef.current -= speed * (delta / 16);
-    const halfW = trackRef.current.scrollWidth / 2;
-    if (Math.abs(xRef.current) >= halfW) {
-      xRef.current = 0;
-    }
-    trackRef.current.style.transform = `translateX(${xRef.current}px)`;
-  });
 
   const rgb = hexToRgb(color);
 
@@ -210,12 +198,20 @@ function BrandRow({ catName, brands, color, isIvory }: { catName: string; brands
     return <span key={`${brand.name}-${i}`} title={brand.name} style={baseStyle}>{inner}</span>;
   }
 
+  const animName = `marquee-${catName.replace(/[^a-z0-9]/gi, "")}`;
+
   return (
     <div
       style={{ overflow: "hidden", width: "100%", position: "relative" }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
+      <style>{`
+        @keyframes ${animName} {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
       <div style={{
         position: "absolute", left: 0, top: 0, bottom: 0, width: "60px", zIndex: 2,
         background: `linear-gradient(to right, var(--belvo-bg), transparent)`,
@@ -229,7 +225,11 @@ function BrandRow({ catName, brands, color, isIvory }: { catName: string; brands
 
       <div
         ref={trackRef}
-        style={{ display: "flex", gap: "12px", willChange: "transform", width: "fit-content" }}
+        style={{
+          display: "flex", gap: "12px", willChange: "transform", width: "fit-content",
+          animation: `${animName} ${Math.max(15, brands.length * 3)}s linear infinite`,
+          animationPlayState: paused ? "paused" : "running",
+        }}
       >
         {[...brands, ...brands].map((brand, i) => (
           <BrandItem key={`${brand.name}-${i}`} brand={brand} i={i} />
@@ -290,7 +290,7 @@ export default function PortfolioSection({ id }: Props) {
           animate={headerInView ? "visible" : "hidden"}
           style={{ textAlign: "center", marginBottom: "64px" }}
         >
-          <motion.span
+          <span
             style={{
               display: "inline-block",
               fontFamily: "'Inter',sans-serif", fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.18em",
@@ -302,11 +302,9 @@ export default function PortfolioSection({ id }: Props) {
               border: `1px solid rgba(157,78,221,${isIvory ? "0.15" : "0.18"})`,
               marginBottom: "20px",
             }}
-            animate={{ opacity: [0.7, 1, 0.7] }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
           >
             Our Portfolio
-          </motion.span>
+          </span>
           <h2 style={{
             fontFamily: "'Cormorant Garamond',serif", fontWeight: 700,
             fontSize: "clamp(2rem,4.5vw,3.4rem)",
@@ -315,18 +313,10 @@ export default function PortfolioSection({ id }: Props) {
             margin: "0 0 16px",
           }}>
             From skincare to startups —{" "}
-            <motion.span
-              style={{ color: "#9D4EDD", display: "inline-block" }}
-              animate={{ y: [0, -2, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            >
+            <span style={{ color: "#9D4EDD", display: "inline" }}>
               <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 750, fontSize: "90%" }}>100+ Brands, </span> 
-            </motion.span>{" "}
-            <motion.span
-              style={{ fontFamily: "'Inter',sans-serif", fontWeight: 750, fontSize: "90%", color: "#9D4EDD", display: "inline-block" }}
-              animate={{ y: [0, 2, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
-            >15+ Industries</motion.span> 
+            </span>{" "}
+            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 750, fontSize: "90%", color: "#9D4EDD", display: "inline" }}>15+ Industries</span> 
           </h2>
           <p style={{
             fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", lineHeight: 1.8,
@@ -348,19 +338,13 @@ export default function PortfolioSection({ id }: Props) {
             animate={headerInView ? "visible" : "hidden"}
           >
             {/* Category heading */}
-            <motion.div
-              style={{ padding: "0 24px", maxWidth: "1200px", margin: "0 auto 16px" }}
-              animate={{ x: [0, 5, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: ci * 0.3 }}
-            >
+            <div style={{ padding: "0 24px", maxWidth: "1200px", margin: "0 auto 16px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <motion.span
+                <span
                   style={{
                     width: "5px", height: "20px", borderRadius: "3px",
                     background: cat.color, flexShrink: 0,
                   }}
-                  animate={{ height: [20, 24, 20] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: ci * 0.2 }}
                 />
                 <h3 style={{
                   fontFamily: "'Inter',sans-serif", fontWeight: 700,
@@ -369,7 +353,7 @@ export default function PortfolioSection({ id }: Props) {
                 }}>
                   {cat.name}
                 </h3>
-                <motion.span
+                <span
                   style={{
                     fontFamily: "'Inter',sans-serif", fontSize: "0.65rem", fontWeight: 600,
                     color: cat.color,
@@ -378,11 +362,9 @@ export default function PortfolioSection({ id }: Props) {
                     borderRadius: "100px", padding: "2px 10px",
                     whiteSpace: "nowrap",
                   }}
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: ci * 0.3 }}
                 >
                   {cat.count}
-                </motion.span>
+                </span>
               </div>
             </motion.div>
             <BrandRow catName={cat.name} brands={cat.brands} color={cat.color} isIvory={isIvory} />
@@ -415,14 +397,12 @@ export default function PortfolioSection({ id }: Props) {
             transition: { duration: 0.4 },
           }}
         >
-          <motion.div
+          <div
             style={{
-              position: "absolute", top: 0, left: "-100%",
-              width: "100%", height: "1px",
-              background: "linear-gradient(90deg, transparent, #9D4EDD, transparent)",
+              position: "absolute", top: 0, left: 0, right: 0,
+              height: "1px",
+              background: "linear-gradient(90deg, transparent, rgba(157,78,221,0.3), transparent)",
             }}
-            animate={{ left: ["100%", "-100%"] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
           />
           <h3 style={{
             fontFamily: "'Inter',sans-serif", fontWeight: 700, fontSize: "0.8rem",
@@ -477,8 +457,7 @@ export default function PortfolioSection({ id }: Props) {
               backdropFilter: "blur(4px)",
             }}
             whileHover={{ scale: 1.02, borderColor: "rgba(157,78,221,0.3)" }}
-            animate={{ y: [0, -3, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+
           >
             <span style={{
               fontFamily: "'Inter',sans-serif", fontWeight: 700, fontSize: "0.7rem",

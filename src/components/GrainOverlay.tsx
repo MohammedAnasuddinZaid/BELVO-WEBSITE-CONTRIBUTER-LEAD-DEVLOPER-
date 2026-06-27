@@ -9,22 +9,30 @@ export default function GrainOverlay({ opacity = 0.03, blend = "overlay" }: { op
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let animId: number;
     const w = 256;
     const h = 256;
     canvas.width = w;
     canvas.height = h;
 
-    const draw = () => {
-      const imgData = ctx.createImageData(w, h);
-      for (let i = 0; i < imgData.data.length; i += 4) {
-        const v = Math.random() * 255;
-        imgData.data[i] = v;
-        imgData.data[i + 1] = v;
-        imgData.data[i + 2] = v;
-        imgData.data[i + 3] = 255;
+    let animId: number;
+    let lastFrame = 0;
+    const FPS = 8;
+    const interval = 1000 / FPS;
+
+    const draw = (now: number) => {
+      const elapsed = now - lastFrame;
+      if (elapsed >= interval) {
+        lastFrame = now - (elapsed % interval);
+        const imgData = ctx.createImageData(w, h);
+        for (let i = 0; i < imgData.data.length; i += 4) {
+          const v = Math.random() * 255;
+          imgData.data[i] = v;
+          imgData.data[i + 1] = v;
+          imgData.data[i + 2] = v;
+          imgData.data[i + 3] = 255;
+        }
+        ctx.putImageData(imgData, 0, 0);
       }
-      ctx.putImageData(imgData, 0, 0);
       animId = requestAnimationFrame(draw);
     };
 

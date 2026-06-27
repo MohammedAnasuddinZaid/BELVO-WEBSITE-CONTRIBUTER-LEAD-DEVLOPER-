@@ -73,7 +73,7 @@ function ServiceCard({ svc, i, isIvory }: { svc: typeof SERVICES[0]; i: number; 
           transition: "border-color 0.3s, box-shadow 0.3s",
         }}
       >
-        <motion.div
+        <div
           style={{
             width: 32,
             height: 32,
@@ -87,16 +87,6 @@ function ServiceCard({ svc, i, isIvory }: { svc: typeof SERVICES[0]; i: number; 
             fontWeight: 700,
             color: "#9D4EDD",
             fontFamily: "'Inter', sans-serif",
-          }}
-          animate={{
-            rotate: [0, 5, -5, 0],
-            scale: [1, 1.05, 1],
-          }}
-          transition={{
-            duration: 4 + (i % 3),
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: i * 0.3,
           }}
         >
           {String(i + 1).padStart(2, "0")}
@@ -163,10 +153,8 @@ export default function ServicesSection({ id }: Props) {
   const iconPositions = [
     { x: "10%", y: "15%", size: 20, delay: 0 },
     { x: "85%", y: "20%", size: 16, delay: 1 },
-    { x: "75%", y: "75%", size: 24, delay: 2 },
     { x: "15%", y: "70%", size: 14, delay: 0.5 },
     { x: "50%", y: "10%", size: 18, delay: 1.5 },
-    { x: "90%", y: "55%", size: 12, delay: 3 },
   ];
 
   return (
@@ -210,13 +198,10 @@ export default function ServicesSection({ id }: Props) {
               zIndex: 0,
             }}
             animate={{
-              y: [0, -15 - Math.random() * 10, 0],
-              x: [0, (Math.random() - 0.5) * 10, 0],
-              scale: [1, 1.1, 1],
-              opacity: [0.5, 1, 0.5],
+              y: [0, -10, 0],
             }}
             transition={{
-              duration: 4 + Math.random() * 3,
+              duration: 5 + i * 0.5,
               repeat: Infinity,
               ease: "easeInOut",
               delay: ic.delay,
@@ -234,7 +219,7 @@ export default function ServicesSection({ id }: Props) {
 
         <div style={{ position: "relative", zIndex: 1, maxWidth: "800px" }}>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={heroInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.1 }} style={{ marginBottom: "18px" }}>
-            <motion.span
+            <span
               style={{
                 display: "inline-flex", alignItems: "center", gap: "8px",
                 padding: "6px 18px",
@@ -244,8 +229,6 @@ export default function ServicesSection({ id }: Props) {
                 fontFamily: "'Inter',sans-serif", fontSize: "0.68rem", fontWeight: 600,
                 letterSpacing: "0.3em", textTransform: "uppercase", color: "#9D4EDD",
               }}
-              animate={{ opacity: [0.7, 1, 0.7] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             >
               <Sparkles size={11} />
               Our Services
@@ -259,13 +242,9 @@ export default function ServicesSection({ id }: Props) {
             style={{ fontFamily: "'Inter',sans-serif", fontWeight: 900, fontSize: "clamp(2.4rem,6vw,5.5rem)", lineHeight: 1.04, color: "var(--belvo-text-1)", margin: "0 0 10px", letterSpacing: "-0.01em" }}
           >
             Full-Service{" "}
-            <motion.span
-              style={{ color: "#9D4EDD", display: "inline-block" }}
-              animate={{ y: [0, -3, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-            >
+            <span style={{ color: "#9D4EDD" }}>
               Creative
-            </motion.span>{" "}
+            </span>{" "}
             Agency
           </motion.h1>
 
