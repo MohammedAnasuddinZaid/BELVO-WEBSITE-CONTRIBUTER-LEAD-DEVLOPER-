@@ -8,7 +8,7 @@ const NAV_LINKS = [
   { name: "Home",     href: "/" },
   { name: "About",    href: "/#about" },
   { name: "Services", href: "/services" },
-  { name: "Works",    href: "/#works" },
+  { name: "Works",    href: "/#portfolio" },
   { name: "Careers",  href: "/careers" },
   { name: "Blogs",    href: "/blogs" },
 ];
@@ -28,16 +28,28 @@ export default function Navbar() {
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
+  const scrollToId = (id: string) => {
+    let attempts = 0;
+    const tryScroll = () => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      } else if (attempts < 10) {
+        attempts++;
+        setTimeout(tryScroll, 80);
+      }
+    };
+    tryScroll();
+  };
+
   const handleBookCall = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsOpen(false);
     if (location === "/") {
-      document.getElementById("book-a-call")?.scrollIntoView({ behavior: "smooth" });
+      scrollToId("book-a-call");
     } else {
       navigate("/");
-      setTimeout(() => {
-        document.getElementById("book-a-call")?.scrollIntoView({ behavior: "smooth" });
-      }, 400);
+      setTimeout(() => scrollToId("book-a-call"), 100);
     }
   };
 
@@ -47,12 +59,10 @@ export default function Navbar() {
     if (href.startsWith("/#")) {
       const id = href.slice(2);
       if (location === "/") {
-        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+        scrollToId(id);
       } else {
         navigate("/");
-        setTimeout(() => {
-          document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-        }, 400);
+        setTimeout(() => scrollToId(id), 100);
       }
     } else {
       if (location === href) {
@@ -77,11 +87,10 @@ export default function Navbar() {
     ? isIvory ? "rgba(248,245,239,0.96)" : "rgba(4,0,14,0.88)"
     : "var(--belvo-bg-nav)";
 
-  // Active section detection for anchors
   const [activeSection, setActiveSection] = React.useState("");
 
   React.useEffect(() => {
-    const sections = ["about", "services", "works"];
+    const sections = ["about", "services", "portfolio", "works"];
     const observers: IntersectionObserver[] = [];
 
     sections.forEach((id) => {
