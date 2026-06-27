@@ -159,13 +159,19 @@ export default function Navbar() {
       <div className="max-w-[1400px] mx-auto px-6 lg:px-10 h-[68px] flex items-center justify-between">
 
         <Link href="/" onClick={handleLogoClick} className="flex items-center gap-2.5" data-testid="link-logo">
-          <img src="/belvo-logo-transparent.png" alt="BELVO" className="h-8 w-auto" />
-          <span
+          <motion.img
+            src="/belvo-logo-transparent.png" alt="BELVO" className="h-8 w-auto"
+            animate={{ filter: ["drop-shadow(0 0 4px rgba(157,78,221,0.3))", "drop-shadow(0 0 10px rgba(157,78,221,0.6))", "drop-shadow(0 0 4px rgba(157,78,221,0.3))"] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.span
             className="font-semibold text-lg tracking-widest"
             style={{ fontFamily: "'Inter', sans-serif", letterSpacing: "0.18em", color: "var(--belvo-text-1)" }}
+            animate={{ letterSpacing: ["0.18em", "0.22em", "0.18em"] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
           >
             BELVO
-          </span>
+          </motion.span>
         </Link>
 
         <nav className="hidden lg:flex items-center gap-9">

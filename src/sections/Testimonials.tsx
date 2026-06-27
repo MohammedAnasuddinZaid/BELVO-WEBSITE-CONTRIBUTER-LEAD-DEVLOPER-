@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Quote } from "lucide-react";
 
 // Resolve local images in src/Images via import.meta.url so Vite handles them correctly
@@ -111,6 +111,21 @@ const fadeUp = {
 function TestimonialCard({ testimonial, index }: { testimonial: typeof TESTIMONIALS[0]; index: number }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  const handleMove = (e: React.MouseEvent) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    setTilt({
+      x: ((e.clientY - rect.top) / rect.height - 0.5) * -5,
+      y: ((e.clientX - rect.left) / rect.width - 0.5) * 5,
+    });
+  };
+
+  const handleLeave = () => setTilt({ x: 0, y: 0 });
+
   return (
     <motion.div
       ref={ref}
@@ -118,54 +133,81 @@ function TestimonialCard({ testimonial, index }: { testimonial: typeof TESTIMONI
       variants={fadeUp}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
-      style={{
-        border: "1px solid var(--belvo-border-card)",
-        borderRadius: "16px",
-        padding: "clamp(24px, 3.5vw, 36px)",
-        backdropFilter: "blur(14px)",
-        display: "flex",
-        flexDirection: "column",
-        gap: "20px",
-        position: "relative",
-        overflow: "hidden",
-        transition: "border-color 0.3s ease, box-shadow 0.3s ease",
-      }}
-      whileHover={{
-        borderColor: "rgba(157,78,221,0.38)",
-        boxShadow: "0 8px 40px rgba(100,20,180,0.14)",
-      }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: "18px", paddingBottom: "18px", minHeight: "120px", flexShrink: 0 }}>
-        <div style={{ width: "88px", height: "88px", borderRadius: "50%", overflow: "hidden", background: "linear-gradient(135deg, rgba(123,47,190,0.30), rgba(157,78,221,0.12))", border: "2px solid rgba(157,78,221,0.28)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-          {testimonial.image ? (
-            <img
-              src={testimonial.image}
-              alt={testimonial.name}
-              width={88}
-              height={88}
-              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-            />
-          ) : (
-            <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "1.08rem", color: "#9D4EDD", letterSpacing: "0.04em" }}>
-              {testimonial.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
-            </span>
-          )}
+      <motion.div
+        ref={cardRef}
+        onMouseMove={handleMove}
+        onMouseLeave={handleLeave}
+        style={{
+          border: "1px solid var(--belvo-border-card)",
+          borderRadius: "16px",
+          padding: "clamp(24px, 3.5vw, 36px)",
+          backdropFilter: "blur(14px)",
+          display: "flex",
+          flexDirection: "column",
+          gap: "20px",
+          position: "relative",
+          overflow: "hidden",
+          transition: "border-color 0.3s ease, box-shadow 0.3s ease",
+          transformStyle: "preserve-3d",
+          perspective: 600,
+          rotateX: tilt.x,
+          rotateY: tilt.y,
+        }}
+        whileHover={{
+          borderColor: "rgba(157,78,221,0.38)",
+          boxShadow: "0 8px 40px rgba(100,20,180,0.14)",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "18px", paddingBottom: "18px", minHeight: "120px", flexShrink: 0 }}>
+          <motion.div
+            style={{
+              width: "88px", height: "88px", borderRadius: "50%", overflow: "hidden",
+              background: "linear-gradient(135deg, rgba(123,47,190,0.30), rgba(157,78,221,0.12))",
+              border: "2px solid rgba(157,78,221,0.28)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+            }}
+            animate={{ boxShadow: ["0 0 0px rgba(157,78,221,0.2)", "0 0 20px rgba(157,78,221,0.4)", "0 0 0px rgba(157,78,221,0.2)"] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: index * 0.2 }}
+          >
+            {testimonial.image ? (
+              <img
+                src={testimonial.image}
+                alt={testimonial.name}
+                width={88}
+                height={88}
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              />
+            ) : (
+              <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "1.08rem", color: "#9D4EDD", letterSpacing: "0.04em" }}>
+                {testimonial.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
+              </span>
+            )}
+          </motion.div>
+          <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", minHeight: "100%" }}>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "1rem", color: "var(--belvo-text-1)", margin: 0, letterSpacing: "0.01em" }}>{testimonial.name}</p>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.78rem", color: "var(--belvo-text-3)", margin: "6px 0 0", letterSpacing: "0.04em" }}>{testimonial.title} · {testimonial.company}</p>
+          </div>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", minHeight: "100%" }}>
-          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "1rem", color: "var(--belvo-text-1)", margin: 0, letterSpacing: "0.01em" }}>{testimonial.name}</p>
-          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.78rem", color: "var(--belvo-text-3)", margin: "6px 0 0", letterSpacing: "0.04em" }}>{testimonial.title} · {testimonial.company}</p>
-        </div>
-      </div>
 
-      <div style={{ height: "1px", background: "var(--belvo-border-bottom)", opacity: 0.5 }} />
+        <div style={{ height: "1px", background: "var(--belvo-border-bottom)", opacity: 0.5 }} />
 
-      <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.96rem", lineHeight: 1.8, color: "var(--belvo-text-6)", margin: 0, flex: 1, letterSpacing: "0.01em" }}>
-        {testimonial.review}
-      </p>
+        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.96rem", lineHeight: 1.8, color: "var(--belvo-text-6)", margin: 0, flex: 1, letterSpacing: "0.01em" }}>
+          {testimonial.review}
+        </p>
 
-      <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "linear-gradient(135deg, rgba(123,47,190,0.18), rgba(157,78,221,0.08))", border: "1px solid rgba(157,78,221,0.22)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-        <Quote size={15} style={{ color: "#9D4EDD" }} />
-      </div>
+        <motion.div
+          style={{
+            width: "36px", height: "36px", borderRadius: "8px",
+            background: "linear-gradient(135deg, rgba(123,47,190,0.18), rgba(157,78,221,0.08))",
+            border: "1px solid rgba(157,78,221,0.22)",
+            display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+          }}
+          animate={{ rotate: [0, 10, -10, 0] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: index * 0.3 }}
+        >
+          <Quote size={15} style={{ color: "#9D4EDD" }} />
+        </motion.div>
+      </motion.div>
     </motion.div>
   );
 }

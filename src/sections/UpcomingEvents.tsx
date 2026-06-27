@@ -1,21 +1,37 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link } from "wouter";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { Calendar, Globe, Mail, MapPin, Phone, Wifi } from "lucide-react";
 import { EVENTS } from "@/lib/events";
+
+const easeOut = [0.16, 1, 0.3, 1] as const;
 
 const fadeUp = {
   hidden: { opacity: 0, y: 36 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, delay: i * 0.14, ease: [0.16, 1, 0.3, 1] as const },
+    transition: { duration: 0.8, delay: i * 0.14, ease: easeOut },
   }),
 };
 
 function EventCard({ event, index }: { event: typeof EVENTS[0]; index: number }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  const handleMove = (e: React.MouseEvent) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    setTilt({
+      x: ((e.clientY - rect.top) / rect.height - 0.5) * -4,
+      y: ((e.clientX - rect.left) / rect.width - 0.5) * 4,
+    });
+  };
+
+  const handleLeave = () => setTilt({ x: 0, y: 0 });
 
   return (
     <motion.div
@@ -24,30 +40,43 @@ function EventCard({ event, index }: { event: typeof EVENTS[0]; index: number })
       variants={fadeUp}
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
-      whileHover={{ y: -6, transition: { duration: 0.28, ease: [0.16, 1, 0.3, 1] } }}
-      onMouseEnter={e => {
-        const el = e.currentTarget as HTMLElement;
-        el.style.borderColor = "rgba(157,78,221,0.45)";
-        el.style.boxShadow = "0 16px 48px rgba(100,20,180,0.18), 0 2px 8px rgba(100,20,180,0.10)";
-      }}
-      onMouseLeave={e => {
-        const el = e.currentTarget as HTMLElement;
-        el.style.borderColor = "var(--belvo-border-card)";
-        el.style.boxShadow = "none";
-      }}
-      style={{
-        background: "var(--belvo-bg-card)",
-        border: "1px solid var(--belvo-border-card)",
-        borderRadius: "18px",
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-        transition: "border-color 0.3s ease, box-shadow 0.3s ease",
-        cursor: "default",
-      }}
     >
+      <motion.div
+        ref={cardRef}
+        onMouseMove={handleMove}
+        onMouseLeave={handleLeave}
+        whileHover={{ y: -6, transition: { duration: 0.28, ease: easeOut } }}
+        onMouseEnter={e => {
+          const el = e.currentTarget as HTMLElement;
+          el.style.borderColor = "rgba(157,78,221,0.45)";
+          el.style.boxShadow = "0 16px 48px rgba(100,20,180,0.18), 0 2px 8px rgba(100,20,180,0.10)";
+        }}
+        onMouseOut={e => {
+          const el = e.currentTarget as HTMLElement;
+          el.style.borderColor = "var(--belvo-border-card)";
+          el.style.boxShadow = "none";
+        }}
+        style={{
+          background: "var(--belvo-bg-card)",
+          border: "1px solid var(--belvo-border-card)",
+          borderRadius: "18px",
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+          transition: "border-color 0.3s ease, box-shadow 0.3s ease",
+          cursor: "default",
+          transformStyle: "preserve-3d",
+          perspective: 600,
+          rotateX: tilt.x,
+          rotateY: tilt.y,
+        }}
+      >
       {/* Top accent bar */}
-      <div style={{ height: "3px", background: `linear-gradient(90deg, ${event.accentColor}, transparent)` }} />
+      <motion.div
+        style={{ height: "3px", background: `linear-gradient(90deg, ${event.accentColor}, transparent)` }}
+        animate={{ opacity: [0.6, 1, 0.6] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: index * 0.3 }}
+      />
 
       {/* Header zone */}
       <div
@@ -209,6 +238,7 @@ function EventCard({ event, index }: { event: typeof EVENTS[0]; index: number })
           </span>
         </div>
       </div>
+    </motion.div>
     </motion.div>
   );
 }

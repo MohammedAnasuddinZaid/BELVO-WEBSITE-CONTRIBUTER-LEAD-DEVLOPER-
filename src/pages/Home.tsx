@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { ArrowUpRight, Play } from "lucide-react";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { ArrowUpRight, Play, Sparkles } from "lucide-react";
 import { useRef } from "react";
 import About from "@/sections/About";
 import BookACall from "@/sections/BookACall";
@@ -10,6 +10,44 @@ import Testimonials from "@/sections/Testimonials";
 import PortfolioSection from "@/sections/PortfolioSection";
 import UpcomingEvents from "@/sections/UpcomingEvents";
 import FAQ from "@/sections/FAQ";
+import { useMousePosition } from "@/hooks/useMousePosition";
+
+const easeOut = [0.16, 1, 0.3, 1] as const;
+
+function MagneticButton({ children, className, style, onClick, ...props }: any) {
+  const ref = useRef<HTMLButtonElement>(null);
+  const pos = useMousePosition();
+
+  const handleMove = (e: React.MouseEvent) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    const dist = Math.sqrt(x * x + y * y);
+    const maxDist = 150;
+    const strength = Math.max(0, 1 - dist / maxDist);
+    el.style.transform = `translate(${x * 0.25 * strength}px, ${y * 0.25 * strength}px) scale(${1 + 0.03 * strength})`;
+  };
+
+  const handleLeave = () => {
+    if (ref.current) ref.current.style.transform = "translate(0,0) scale(1)";
+  };
+
+  return (
+    <button
+      ref={ref}
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+      onClick={onClick}
+      className={className}
+      style={{ ...style, transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)" }}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}
 
 function AuroraWaves() {
   return (
@@ -17,7 +55,6 @@ function AuroraWaves() {
       className="absolute inset-0 w-full h-full"
       viewBox="0 0 1440 900"
       preserveAspectRatio="xMidYMid slice"
-      xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
         <filter id="glow-strong" x="-50%" y="-50%" width="200%" height="200%">
@@ -61,12 +98,32 @@ function AuroraWaves() {
             80% { opacity: 1; }
             100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
           }
+          @keyframes morphBlob {
+            0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+            50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+            100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+          }
+          @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+          }
           .wave-path-1 { animation: wave1 9s ease-in-out infinite; }
           .wave-path-2 { animation: wave2 11s ease-in-out infinite; }
           .wave-path-3 { animation: wave3 7s ease-in-out infinite; }
           .particle {
             animation: float-particle var(--dur) ease-in-out infinite;
             animation-delay: var(--del);
+          }
+          .morph-blob {
+            animation: morphBlob 12s ease-in-out infinite;
+          }
+          .shimmer-text {
+            background: linear-gradient(90deg, #9D4EDD 0%, #C9A341 25%, #9D4EDD 50%, #C9A341 75%, #9D4EDD 100%);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out infinite;
           }
         `}</style>
       </defs>
@@ -105,21 +162,80 @@ function AuroraWaves() {
         </circle>
       ))}
 
-      {Array.from({ length: 20 }).map((_, i) => (
+      {Array.from({ length: 30 }).map((_, i) => (
         <circle key={`float-${i}`} className="particle"
           cx={100 + Math.random() * 1240} cy={100 + Math.random() * 700}
-          r={1 + Math.random() * 2}
+          r={1 + Math.random() * 2.5}
           fill={i % 2 === 0 ? "rgba(200,140,255,0.8)" : "rgba(157,78,221,0.6)"}
           filter="url(#particle-glow)"
           style={{
-            "--dx": `${(Math.random() - 0.5) * 200}px`,
-            "--dy": `${-(50 + Math.random() * 150)}px`,
-            "--dur": `${5 + Math.random() * 8}s`,
-            "--del": `${Math.random() * 10}s`,
+            "--dx": `${(Math.random() - 0.5) * 300}px`,
+            "--dy": `${-(60 + Math.random() * 200)}px`,
+            "--dur": `${6 + Math.random() * 10}s`,
+            "--del": `${Math.random() * 12}s`,
           } as React.CSSProperties}
         />
       ))}
     </svg>
+  );
+}
+
+function FloatingOrbs() {
+  return (
+    <>
+      {[
+        { size: 60, x: "15%", y: "20%", dur: 7, color: "rgba(157,78,221,0.08)" },
+        { size: 40, x: "80%", y: "30%", dur: 9, color: "rgba(201,163,65,0.06)" },
+        { size: 80, x: "70%", y: "70%", dur: 11, color: "rgba(157,78,221,0.05)" },
+        { size: 50, x: "25%", y: "75%", dur: 8, color: "rgba(201,163,65,0.04)" },
+      ].map((orb, i) => (
+        <motion.div
+          key={i}
+          className="morph-blob"
+          style={{
+            position: "absolute",
+            width: orb.size,
+            height: orb.size,
+            left: orb.x,
+            top: orb.y,
+            background: orb.color,
+            filter: "blur(40px)",
+            pointerEvents: "none",
+          }}
+          animate={{
+            y: [0, -30, 0, 20, 0],
+            x: [0, 20, -15, 10, 0],
+            scale: [1, 1.2, 0.9, 1.1, 1],
+          }}
+          transition={{
+            duration: orb.dur,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </>
+  );
+}
+
+function ScrollProgress() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+  return (
+    <motion.div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        height: "2px",
+        background: "linear-gradient(90deg, #7B2FBE, #9D4EDD, #C9A341)",
+        transformOrigin: "0% 50%",
+        scaleX,
+        zIndex: 9999,
+      }}
+    />
   );
 }
 
@@ -132,15 +248,27 @@ const itemUp = {
 };
 
 export default function Home() {
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
   return (
     <>
+      <ScrollProgress />
+
       {/* ── HERO ── */}
       <div
+        ref={heroRef}
         className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden text-white"
         style={{ background: "var(--belvo-bg)" }}
       >
         <div className="absolute inset-0 z-0 pointer-events-none">
           <AuroraWaves />
+          <FloatingOrbs />
           <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 90% 80% at 50% 50%, transparent 30%, var(--belvo-vignette-1) 100%)" }} />
           <div className="absolute inset-x-0 top-0 h-32" style={{ background: "linear-gradient(to bottom, var(--belvo-vignette-2), transparent)" }} />
           <div className="absolute inset-x-0 bottom-0 h-40" style={{ background: "linear-gradient(to top, var(--belvo-vignette-3), transparent)" }} />
@@ -148,27 +276,40 @@ export default function Home() {
           <div className="absolute inset-y-0 right-0 w-32" style={{ background: "linear-gradient(to left, var(--belvo-vignette-4), transparent)" }} />
         </div>
 
-        <div className="relative z-10 flex flex-col items-center text-center px-4 w-full max-w-4xl mx-auto pt-20">
+        <motion.div
+          className="relative z-10 flex flex-col items-center text-center px-4 w-full max-w-4xl mx-auto pt-20"
+          style={{ y: heroY, opacity: heroOpacity }}
+        >
           <motion.div custom={0} variants={itemUp} initial="hidden" animate="visible" className="mb-3">
-            <img
+            <motion.img
               src="/belvo-logo-transparent.png"
               alt="BELVO"
               className="w-auto object-contain"
               data-testid="img-hero-logo"
               style={{ height: "clamp(7rem, 14vw, 12rem)", clipPath: "inset(0 0 38% 0)", marginBottom: "-2rem" }}
+              animate={{ filter: ["drop-shadow(0 0 20px rgba(157,78,221,0.3))", "drop-shadow(0 0 40px rgba(157,78,221,0.6))", "drop-shadow(0 0 20px rgba(157,78,221,0.3))"] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             />
           </motion.div>
 
           <motion.div custom={1} variants={itemUp} initial="hidden" animate="visible" className="mb-1">
-            <span className="font-semibold tracking-[0.35em] text-xl md:text-2xl" style={{ fontFamily: "'Inter', sans-serif", color: "var(--belvo-text-1)" }}>
+            <motion.span
+              className="font-semibold tracking-[0.35em] text-xl md:text-2xl"
+              style={{ fontFamily: "'Inter', sans-serif", color: "var(--belvo-text-1)" }}
+              animate={{ letterSpacing: ["0.35em", "0.45em", "0.35em"] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            >
               BELVO
-            </span>
+            </motion.span>
           </motion.div>
 
           <motion.div custom={2} variants={itemUp} initial="hidden" animate="visible" className="mb-10">
-            <span className="tracking-[0.4em] text-xs uppercase font-medium" style={{ color: "#9D4EDD", fontFamily: "'Inter', sans-serif" }}>
+            <motion.span
+              className="tracking-[0.4em] text-xs uppercase font-medium shimmer-text"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
               Growth Core
-            </span>
+            </motion.span>
           </motion.div>
 
           <motion.h1
@@ -176,8 +317,21 @@ export default function Home() {
             className="leading-[1.05] font-black uppercase mb-5 w-full"
             style={{ fontFamily: "'Inter', sans-serif", fontSize: "clamp(2.2rem, 5.8vw, 5.8rem)", fontWeight: 900 }}
           >
-            <span className="block" style={{ color: "var(--belvo-text-1)" }}>A Perfect Agency</span>
-            <span className="block" style={{ color: "#9D4EDD" }}>For Your Brand.</span>
+            <motion.span
+              className="block"
+              style={{ color: "var(--belvo-text-1)" }}
+              animate={{ y: [0, -3, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+            >
+              A Perfect Agency
+            </motion.span>
+            <motion.span
+              className="block shimmer-text"
+              animate={{ y: [0, 3, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+            >
+              For Your Brand.
+            </motion.span>
           </motion.h1>
 
           <motion.p
@@ -195,7 +349,7 @@ export default function Home() {
             custom={5} variants={itemUp} initial="hidden" animate="visible"
             className="flex flex-col sm:flex-row items-center gap-4"
           >
-            <button
+            <MagneticButton
               onClick={() => document.getElementById("book-a-call")?.scrollIntoView({ behavior: "smooth" })}
               data-testid="button-hero-cta"
               className="inline-flex items-center gap-2.5 px-8 py-3.5 font-semibold text-sm tracking-[0.12em] uppercase"
@@ -203,7 +357,6 @@ export default function Home() {
                 background: "linear-gradient(135deg, #7B2FBE, #9D4EDD)",
                 borderRadius: "8px", color: "#ffffff",
                 boxShadow: "0 0 32px rgba(130,40,200,0.4)", border: "none", cursor: "pointer",
-                transition: "box-shadow 0.3s, background 0.3s",
               }}
               onMouseEnter={e => {
                 (e.currentTarget as HTMLElement).style.boxShadow = "0 0 48px rgba(157,78,221,0.6)";
@@ -215,10 +368,16 @@ export default function Home() {
               }}
             >
               Book A Free Call
-              <ArrowUpRight size={15} strokeWidth={2.5} />
-            </button>
+              <motion.span
+                animate={{ x: [0, 3, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                style={{ display: "inline-flex" }}
+              >
+                <ArrowUpRight size={15} strokeWidth={2.5} />
+              </motion.span>
+            </MagneticButton>
 
-            <button
+            <MagneticButton
               onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
               data-testid="button-hero-services"
               className="inline-flex items-center gap-2.5 px-8 py-3.5 font-semibold text-sm tracking-[0.12em] uppercase"
@@ -227,7 +386,6 @@ export default function Home() {
                 border: "1px solid var(--belvo-border-card)",
                 borderRadius: "8px", color: "var(--belvo-text-1)",
                 cursor: "pointer",
-                transition: "background 0.3s, border-color 0.3s",
               }}
               onMouseEnter={e => {
                 (e.currentTarget as HTMLElement).style.background = "var(--belvo-bg-card-2)";
@@ -238,11 +396,47 @@ export default function Home() {
                 (e.currentTarget as HTMLElement).style.borderColor = "var(--belvo-border-card)";
               }}
             >
-              <Play size={13} fill="currentColor" strokeWidth={0} />
+              <motion.span
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                style={{ display: "inline-flex" }}
+              >
+                <Play size={13} fill="currentColor" strokeWidth={0} />
+              </motion.span>
               View Services
-            </button>
+            </MagneticButton>
           </motion.div>
-        </div>
+        </motion.div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <motion.div
+            style={{
+              width: 24,
+              height: 40,
+              borderRadius: 12,
+              border: "2px solid rgba(157,78,221,0.3)",
+              display: "flex",
+              justifyContent: "center",
+              paddingTop: 8,
+            }}
+          >
+            <motion.div
+              style={{
+                width: 3,
+                height: 10,
+                borderRadius: 2,
+                background: "#9D4EDD",
+              }}
+              animate={{ y: [0, 12, 0], opacity: [1, 0.3, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* ── SECTIONS ── */}
@@ -252,7 +446,6 @@ export default function Home() {
       <TeamSection />
       <Testimonials />
       <UpcomingEvents />
-
       <BookACall />
       <FAQ />
       <Footer />
