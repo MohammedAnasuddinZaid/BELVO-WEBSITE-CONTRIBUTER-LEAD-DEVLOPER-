@@ -1,3 +1,4 @@
+```typescriptreact
 import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
@@ -85,3 +86,4 @@ function App() {
 }
 
 export default App;
+```
