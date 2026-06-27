@@ -366,7 +366,7 @@ export default function PortfolioSection({ id }: Props) {
                   {cat.count}
                 </span>
               </div>
-            </motion.div>
+            </div>
             <BrandRow catName={cat.name} brands={cat.brands} color={cat.color} isIvory={isIvory} />
           </motion.div>
         ))}

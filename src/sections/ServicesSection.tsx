@@ -90,7 +90,7 @@ function ServiceCard({ svc, i, isIvory }: { svc: typeof SERVICES[0]; i: number; 
           }}
         >
           {String(i + 1).padStart(2, "0")}
-        </motion.div>
+        </div>
 
         <h3 style={{ fontFamily: "'Inter',sans-serif", fontWeight: 700, fontSize: "0.97rem", color: "var(--belvo-text-1)", margin: 0, lineHeight: 1.3 }}>
           {svc.category}
@@ -232,7 +232,7 @@ export default function ServicesSection({ id }: Props) {
             >
               <Sparkles size={11} />
               Our Services
-            </motion.span>
+            </span>
           </motion.div>
 
           <motion.h1
