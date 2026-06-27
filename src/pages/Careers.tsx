@@ -608,7 +608,7 @@ export default function Careers() {
                       flexShrink: 0,
                     }}
                   >
-                    {role.icon}
+                    {/* {role.icon} */}
                   </div>
                   <h3
                     style={{
