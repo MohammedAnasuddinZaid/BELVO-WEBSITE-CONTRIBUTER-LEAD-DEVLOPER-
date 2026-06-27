@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useAnimationFrame } from "framer-motion";
 import { useTheme } from "@/contexts/ThemeContext";
 
 interface Props {
@@ -137,10 +137,76 @@ function BrandBadge({ logoSrc, initial, color, rgb }: { logoSrc: string | undefi
   );
 }
 
-function BrandRow({ catName, brands, color, isIvory, speed = 1 }: { catName: string; brands: Brand[]; color: string; isIvory: boolean; speed?: number }) {
+function BrandRow({ catName, brands, color, isIvory }: { catName: string; brands: Brand[]; color: string; isIvory: boolean }) {
+  const trackRef = useRef<HTMLDivElement>(null);
   const [paused, setPaused] = useState(false);
+  const xRef = useRef(0);
+
+  useAnimationFrame((time, delta) => {
+    if (paused || !trackRef.current) return;
+    const speed = 0.2;
+    xRef.current -= speed * (delta / 16);
+    const halfW = trackRef.current.scrollWidth / 2;
+    if (Math.abs(xRef.current) >= halfW) {
+      xRef.current = 0;
+    }
+    trackRef.current.style.transform = `translateX(${xRef.current}px)`;
+  });
+
   const rgb = hexToRgb(color);
-  const dur = 60 / speed;
+
+  function BrandItem({ brand, i }: { brand: Brand; i: number }) {
+    const initial = brand.name.replace(/['"]/g, "").charAt(0).toUpperCase();
+    const logoSrc = getLogoPath(catName, brand.url) || undefined;
+    const badge = <BrandBadge logoSrc={logoSrc} initial={initial} color={color} rgb={rgb} />;
+    const baseStyle: React.CSSProperties = {
+      display: "inline-flex", alignItems: "center", gap: "10px",
+      padding: "8px 18px 8px 12px",
+      background: isIvory
+        ? `linear-gradient(135deg, rgba(${rgb},0.07), rgba(${rgb},0.03))`
+        : `linear-gradient(135deg, rgba(${rgb},0.09), rgba(${rgb},0.03))`,
+      border: `1px solid rgba(${rgb},0.12)`,
+      borderRadius: "100px",
+      fontFamily: "'Inter',sans-serif", fontSize: "0.85rem", fontWeight: 500,
+      color: "var(--belvo-text-1)",
+      whiteSpace: "nowrap",
+      flexShrink: 0,
+      transition: "background 0.2s, border-color 0.2s",
+    };
+    const inner = (
+      <>
+        {badge}
+        <span style={{ position: "relative", top: "1px" }}>{brand.name}</span>
+      </>
+    );
+    if (brand.url) {
+      return (
+        <a
+          key={`${brand.name}-${i}`}
+          href={brand.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={brand.name}
+          style={{ ...baseStyle, textDecoration: "none" }}
+          onMouseEnter={e => {
+            const el = e.currentTarget as HTMLElement;
+            el.style.background = `rgba(${rgb},0.15)`;
+            el.style.borderColor = `rgba(${rgb},0.35)`;
+          }}
+          onMouseLeave={e => {
+            const el = e.currentTarget as HTMLElement;
+            el.style.background = isIvory
+              ? `linear-gradient(135deg, rgba(${rgb},0.07), rgba(${rgb},0.03))`
+              : `linear-gradient(135deg, rgba(${rgb},0.09), rgba(${rgb},0.03))`;
+            el.style.borderColor = `rgba(${rgb},0.12)`;
+          }}
+        >
+          {inner}
+        </a>
+      );
+    }
+    return <span key={`${brand.name}-${i}`} title={brand.name} style={baseStyle}>{inner}</span>;
+  }
 
   return (
     <div
@@ -149,100 +215,24 @@ function BrandRow({ catName, brands, color, isIvory, speed = 1 }: { catName: str
       onMouseLeave={() => setPaused(false)}
     >
       <div style={{
-        position: "absolute", left: 0, top: 0, bottom: 0, width: "100px", zIndex: 2,
+        position: "absolute", left: 0, top: 0, bottom: 0, width: "60px", zIndex: 2,
         background: `linear-gradient(to right, var(--belvo-bg), transparent)`,
         pointerEvents: "none",
       }} />
       <div style={{
-        position: "absolute", right: 0, top: 0, bottom: 0, width: "100px", zIndex: 2,
+        position: "absolute", right: 0, top: 0, bottom: 0, width: "60px", zIndex: 2,
         background: `linear-gradient(to left, var(--belvo-bg), transparent)`,
         pointerEvents: "none",
       }} />
 
-      <motion.div
-        style={{ display: "flex", gap: "12px", width: "fit-content" }}
-        animate={paused ? {} : { x: ["0%", "-50%"] }}
-        transition={{
-          repeat: Infinity,
-          duration: dur,
-          ease: "linear",
-          repeatType: "loop",
-        }}
+      <div
+        ref={trackRef}
+        style={{ display: "flex", gap: "12px", willChange: "transform", width: "fit-content" }}
       >
-        {[...brands, ...brands, ...brands].map((brand, i) => {
-          const initial = brand.name.replace(/['"]/g, "").charAt(0).toUpperCase();
-          const logoSrc = getLogoPath(catName, brand.url) || undefined;
-          const badge = <BrandBadge logoSrc={logoSrc} initial={initial} color={color} rgb={rgb} />;
-          return brand.url ? (
-            <a
-              key={`${brand.name}-${i}`}
-              href={brand.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              title={brand.name}
-              style={{
-                display: "inline-flex", alignItems: "center", gap: "10px",
-                padding: "8px 18px 8px 12px",
-                background: isIvory
-                  ? `linear-gradient(135deg, rgba(${rgb},0.07), rgba(${rgb},0.03))`
-                  : `linear-gradient(135deg, rgba(${rgb},0.09), rgba(${rgb},0.03))`,
-                border: `1px solid rgba(${rgb},0.12)`,
-                borderRadius: "100px",
-                textDecoration: "none",
-                fontFamily: "'Inter',sans-serif", fontSize: "0.85rem", fontWeight: 500,
-                color: "var(--belvo-text-1)",
-                whiteSpace: "nowrap",
-                transition: "all 0.3s cubic-bezier(0.16,1,0.3,1)",
-                flexShrink: 0,
-                boxShadow: `0 2px 8px rgba(${rgb},0.04)`,
-                backdropFilter: "blur(4px)",
-              }}
-              onMouseEnter={e => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.background = `rgba(${rgb},0.15)`;
-                el.style.borderColor = `rgba(${rgb},0.35)`;
-                el.style.transform = "scale(1.04)";
-                el.style.boxShadow = `0 4px 16px rgba(${rgb},0.12)`;
-              }}
-              onMouseLeave={e => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.background = isIvory
-                  ? `linear-gradient(135deg, rgba(${rgb},0.07), rgba(${rgb},0.03))`
-                  : `linear-gradient(135deg, rgba(${rgb},0.09), rgba(${rgb},0.03))`;
-                el.style.borderColor = `rgba(${rgb},0.12)`;
-                el.style.transform = "scale(1)";
-                el.style.boxShadow = `0 2px 8px rgba(${rgb},0.04)`;
-              }}
-            >
-              {badge}
-              <span style={{ position: "relative", top: "1px" }}>{brand.name}</span>
-            </a>
-          ) : (
-            <span
-              key={`${brand.name}-${i}`}
-              title={brand.name}
-              style={{
-                display: "inline-flex", alignItems: "center", gap: "10px",
-                padding: "8px 18px 8px 12px",
-                background: isIvory
-                  ? `linear-gradient(135deg, rgba(${rgb},0.07), rgba(${rgb},0.03))`
-                  : `linear-gradient(135deg, rgba(${rgb},0.09), rgba(${rgb},0.03))`,
-                border: `1px solid rgba(${rgb},0.12)`,
-                borderRadius: "100px",
-                fontFamily: "'Inter',sans-serif", fontSize: "0.85rem", fontWeight: 500,
-                color: "var(--belvo-text-1)",
-                whiteSpace: "nowrap",
-                flexShrink: 0,
-                boxShadow: `0 2px 8px rgba(${rgb},0.04)`,
-                backdropFilter: "blur(4px)",
-              }}
-            >
-              {badge}
-              <span style={{ position: "relative", top: "1px" }}>{brand.name}</span>
-            </span>
-          );
-        })}
-      </motion.div>
+        {[...brands, ...brands].map((brand, i) => (
+          <BrandItem key={`${brand.name}-${i}`} brand={brand} i={i} />
+        ))}
+      </div>
     </div>
   );
 }
