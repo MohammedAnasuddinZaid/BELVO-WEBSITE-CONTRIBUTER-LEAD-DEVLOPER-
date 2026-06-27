@@ -274,6 +274,8 @@ export default function PortfolioSection({ id }: Props) {
         pointerEvents: "none",
       }} />
 
+      <div style={{ position: "absolute", top: "0px", left: "0px", right: "0px", height: "1px", background: "linear-gradient(90deg, transparent, var(--belvo-border-divider), transparent)" }} />
+
       <div ref={headerRef} style={{ padding: "0 24px", maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
         <motion.div
           custom={0}
@@ -297,14 +299,17 @@ export default function PortfolioSection({ id }: Props) {
           </span>
           <h2 style={{
             fontFamily: "'Cormorant Garamond',serif", fontWeight: 700,
-            fontSize: "clamp(2.4rem,5.5vw,4rem)",
+            fontSize: "clamp(2rem,4.5vw,3.4rem)",
             lineHeight: 1.08,
+            whiteSpace: "nowrap",
             color: "var(--belvo-text-1)",
             margin: "0 0 16px",
           }}>
             From skincare to startups —{" "}
-            <span style={{ color: "#9D4EDD" }}>96 brands</span>,{" "}
-            13 industries
+            <span style={{ color: "#9D4EDD" }}>
+              <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 750, fontSize: "90%" }}>100+ Brands, </span> 
+            </span>{" "}
+            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 750, fontSize: "90%", color: "#9D4EDD" }}>15+ Industries</span> 
           </h2>
           <p style={{
             fontFamily: "'Inter',sans-serif", fontSize: "0.88rem", lineHeight: 1.8,
@@ -421,9 +426,9 @@ export default function PortfolioSection({ id }: Props) {
               Total Reach
             </span>
             <span style={{ width: "1px", height: "14px", background: `rgba(157,78,221,${isIvory ? "0.15" : "0.2"})` }} />
-            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: "0.78rem", color: "var(--belvo-text-1)" }}>96 Brands</span>
+            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: "0.78rem", color: "var(--belvo-text-1)" }}>100+ Brands</span>
             <span style={{ width: "1px", height: "14px", background: `rgba(157,78,221,${isIvory ? "0.15" : "0.2"})` }} />
-            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: "0.78rem", color: "var(--belvo-text-1)" }}>13 Industries</span>
+            <span style={{ fontFamily: "'Inter',sans-serif", fontWeight: 600, fontSize: "0.78rem", color: "var(--belvo-text-1)" }}>15+ Industries</span>
           </div>
         </motion.div>
       </div>
