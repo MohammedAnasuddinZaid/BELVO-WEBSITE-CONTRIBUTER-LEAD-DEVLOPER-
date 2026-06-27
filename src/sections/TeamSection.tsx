@@ -89,7 +89,7 @@ const TEAMS = [
     name: "Human Resource",
     color: "#7B2FBE",
     lightColor: "#9D4EDD",
-    members: ["Raavula Vaibhav", "Mohd Anasuddin Zaid", "Mohd Usaid Ali Khan"],
+    members: ["Raavula Vaibhav", "Mohammad Anasuddin Zaid", "Mohd Usaid Ali Khan"],
     responsibilities: ["HR"],
   },
   {
