@@ -64,7 +64,7 @@ const TEAMS = [
     name: "Co-Administration",
     color: "#007BFF",
     lightColor: "#0056b3",
-    members: ["Ajintya Gurba"],
+    members: ["Achintya Gurba"],
     responsibilities: ["Operations", "Team Coordination", "Client Communication", "Internal Management"] as readonly string[],
 
   }
