@@ -8,7 +8,11 @@ import ServicesSection from "@/sections/ServicesSection";
 import PortfolioSection from "@/sections/PortfolioSection";
 import TeamSection from "@/sections/TeamSection";
 import About from "@/sections/About";
+<<<<<<< HEAD
+import Testimonials from "@/sections/Testimonials";
+=======
 import FAQ from "@/sections/FAQ";
+>>>>>>> dc2d32d9b286c8794f6a415be720c34b12ca9a10
 
 function AuroraWaves() {
   return (
@@ -204,7 +208,8 @@ export default function Home() {
       <About />
       <ServicesSection id="services" />
       <PortfolioSection id="portfolio" />
-      <UnderConstruction id="testimonials" number="06" title="Client Testimonials" glowSide="center" />
+      <Testimonials />
+      <Works />
       <TeamSection />
       <BookACall />
       <Footer />
