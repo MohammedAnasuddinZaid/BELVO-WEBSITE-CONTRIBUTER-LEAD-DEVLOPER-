@@ -1,7 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Mail, Download } from "lucide-react";
-import { CONTACT_TARGETS, COMPANY_EMAIL } from "@/lib/contact";
+import { Mail, Download, Phone } from "lucide-react";
+import { CONTACT_TARGETS } from "@/lib/contact";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -14,20 +14,15 @@ const fadeUp = {
 
 const SOCIAL_LINKS = [
   {
-    id: "whatsapp",
-    label: "WhatsApp",
-    href: CONTACT_TARGETS.whatsappCommunityUrl,
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.134.558 4.133 1.535 5.866L.057 23.571a.75.75 0 0 0 .92.921l5.796-1.485A11.946 11.946 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.9 0-3.7-.497-5.267-1.37l-.378-.214-3.926 1.006 1.019-3.832-.234-.393A9.955 9.955 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
-      </svg>
-    ),
+    id: "email-info",
+    label: "info.belvo@gmail.com",
+    href: "mailto:info.belvo@gmail.com",
+    icon: <Mail size={18} />,
   },
   {
-    id: "email",
-    label: COMPANY_EMAIL,
-    href: `mailto:${COMPANY_EMAIL}`,
+    id: "email-contact",
+    label: "contact.belvo@gmail.com",
+    href: "mailto:contact.belvo@gmail.com",
     icon: <Mail size={18} />,
   },
   {
@@ -51,15 +46,16 @@ const SOCIAL_LINKS = [
     ),
   },
   {
-    id: "whatsapp-community",
-    label: "WhatsApp Community",
-    href: CONTACT_TARGETS.whatsappCommunityUrl,
-    icon: (
-      <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.134.558 4.133 1.535 5.866L.057 23.571a.75.75 0 0 0 .92.921l5.796-1.485A11.946 11.946 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.9 0-3.7-.497-5.267-1.37l-.378-.214-3.926 1.006 1.019-3.832-.234-.393A9.955 9.955 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
-      </svg>
-    ),
+    id: "phone-1",
+    label: "+91 89284 66820",
+    href: "tel:+918928466820",
+    icon: <Phone size={18} />,
+  },
+  {
+    id: "phone-2",
+    label: "+91 98495 67122",
+    href: "tel:+919849567122",
+    icon: <Phone size={18} />,
   },
 ];
 
@@ -91,6 +87,7 @@ export default function Footer() {
           justifyContent: "space-between", alignItems: "flex-start",
           marginBottom: "56px",
         }}>
+
           {/* Brand */}
           <motion.div
             custom={0} variants={fadeUp} initial="hidden" animate={inView ? "visible" : "hidden"}
@@ -133,9 +130,90 @@ export default function Footer() {
             </motion.div>
           </motion.div>
 
-          {/* Social */}
+          {/* Offices */}
           <motion.div
             custom={2} variants={fadeUp} initial="hidden" animate={inView ? "visible" : "hidden"}
+          >
+            <p style={{
+              fontSize: "0.65rem", letterSpacing: "0.3em", textTransform: "uppercase",
+              color: "var(--belvo-text-4)", fontFamily: "'Inter', sans-serif",
+              marginBottom: "20px",
+            }}>Our Offices</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+              {[
+                { city: "Gurgaon", label: "Haryana, India" },
+                { city: "Mumbai", label: "Maharashtra, India" },
+              ].map((office, i) => (
+                <motion.div
+                  key={office.city}
+                  custom={i + 3} variants={fadeUp} initial="hidden" animate={inView ? "visible" : "hidden"}
+                  style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}
+                >
+                  <span style={{ color: "rgba(157,78,221,0.7)", display: "flex", marginTop: "2px", flexShrink: 0 }}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" width="15" height="15">
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                      <circle cx="12" cy="9" r="2.5" />
+                    </svg>
+                  </span>
+                  <div>
+                    <p style={{
+                      fontFamily: "'Inter', sans-serif", fontSize: "0.875rem",
+                      fontWeight: 600, color: "var(--belvo-text-2)",
+                      margin: 0, letterSpacing: "0.01em",
+                    }}>{office.city}</p>
+                    <p style={{
+                      fontFamily: "'Inter', sans-serif", fontSize: "0.78rem",
+                      color: "var(--belvo-text-4)", margin: "2px 0 0",
+                      letterSpacing: "0.02em",
+                    }}>{office.label}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Quick Links */}
+          <motion.div
+            custom={4} variants={fadeUp} initial="hidden" animate={inView ? "visible" : "hidden"}
+          >
+            <p style={{
+              fontSize: "0.65rem", letterSpacing: "0.3em", textTransform: "uppercase",
+              color: "var(--belvo-text-4)", fontFamily: "'Inter', sans-serif",
+              marginBottom: "20px",
+            }}>Quick Links</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+              {[
+                { label: "About", id: "about" },
+                { label: "Services", id: "services" },
+                { label: "Portfolio", id: "portfolio" },
+                { label: "FAQ", id: "faq" },
+                { label: "Book A Call", id: "book-a-call" },
+              ].map((link, i) => (
+                <motion.button
+                  key={link.id}
+                  custom={i + 5} variants={fadeUp} initial="hidden" animate={inView ? "visible" : "hidden"}
+                  onClick={() => document.getElementById(link.id)?.scrollIntoView({ behavior: "smooth" })}
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: "8px",
+                    background: "none", border: "none", padding: 0, cursor: "pointer",
+                    color: "var(--belvo-text-2)",
+                    fontFamily: "'Inter', sans-serif", fontSize: "0.875rem",
+                    letterSpacing: "0.01em", textAlign: "left",
+                    transition: "color 0.2s",
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "#9D4EDD"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--belvo-text-2)"; }}
+                >
+                  <span style={{ color: "rgba(157,78,221,0.5)", fontSize: "0.6rem" }}>▶</span>
+                  {link.label}
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Social & Contact */}
+          <motion.div
+            custom={11} variants={fadeUp} initial="hidden" animate={inView ? "visible" : "hidden"}
           >
             <p style={{
               fontSize: "0.65rem", letterSpacing: "0.3em", textTransform: "uppercase",
@@ -147,10 +225,10 @@ export default function Footer() {
                 <motion.a
                   key={link.id}
                   href={link.href}
-                  target="_blank"
+                  target={link.href.startsWith("tel") || link.href.startsWith("mailto") ? "_self" : "_blank"}
                   rel="noopener noreferrer"
                   data-testid={`link-footer-${link.id}`}
-                  custom={i + 3} variants={fadeUp} initial="hidden" animate={inView ? "visible" : "hidden"}
+                  custom={i + 12} variants={fadeUp} initial="hidden" animate={inView ? "visible" : "hidden"}
                   style={{
                     display: "inline-flex", alignItems: "center", gap: "12px",
                     color: "var(--belvo-text-2)",
@@ -167,11 +245,12 @@ export default function Footer() {
               ))}
             </div>
           </motion.div>
+
         </div>
 
         {/* Bottom bar */}
         <motion.div
-          custom={9} variants={fadeUp} initial="hidden" animate={inView ? "visible" : "hidden"}
+          custom={18} variants={fadeUp} initial="hidden" animate={inView ? "visible" : "hidden"}
           style={{
             paddingTop: "28px",
             borderTop: "1px solid var(--belvo-border-bottom)",

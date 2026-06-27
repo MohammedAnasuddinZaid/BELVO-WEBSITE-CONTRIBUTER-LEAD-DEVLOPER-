@@ -9,6 +9,7 @@ import PortfolioSection from "@/sections/PortfolioSection";
 import Works from "@/sections/Works";
 import TeamSection from "@/sections/TeamSection";
 import About from "@/sections/About";
+import FAQ from "@/sections/FAQ";
 
 function AuroraWaves() {
   return (
@@ -207,7 +208,7 @@ export default function Home() {
       <UnderConstruction id="process"      number="04" title="Our Process"               glowSide="right"  />
       <PortfolioSection id="portfolio" />
       <UnderConstruction id="testimonials" number="06" title="Client Testimonials"       glowSide="center" />
-      <UnderConstruction id="faq"          number="07" title="FAQ"                       glowSide="right"  />
+      <FAQ />
       <Works />
       <TeamSection />
       <BookACall />
