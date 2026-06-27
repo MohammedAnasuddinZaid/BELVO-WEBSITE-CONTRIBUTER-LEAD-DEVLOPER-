@@ -3,7 +3,7 @@ title: React Best Practices in 2026
 date: 2026-05-10
 category: Tech
 excerpt: From server components to concurrent features — here's what senior React developers are actually doing differently in 2026 to build faster, cleaner, and more maintainable apps.
-thumbnail: https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&q=80
+thumbnail: /blog-covers/react-best-practices.png
 published: true
 ---
 

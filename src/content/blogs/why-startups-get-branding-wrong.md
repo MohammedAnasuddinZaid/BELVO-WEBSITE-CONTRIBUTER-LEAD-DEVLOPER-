@@ -3,7 +3,7 @@ title: Why Most Startups Get Branding Wrong (And How to Fix It)
 date: 2025-04-22
 category: Branding
 excerpt: A logo is not a brand. A color palette is not a brand. Here's what branding actually means — and why getting it right from day one changes everything.
-thumbnail: https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=800&q=80
+thumbnail: /blog-covers/branding-wrong.png
 published: true
 ---
 

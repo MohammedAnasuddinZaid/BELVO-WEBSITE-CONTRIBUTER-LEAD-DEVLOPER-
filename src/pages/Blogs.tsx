@@ -137,12 +137,13 @@ export default function Blogs() {
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--belvo-border-card)"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
                 >
                   <div style={{
-                    aspectRatio: "16 / 10",
-                    background: `linear-gradient(135deg, rgba(255,154,201,0.15), rgba(157,78,221,0.25), rgba(80,20,160,0.4)), url(${post.thumbnail})`,
+                    aspectRatio: "16 / 9",
+                    backgroundImage: `url(${post.thumbnail})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     position: "relative",
                     overflow: "hidden",
+                    borderBottom: "1px solid var(--belvo-border-card)",
                   }}>
                     <div style={{
                       position: "absolute", bottom: "10px", left: "10px",

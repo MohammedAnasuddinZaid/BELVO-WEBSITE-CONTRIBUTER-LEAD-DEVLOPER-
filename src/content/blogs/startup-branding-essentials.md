@@ -3,7 +3,7 @@ title: Why Every Startup Needs Strong Branding
 date: 2026-04-18
 category: Branding
 excerpt: Product alone won't win the market. In a world of abundant options and short attention spans, brand is the moat that keeps customers coming back and competitors at bay.
-thumbnail: https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&q=80
+thumbnail: /blog-covers/startup-branding.png
 published: true
 ---
 
