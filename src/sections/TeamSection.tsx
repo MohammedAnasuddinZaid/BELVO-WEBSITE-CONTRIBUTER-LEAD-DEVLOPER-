@@ -13,6 +13,7 @@ const NAME_OVERRIDES: Record<string, string> = {
   "ramnath": "ram nath",
   "saurav": "sourav",
   "sharfudeen": "sharfu",
+  "sheth yamani": "yamini",
 };
 
 function getImageUrl(memberName: string): string | undefined {
@@ -47,7 +48,7 @@ const TEAMS = [
     members: [
       "Lokesh", "Sri Satya", "Akhil", "Harsh", "Saurav",
       "Mohammad Anasuddin Zaid", "Ishwari",
-      "Sandali", "Tamil Selvan", "Ramnath",
+      "Sandali", "Tamil Selvan", "Ram Nath G K",
       "Guru dutt", "Shailender",
     ],
   },
@@ -96,6 +97,13 @@ const TEAMS = [
     members: ["Ajintya Gurba"],
     responsibilities: ["Operations", "Team Coordination", "Client Communication", "Internal Management"] as readonly string[],
 
+  },
+  {
+    id: "content",
+    name: "Content Writer",
+    color: "#7B2FBE",
+    lightColor: "#9D4EDD",
+    members: ["Sheth Yamani"],
   }
 
 ] as const;
