@@ -24,6 +24,7 @@ const NAME_OVERRIDES: Record<string, string> = {
   "rimi gosh": "rimi",
   "mohd usaid ali khan": "mohd usaid",
   "mohammad ali": "mohd usaid",
+  "mohammad anasuddin zaid": "mohs anas",
   "anshika srivastava": "anshika",
   "sri satya": "sri",
   "guru dutt": "guru",
