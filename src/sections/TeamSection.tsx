@@ -29,6 +29,7 @@ const NAME_OVERRIDES: Record<string, string> = {
   "anurag khushwaha": "anurag",
   "achintya gurba": "achintya gurba",
   "deepak sharma": "deepak sharma",
+  "tamil selvan": "tamil",
 };
 
 function getImageUrl(memberName: string): string | undefined {
@@ -70,7 +71,7 @@ const TEAMS = [
     name: "App Development",
     color: "#7B2FBE",
     lightColor: "#9D4EDD",
-    members: ["Anand", "Anshika Srivastava", "Aaryan", "Suhani", "Aman", "Naveen Kumar", "Naveen K D"],
+    members: ["Anand", "Anshika Srivastava", "Aaryan", "Suhani", "Aditya", "Naveen Kumar", "Naveen K D"],
   },
   {
     id: "cyber",
@@ -87,7 +88,7 @@ const TEAMS = [
     members: ["Ishika", "Obed", "Sasikumar", "Sharfudeen", "Sibijan"],
   },
   {
-    id: "Graphic",
+    id: "graphic",
     name: "Graphic Designing",
     color: "#7B2FBE",
     lightColor: "#9D4EDD",
@@ -106,23 +107,8 @@ const TEAMS = [
     name: "Administration",
     color: "#007BFF",
     lightColor: "#0056b3",
-    members: ["Mohammad Ali"],
+    members: ["Mohammad Ali", "Raavula Vaibhav", "Achintya Gurba"],
     responsibilities: ["Operations", "Team Coordination", "Client Communication", "Internal Management"] as readonly string[],
-  },
-  {
-    id: "coadmin",
-    name: "Co-Administration",
-    color: "#007BFF",
-    lightColor: "#0056b3",
-    members: ["Achintya Gurba"],
-    responsibilities: ["Operations", "Team Coordination", "Client Communication", "Internal Management"] as readonly string[],
-  },
-  {
-    id: "content",
-    name: "Content Writer",
-    color: "#7B2FBE",
-    lightColor: "#9D4EDD",
-    members: ["Sheth Yamani"],
   },
 ] as const;
 
@@ -323,11 +309,11 @@ function MemberCard({
   );
 }
 
-function AdminGroup({ adminTeam, coadminTeam }: { adminTeam: any; coadminTeam: any }) {
+function AdminGroup({ adminTeam }: { adminTeam: any }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
-  if (!adminTeam || !coadminTeam) return null;
+  if (!adminTeam) return null;
 
   return (
     <div ref={ref} style={{ marginBottom: "64px", width: "100%" }}>
@@ -351,15 +337,8 @@ function AdminGroup({ adminTeam, coadminTeam }: { adminTeam: any; coadminTeam: a
         {adminTeam.members.map((name: string, i: number) => (
           <MemberCard
             key={name} name={name} team={adminTeam.name} color={adminTeam.color} lightColor={adminTeam.lightColor}
-            responsibilities={"responsibilities" in adminTeam ? adminTeam.responsibilities : undefined}
+            responsibilities={adminTeam.responsibilities}
             inView={inView} index={i}
-          />
-        ))}
-        {coadminTeam.members.map((name: string, i: number) => (
-          <MemberCard
-            key={name} name={name} team={coadminTeam.name} color={coadminTeam.color} lightColor={coadminTeam.lightColor}
-            responsibilities={"responsibilities" in coadminTeam ? coadminTeam.responsibilities : undefined}
-            inView={inView} index={i + 1}
           />
         ))}
       </div>
@@ -464,14 +443,11 @@ export default function TeamSection() {
 
           <CeoCard inView={headerInView} />
 
-          {TEAMS.filter(t => t.id !== "admin" && t.id !== "coadmin").map((team) => (
+          {TEAMS.filter(t => t.id !== "admin").map((team) => (
             <TeamGroup key={team.id} team={team} />
           ))}
 
-          <AdminGroup
-            adminTeam={TEAMS.find(t => t.id === "admin")}
-            coadminTeam={TEAMS.find(t => t.id === "coadmin")}
-          />
+          <AdminGroup adminTeam={TEAMS.find(t => t.id === "admin")} />
         </div>
       </section>
     </>
