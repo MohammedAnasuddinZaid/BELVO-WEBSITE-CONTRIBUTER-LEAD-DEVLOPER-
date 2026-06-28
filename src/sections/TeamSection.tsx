@@ -70,7 +70,7 @@ const TEAMS = [
     name: "App Development",
     color: "#7B2FBE",
     lightColor: "#9D4EDD",
-    members: ["Anand", "Anshika Srivastava", "Aaryan", "Suhani", "Aditya", "Naveen Kumar", "Naveen K D"],
+    members: ["Anand", "Anshika Srivastava", "Aaryan", "Suhani", "Aman", "Naveen Kumar", "Naveen K D"],
   },
   {
     id: "cyber",
