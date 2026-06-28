@@ -96,6 +96,13 @@ const TEAMS = [
     members: ["Anurag khushwaha", "Rimi gosh", "Sanskruti akare", "Deepak Sharma"],
   },
   {
+    id: "content",
+    name: "Content Writer",
+    color: "#7B2FBE",
+    lightColor: "#9D4EDD",
+    members: ["Sheth Yamani"],
+  },
+  {
     id: "admin",
     name: "Administration",
     color: "#007BFF",
