@@ -82,6 +82,7 @@ const HARDCODED_TEAMS: TeamDisplay[] = [
       "Mohammad Anasuddin Zaid", "Ishwari",
       "Sandali", "Tamil Selvan", "Ram Nath G K",
       "Guru dutt", "Shailender",
+      "Aditya Sarkar", "Divyansh Salanki",
     ].map(name => ({ name })),
   },
   {
@@ -96,7 +97,14 @@ const HARDCODED_TEAMS: TeamDisplay[] = [
     name: "Cyber Security",
     color: "#7B2FBE",
     lightColor: "#9D4EDD",
-    members: ["Harsh", "Sourav", "Parv"].map(name => ({ name })),
+    members: ["Harsh", "Sourav", "Parv", "Ankit Sharma"].map(name => ({ name })),
+  },
+  {
+    id: "software",
+    name: "Software Development",
+    color: "#7B2FBE",
+    lightColor: "#9D4EDD",
+    members: ["Aditya Siras", "Rudra Matta", "Ankush Gemnnani", "Aditya Singh", "Aryan"].map(name => ({ name })),
   },
   {
     id: "analytics",
@@ -110,7 +118,14 @@ const HARDCODED_TEAMS: TeamDisplay[] = [
     name: "Graphic Designing",
     color: "#7B2FBE",
     lightColor: "#9D4EDD",
-    members: ["Anurag khushwaha", "Rimi gosh", "Sanskruti akare", "Deepak Sharma"].map(name => ({ name })),
+    members: ["Anurag khushwaha", "Rimi gosh", "Sanskruti akare", "Deepak Sharma", "Neha"].map(name => ({ name })),
+  },
+  {
+    id: "social",
+    name: "Social Media Management",
+    color: "#7B2FBE",
+    lightColor: "#9D4EDD",
+    members: ["Yash Mewati"].map(name => ({ name })),
   },
   {
     id: "content",
@@ -124,7 +139,7 @@ const HARDCODED_TEAMS: TeamDisplay[] = [
     name: "Administration",
     color: "#007BFF",
     lightColor: "#0056b3",
-    members: ["Mohd Usaid Ali Khan", "Raavula Vaibhav", "Achintya Gurba"].map(name => ({ name })),
+    members: ["Mohd Usaid Ali Khan", "Raavula Vaibhav", "Achintya Gurba", "Chetan Pawar"].map(name => ({ name })),
     responsibilities: ["Operations", "Team Coordination", "Client Communication", "Internal Management"] as readonly string[],
   },
 ];
