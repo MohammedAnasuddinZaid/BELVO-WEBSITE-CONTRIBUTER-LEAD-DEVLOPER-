@@ -282,7 +282,7 @@ export default function Home() {
             <span className="block" style={{ color: "var(--belvo-text-1)" }}>
               A Perfect Agency
             </span>
-            <span className="block shimmer-text">
+            <span className="block" style={{ color: "#5B1A8A" }}>
               For Your Brand.
             </span>
           </motion.h1>
