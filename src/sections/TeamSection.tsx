@@ -87,6 +87,7 @@ const HARDCODED_TEAMS: TeamDisplay[] = [
       "Sandali", "Tamil Selvan", "Ram Nath G K",
       "Guru dutt", "Shailender",
       "Aditya Sarkar", "Divyansh Salanki", "Harshitha",
+      "Chirag Arora", "Prathamesh Kharbal", "Himagiri Siddesh", "Yashwanth Polepalli",
     ].map(name => ({ name })),
   },
   {
@@ -94,7 +95,7 @@ const HARDCODED_TEAMS: TeamDisplay[] = [
     name: "App Development",
     color: "#7B2FBE",
     lightColor: "#9D4EDD",
-    members: ["Anand", "Anshika Srivastava", "Aaryan", "Suhani", "Aman", "Naveen Kumar"].map(name => ({ name })),
+    members: ["Anand", "Anshika Srivastava", "Aaryan", "Suhani", "Aman", "Naveen Kumar", "Sushmitha", "Sinchana"].map(name => ({ name })),
   },
   {
     id: "cyber",
