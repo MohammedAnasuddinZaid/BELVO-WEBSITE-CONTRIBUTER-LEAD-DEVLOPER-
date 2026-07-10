@@ -17,7 +17,7 @@ import {
 
 const IMG_BASE = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
-const imageModules = import.meta.glob<{ default: string }>("/src/collectives/*", { eager: true, import: "default" });
+const imageModules = import.meta.glob("/src/collectives/*", { eager: true, import: "default" }) as Record<string, string>;
 const IMAGE_MAP: Record<string, string> = {};
 Object.entries(imageModules).forEach(([path, url]) => {
   const name = path.split("/").pop()!.replace(/\.[^.]+$/, "").toLowerCase();
@@ -28,6 +28,7 @@ const NAME_OVERRIDES: Record<string, string> = {
   "sanskruti akare": "sanskruthi",
   "rimi gosh": "rimi",
   "mohd usaid ali khan": "mohd usaid",
+  "mohammad ali": "mohd usaid",
   "mohammad anasuddin zaid": "mohs anas",
   "anshika srivastava": "anshika",
   "sri satya": "sri",
@@ -41,6 +42,10 @@ const NAME_OVERRIDES: Record<string, string> = {
   "shailender": "shilendar",
   "sibijan": "sibi",
   "tamil selvan": "tamil",
+  "saurav": "sourav",
+  "sharfudeen": "sharfu",
+  "yash": "yash1",
+  "chirag arora": "chirag-arora",
 };
 
 function getLocalImage(name: string): string | undefined {

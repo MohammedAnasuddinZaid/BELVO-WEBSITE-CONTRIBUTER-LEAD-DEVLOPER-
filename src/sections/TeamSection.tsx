@@ -20,7 +20,7 @@ interface TeamDisplay {
 
 const easeSmooth = [0.22, 1, 0.36, 1] as const;
 
-const imageModules = import.meta.glob<{ default: string }>("/src/collectives/*", { eager: true, import: "default" });
+const imageModules = import.meta.glob("/src/collectives/*", { eager: true, import: "default" }) as Record<string, string>;
 
 const IMAGE_MAP: Record<string, string> = {};
 Object.entries(imageModules).forEach(([path, url]) => {
@@ -160,7 +160,7 @@ const fadeUp = {
   hidden: { opacity: 0 },
   visible: (i: number) => ({
     opacity: 1,
-    transition: { duration: 0.5, delay: i * 0.05, ease: "easeOut" },
+    transition: { duration: 0.5, delay: i * 0.05, ease: "easeOut" as const },
   }),
 };
 
@@ -425,49 +425,77 @@ function TeamGroup({ team }: { team: TeamDisplay }) {
 
 export default function TeamSection() {
   const [teams, setTeams] = useState<TeamDisplay[] | null>(null);
+  const [apiStatus, setApiStatus] = useState<"loading" | "success" | "failed">("loading");
   const headerRef = useRef(null);
   const headerInView = useInView(headerRef, { once: true, margin: "-80px" });
 
   useEffect(() => {
-    Promise.all([
-      fetch(`${API_BASE}/api/team`).then(r => r.json()),
-      fetch(`${API_BASE}/api/departments`).then(r => r.json()),
-    ]).then(([teamData, deptData]) => {
-      if (!teamData.success || !deptData.success) return;
-      const deptMap = new Map(deptData.departments.map((d: any) => [d.id, d]));
-      const grouped = new Map<string, TeamMemberDisplay[]>();
-      for (const m of teamData.members) {
-        if (!grouped.has(m.team_id)) grouped.set(m.team_id, []);
-        grouped.get(m.team_id)!.push({
-          name: m.name,
-          imageUrl: m.image_url,
-          responsibilities: m.responsibilities,
-        });
-      }
-      const apiTeams: TeamDisplay[] = [];
-      const apiIds = new Set<string>();
-      for (const [id, dept] of deptMap) {
-        const members = grouped.get(id);
-        if (!members || members.length === 0) continue;
-        apiIds.add(id);
-        apiTeams.push({
-          id: dept.id,
-          name: dept.name,
-          color: dept.color,
-          lightColor: dept.light_color,
-          members,
-        });
-      }
-      for (const hard of HARDCODED_TEAMS) {
-        if (!apiIds.has(hard.id)) {
-          apiTeams.push(hard);
+    const fetchFromAPI = async () => {
+      try {
+        const [teamRes, deptRes] = await Promise.all([
+          fetch(`${API_BASE}/api/team`),
+          fetch(`${API_BASE}/api/departments`),
+        ]);
+
+        if (!teamRes.ok || !deptRes.ok) {
+          throw new Error("API request failed");
         }
+
+        const teamData = await teamRes.json();
+        const deptData = await deptRes.json();
+
+        if (!teamData.success || !deptData.success) {
+          throw new Error("API returned error");
+        }
+
+        const deptMap = new Map<string, any>(deptData.departments.map((d: any) => [d.id, d]));
+        const grouped = new Map<string, TeamMemberDisplay[]>();
+        
+        for (const m of teamData.members) {
+          if (!grouped.has(m.team_id)) grouped.set(m.team_id, []);
+          grouped.get(m.team_id)!.push({
+            name: m.name,
+            imageUrl: m.image_url,
+            responsibilities: m.responsibilities,
+          });
+        }
+
+        const apiTeams: TeamDisplay[] = [];
+        const apiIds = new Set<string>();
+
+        for (const [id, dept] of deptMap) {
+          const members = grouped.get(id);
+          if (!members || members.length === 0) continue;
+          apiIds.add(id);
+          apiTeams.push({
+            id: dept.id,
+            name: dept.name,
+            color: dept.color,
+            lightColor: dept.light_color,
+            members,
+          });
+        }
+
+        for (const hard of HARDCODED_TEAMS) {
+          if (!apiIds.has(hard.id)) {
+            apiTeams.push(hard);
+          }
+        }
+
+        if (apiTeams.length > 0) {
+          setTeams(apiTeams);
+        }
+        setApiStatus("success");
+      } catch (error) {
+        console.warn("API unavailable, using hardcoded data:", error);
+        setApiStatus("failed");
       }
-      if (apiTeams.length > 0) setTeams(apiTeams);
-    }).catch(() => {});
+    };
+
+    fetchFromAPI();
   }, []);
 
-  const displayTeams = teams || HARDCODED_TEAMS;
+  const displayTeams = teams ?? (apiStatus === "failed" ? HARDCODED_TEAMS : []);
 
   return (
     <>
