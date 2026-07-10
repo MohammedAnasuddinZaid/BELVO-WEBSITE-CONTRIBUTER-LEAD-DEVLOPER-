@@ -8,7 +8,7 @@ export default function CursorFollower() {
   const springX = useSpring(mouseX, { stiffness: 80, damping: 20 });
   const springY = useSpring(mouseY, { stiffness: 80, damping: 20 });
   const isScrolling = useRef(false);
-  const scrollTimer = useRef<ReturnType<typeof setTimeout>>();
+  const scrollTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     const handle = (e: MouseEvent) => {
