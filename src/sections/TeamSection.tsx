@@ -51,6 +51,7 @@ const NAME_OVERRIDES: Record<string, string> = {
   "tamil selvan": "tamil",
   "yash": "yash1",
   "chirag arora": "chirag-arora",
+  "neha gaikwad": "",
 };
 
 function getImageUrl(memberName: string): string | undefined {
