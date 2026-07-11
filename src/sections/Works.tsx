@@ -6,7 +6,7 @@ const TEAMS = [
     id: "web",
     name: "Web Development Team",
     accent: "#7B2FBE",
-    members: ["Sri", "Lokesh", "Akhil", "Harsh", "Saurav", "Mohammad Anasuddin Zaid", "Ishvari", "Gaurav", "Sandali"],
+    members: ["Sri", "Lokesh", "Akhil", "Harsh", "Saurav", "Mohammad Anasuddin Zaid", "Ishvari", "Gaurav", "Sandali", "Ankush Gemnnani", "Aditya Singh", "Aditya Sarkar", "Divyansh Salanki"],
     cards: [
       { title: "Brand Website",      tag: "UI / Web",    gradient: "linear-gradient(135deg, rgba(80,20,160,0.55) 0%, rgba(20,5,50,0.95) 100%)" },
       { title: "E-Commerce Platform", tag: "Full-Stack",  gradient: "linear-gradient(135deg, rgba(60,10,130,0.55) 0%, rgba(10,2,35,0.95) 100%)" },
