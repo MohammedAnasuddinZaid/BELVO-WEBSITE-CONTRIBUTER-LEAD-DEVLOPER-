@@ -115,11 +115,21 @@ app.post("/api/team", authenticateToken, async (req, res) => {
       return res.status(500).json({ success: false, message: "Database not configured" });
     }
 
-    const { name, teamId, teamName, responsibilities, imageUrl, sortOrder } = req.body;
+    const { name, teamId, teamName, responsibilities, imageUrl } = req.body;
 
     if (!name || !teamId) {
       return res.status(400).json({ success: false, message: "Name and teamId are required" });
     }
+
+    const { data: maxRow } = await supabase
+      .from("team_members")
+      .select("sort_order")
+      .eq("team_id", teamId)
+      .order("sort_order", { ascending: false })
+      .limit(1)
+      .single();
+
+    const nextSortOrder = (maxRow?.sort_order ?? -1) + 1;
 
     const { data, error } = await supabase
       .from("team_members")
@@ -129,7 +139,7 @@ app.post("/api/team", authenticateToken, async (req, res) => {
         team_name: teamName || "",
         responsibilities: responsibilities || [],
         image_url: imageUrl || null,
-        sort_order: sortOrder || 0,
+        sort_order: nextSortOrder,
       }])
       .select()
       .single();

@@ -268,7 +268,7 @@ function MemberCard({
   imageUrl?: string | null;
 }) {
   const initials = getInitials(name);
-  const img = getImageUrl(name) || imageUrl;
+  const img = getImageUrl(name) || (imageUrl ? (imageUrl.startsWith("http") ? imageUrl : `${API_BASE}${imageUrl}`) : undefined);
   const cardRef = useRef<HTMLDivElement>(null);
 
   return (
