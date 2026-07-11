@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
@@ -432,78 +432,10 @@ function TeamGroup({ team }: { team: TeamDisplay }) {
 }
 
 export default function TeamSection() {
-  const [teams, setTeams] = useState<TeamDisplay[] | null>(null);
-  const [apiStatus, setApiStatus] = useState<"loading" | "success" | "failed">("loading");
   const headerRef = useRef(null);
   const headerInView = useInView(headerRef, { once: true, margin: "-80px" });
 
-  useEffect(() => {
-    const fetchFromAPI = async () => {
-      try {
-        const [teamRes, deptRes] = await Promise.all([
-          fetch(`${API_BASE}/api/team`),
-          fetch(`${API_BASE}/api/departments`),
-        ]);
-
-        if (!teamRes.ok || !deptRes.ok) {
-          throw new Error("API request failed");
-        }
-
-        const teamData = await teamRes.json();
-        const deptData = await deptRes.json();
-
-        if (!teamData.success || !deptData.success) {
-          throw new Error("API returned error");
-        }
-
-        const deptMap = new Map<string, any>(deptData.departments.map((d: any) => [d.id, d]));
-        const grouped = new Map<string, TeamMemberDisplay[]>();
-        
-        for (const m of teamData.members) {
-          if (!grouped.has(m.team_id)) grouped.set(m.team_id, []);
-          grouped.get(m.team_id)!.push({
-            name: m.name,
-            imageUrl: m.image_url,
-            responsibilities: m.responsibilities,
-          });
-        }
-
-        const apiTeams: TeamDisplay[] = [];
-        const apiIds = new Set<string>();
-
-        for (const [id, dept] of deptMap) {
-          const members = grouped.get(id);
-          if (!members || members.length === 0) continue;
-          apiIds.add(id);
-          apiTeams.push({
-            id: dept.id,
-            name: dept.name,
-            color: dept.color,
-            lightColor: dept.light_color,
-            members,
-          });
-        }
-
-        for (const hard of HARDCODED_TEAMS) {
-          if (!apiIds.has(hard.id)) {
-            apiTeams.push(hard);
-          }
-        }
-
-        if (apiTeams.length > 0) {
-          setTeams(apiTeams);
-        }
-        setApiStatus("success");
-      } catch (error) {
-        console.warn("API unavailable, using hardcoded data:", error);
-        setApiStatus("failed");
-      }
-    };
-
-    fetchFromAPI();
-  }, []);
-
-  const displayTeams = teams ?? (apiStatus === "failed" ? HARDCODED_TEAMS : []);
+  const displayTeams = HARDCODED_TEAMS;
 
   return (
     <>
