@@ -89,6 +89,7 @@ const HARDCODED_TEAMS: TeamDisplay[] = [
       "Guru dutt", "Shailender",
       "Aditya Sarkar", "Divyansh Salanki", "Harshitha",
       "Chirag Arora", "Prathamesh Kharbal", "Himagiri Siddesh", "Yashwanth Polepalli",
+      "Varsha", "Anuj Kumar",
     ].map(name => ({ name })),
   },
   {
@@ -96,7 +97,7 @@ const HARDCODED_TEAMS: TeamDisplay[] = [
     name: "App Development",
     color: "#7B2FBE",
     lightColor: "#9D4EDD",
-    members: ["Anand", "Anshika Srivastava", "Aaryan", "Suhani", "Aman", "Naveen Kumar", "Sushmitha", "Sinchana"].map(name => ({ name })),
+    members: ["Anand", "Anshika Srivastava", "Aaryan", "Suhani", "Aman", "Naveen Kumar", "Sushmitha", "Sinchana", "Hari Chandra Sekhar", "Dasari Ganesh"].map(name => ({ name })),
   },
   {
     id: "cyber",
@@ -110,7 +111,7 @@ const HARDCODED_TEAMS: TeamDisplay[] = [
     name: "Software Development",
     color: "#7B2FBE",
     lightColor: "#9D4EDD",
-    members: ["Aditya Siras", "Rudra Matta", "Ankush Gemnnani", "Aditya Singh", "Aryan"].map(name => ({ name })),
+    members: ["Aditya Siras", "Rudra Matta", "Ankush Gemnnani", "Aditya Singh", "Aryan", "Neha Gaikwad", "Vivek Kumar"].map(name => ({ name })),
   },
   {
     id: "analytics",
@@ -139,6 +140,13 @@ const HARDCODED_TEAMS: TeamDisplay[] = [
     color: "#7B2FBE",
     lightColor: "#9D4EDD",
     members: ["Sheth Yamani"].map(name => ({ name })),
+  },
+  {
+    id: "cinematography",
+    name: "Cinematography",
+    color: "#7B2FBE",
+    lightColor: "#9D4EDD",
+    members: ["Adarsh"].map(name => ({ name })),
   },
   {
     id: "admin",
