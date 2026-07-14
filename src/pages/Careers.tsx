@@ -64,24 +64,71 @@ type ApplicationData = {
   resume: FileList;
 };
 
+const premiumCardStyle: React.CSSProperties = {
+  position: "relative",
+  overflow: "hidden",
+  background:
+    "linear-gradient(145deg, rgba(255,255,255,0.995), rgba(246,240,255,0.96))",
+  border: "1px solid rgba(157,78,221,0.18)",
+  borderRadius: "32px",
+  padding: "clamp(28px,5vw,60px)",
+  backdropFilter: "blur(26px)",
+  boxShadow:
+    "0 36px 110px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255,255,255,0.92)",
+};
+
 const inputBase: React.CSSProperties = {
   width: "100%",
-  background: "var(--belvo-bg-input)",
-  border: "1px solid var(--belvo-border-input)",
-  borderRadius: "8px",
-  padding: "14px 18px",
+  minHeight: "54px",
+  background: "linear-gradient(180deg, rgba(255,255,255,0.995), rgba(247,243,255,0.96))",
+  border: "1px solid rgba(157,78,221,0.14)",
+  borderRadius: "16px",
+  padding: "14px 16px",
   color: "var(--belvo-text-1)",
   fontFamily: "'Inter', sans-serif",
-  fontSize: "0.875rem",
+  fontSize: "0.95rem",
+  fontWeight: 600,
   letterSpacing: "0.01em",
+  lineHeight: 1.4,
   outline: "none",
-  transition: "border-color 0.2s, box-shadow 0.2s",
+  transition: "border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease",
   boxSizing: "border-box",
+  boxShadow: "inset 0 1px 2px rgba(15,23,42,0.04)",
+  backdropFilter: "blur(6px)",
 };
 
 const inputErr: React.CSSProperties = {
   ...inputBase,
   border: "1px solid rgba(239,68,68,0.6)",
+  boxShadow: "0 0 0 3px rgba(239,68,68,0.12)",
+};
+
+const fieldLabelStyle: React.CSSProperties = {
+  fontSize: "0.72rem",
+  fontFamily: "'Inter',sans-serif",
+  fontWeight: 700,
+  letterSpacing: "0.12em",
+  textTransform: "uppercase",
+  color: "var(--belvo-text-2)",
+  display: "block",
+  marginBottom: "6px",
+};
+
+const fieldErrorStyle: React.CSSProperties = {
+  fontSize: "0.74rem",
+  color: "rgba(239,100,100,0.95)",
+  fontFamily: "'Inter',sans-serif",
+  fontWeight: 500,
+  marginTop: "6px",
+};
+
+const textareaBase: React.CSSProperties = {
+  ...inputBase,
+  minHeight: "130px",
+  resize: "vertical",
+  lineHeight: 1.7,
+  borderRadius: "14px",
+  padding: "14px 16px",
 };
 
 function focusIn(
@@ -90,7 +137,9 @@ function focusIn(
   >
 ) {
   e.currentTarget.style.borderColor = "rgba(157,78,221,0.7)";
-  e.currentTarget.style.boxShadow = "0 0 0 3px rgba(130,40,200,0.12)";
+  e.currentTarget.style.boxShadow =
+    "0 0 0 3px rgba(130,40,200,0.14), 0 12px 24px rgba(130,40,200,0.08)";
+  e.currentTarget.style.transform = "translateY(-1px)";
 }
 function focusOut(
   e: React.FocusEvent<
@@ -100,8 +149,9 @@ function focusOut(
 ) {
   e.currentTarget.style.borderColor = err
     ? "rgba(239,68,68,0.6)"
-    : "var(--belvo-border-input)";
-  e.currentTarget.style.boxShadow = "none";
+    : "rgba(157,78,221,0.18)";
+  e.currentTarget.style.boxShadow = "inset 0 1px 2px rgba(15,23,42,0.04)";
+  e.currentTarget.style.transform = "translateY(0)";
 }
 
 function Field({
@@ -115,30 +165,9 @@ function Field({
 }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-      <label
-        style={{
-          fontSize: "0.72rem",
-          fontFamily: "'Inter',sans-serif",
-          fontWeight: 500,
-          letterSpacing: "0.09em",
-          textTransform: "uppercase",
-          color: "var(--belvo-text-2)",
-        }}
-      >
-        {label}
-      </label>
+      <label style={fieldLabelStyle}>{label}</label>
       {children}
-      {error && (
-        <span
-          style={{
-            fontSize: "0.74rem",
-            color: "rgba(239,100,100,0.9)",
-            fontFamily: "'Inter',sans-serif",
-          }}
-        >
-          {error}
-        </span>
-      )}
+      {error && <span style={fieldErrorStyle}>{error}</span>}
     </div>
   );
 }
@@ -808,39 +837,55 @@ export default function Careers() {
             initial="hidden"
             animate={formInView ? "visible" : "hidden"}
             style={{
-              background: "var(--belvo-bg-card)",
-              border: "1px solid var(--belvo-border-card)",
-              borderRadius: "16px",
-              padding: "clamp(28px,5vw,52px)",
-              backdropFilter: "blur(12px)",
+              ...premiumCardStyle,
+              borderRadius: "28px",
             }}
           >
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "linear-gradient(135deg, rgba(157,78,221,0.08), transparent 55%)",
+                pointerEvents: "none",
+              }}
+            />
+            <div style={{ position: "relative", zIndex: 1 }}>
             {isSubmitSuccessful ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                style={{ textAlign: "center", padding: "48px 0" }}
+                style={{
+                  textAlign: "center",
+                  padding: "40px 24px",
+                  background:
+                    "linear-gradient(135deg, rgba(123,47,190,0.06), rgba(255,255,255,0.95))",
+                  border: "1px solid rgba(157,78,221,0.16)",
+                  borderRadius: "22px",
+                  boxShadow: "0 18px 50px rgba(15,23,42,0.05)",
+                }}
               >
                 <div
                   style={{
-                    width: 60,
-                    height: 60,
+                    width: 68,
+                    height: 68,
                     borderRadius: "50%",
                     background: "linear-gradient(135deg,#7B2FBE,#9D4EDD)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     margin: "0 auto 20px",
+                    boxShadow: "0 16px 34px rgba(123,47,190,0.26)",
                   }}
                 >
-                  <CheckCircle2 size={28} color="#fff" />
+                  <CheckCircle2 size={30} color="#fff" />
                 </div>
                 <h3
                   style={{
                     color: "var(--belvo-text-1)",
                     fontFamily: "'Inter',sans-serif",
                     fontWeight: 700,
-                    fontSize: "1.3rem",
+                    fontSize: "1.28rem",
                     margin: "0 0 8px",
                   }}
                 >
@@ -850,7 +895,9 @@ export default function Careers() {
                   style={{
                     color: "var(--belvo-text-3)",
                     fontFamily: "'Inter',sans-serif",
-                    fontSize: "0.9rem",
+                    fontSize: "0.92rem",
+                    lineHeight: 1.7,
+                    margin: 0,
                   }}
                 >
                   We've received your application and will be in touch within
@@ -865,8 +912,8 @@ export default function Careers() {
                     display: "grid",
                     gridTemplateColumns:
                       "repeat(auto-fit,minmax(200px,1fr))",
-                    gap: "20px",
-                    marginBottom: "20px",
+                    gap: "22px",
+                    marginBottom: "24px",
                   }}
                 >
                   <Field
@@ -905,7 +952,7 @@ export default function Careers() {
                 </div>
 
                 {/* Role */}
-                <div style={{ marginBottom: "20px" }}>
+                <div style={{ marginBottom: "24px" }}>
                   <Field
                     label="Role Applying For"
                     error={errors.role?.message}
@@ -915,10 +962,11 @@ export default function Careers() {
                       style={{
                         ...(errors.role ? inputErr : inputBase),
                         appearance: "none",
+                        cursor: "pointer",
                         backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='rgba(157,78,221,0.8)' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
                         backgroundRepeat: "no-repeat",
                         backgroundPosition: "right 16px center",
-                        paddingRight: "40px",
+                        paddingRight: "42px",
                       }}
                       {...register("role", {
                         required: "Please select a role",
@@ -954,8 +1002,8 @@ export default function Careers() {
                     display: "grid",
                     gridTemplateColumns:
                       "repeat(auto-fit,minmax(200px,1fr))",
-                    gap: "20px",
-                    marginBottom: "20px",
+                    gap: "22px",
+                    marginBottom: "24px",
                   }}
                 >
                   <Field
@@ -994,8 +1042,8 @@ export default function Careers() {
                     display: "grid",
                     gridTemplateColumns:
                       "repeat(auto-fit,minmax(200px,1fr))",
-                    gap: "20px",
-                    marginBottom: "20px",
+                    gap: "22px",
+                    marginBottom: "24px",
                   }}
                 >
                   <Field label="Email ID" error={errors.email?.message}>
@@ -1036,7 +1084,7 @@ export default function Careers() {
                 </div>
 
                 {/* Past Work Experience */}
-                <div style={{ marginBottom: "20px" }}>
+                <div style={{ marginBottom: "24px" }}>
                   <Field
                     label="Past Work Experience"
                     error={errors.experience?.message}
@@ -1044,9 +1092,8 @@ export default function Careers() {
                     <textarea
                       placeholder="Describe your relevant experience, roles, and achievements…"
                       style={{
-                        ...(errors.experience ? inputErr : inputBase),
-                        resize: "none",
-                        minHeight: "110px",
+                        ...(errors.experience ? inputErr : textareaBase),
+                        resize: "vertical",
                       }}
                       {...register("experience", {
                         required: "Please describe your experience",
@@ -1058,7 +1105,7 @@ export default function Careers() {
                 </div>
 
                 {/* Current Address */}
-                <div style={{ marginBottom: "20px" }}>
+                <div style={{ marginBottom: "24px" }}>
                   <Field
                     label="Current Address"
                     error={errors.address?.message}
@@ -1066,9 +1113,9 @@ export default function Careers() {
                     <textarea
                       placeholder="City, State, Country"
                       style={{
-                        ...(errors.address ? inputErr : inputBase),
-                        resize: "none",
-                        minHeight: "90px",
+                        ...(errors.address ? inputErr : textareaBase),
+                        minHeight: "100px",
+                        resize: "vertical",
                       }}
                       {...register("address", {
                         required: "Address is required",
@@ -1080,7 +1127,7 @@ export default function Careers() {
                 </div>
 
                 {/* Quick Message */}
-                <div style={{ marginBottom: "20px" }}>
+                <div style={{ marginBottom: "24px" }}>
                   <Field
                     label="Quick Message for Recruiter"
                     error={errors.message?.message}
@@ -1088,9 +1135,7 @@ export default function Careers() {
                     <textarea
                       placeholder="Tell us why you're the perfect fit for BELVO…"
                       style={{
-                        ...(errors.message ? inputErr : inputBase),
-                        resize: "none",
-                        minHeight: "110px",
+                        ...(errors.message ? inputErr : textareaBase),
                       }}
                       {...register("message", {
                         required: "Please write a message",
@@ -1115,13 +1160,16 @@ export default function Careers() {
                         alignItems: "center",
                         gap: "14px",
                         width: "100%",
-                        background: "var(--belvo-bg-input)",
-                        border: "1px dashed var(--belvo-border-input)",
-                        borderRadius: "8px",
+                        minHeight: "92px",
+                        background:
+                          "linear-gradient(135deg, rgba(255,255,255,0.98), rgba(247,242,255,0.94))",
+                        border: "1px dashed rgba(157,78,221,0.32)",
+                        borderRadius: "18px",
                         padding: "18px 20px",
                         cursor: "pointer",
-                        transition: "border-color 0.2s, background 0.2s",
+                        transition: "border-color 0.2s ease, background 0.2s ease, transform 0.2s ease",
                         boxSizing: "border-box",
+                        boxShadow: "inset 0 1px 2px rgba(15,23,42,0.03)",
                       }}
                       onMouseEnter={(e) => {
                         (
@@ -1129,15 +1177,22 @@ export default function Careers() {
                         ).style.borderColor = "rgba(157,78,221,0.6)";
                         (
                           e.currentTarget as HTMLElement
-                        ).style.background = "rgba(157,78,221,0.04)";
+                        ).style.background = "rgba(157,78,221,0.05)";
+                        (
+                          e.currentTarget as HTMLElement
+                        ).style.transform = "translateY(-1px)";
                       }}
                       onMouseLeave={(e) => {
                         (
                           e.currentTarget as HTMLElement
-                        ).style.borderColor = "var(--belvo-border-input)";
+                        ).style.borderColor = "rgba(157,78,221,0.3)";
                         (
                           e.currentTarget as HTMLElement
-                        ).style.background = "var(--belvo-bg-input)";
+                        ).style.background =
+                          "linear-gradient(135deg, rgba(255,255,255,0.98), rgba(247,242,255,0.94))";
+                        (
+                          e.currentTarget as HTMLElement
+                        ).style.transform = "translateY(0)";
                       }}
                     >
                       <Upload
@@ -1196,30 +1251,41 @@ export default function Careers() {
                       display: "inline-flex",
                       alignItems: "center",
                       gap: "10px",
-                      padding: "14px 48px",
+                      padding: "15px 42px",
+                      minHeight: "50px",
                       background:
-                        "linear-gradient(135deg,#7B2FBE,#9D4EDD)",
+                        "linear-gradient(135deg,#7B2FBE 0%,#9D4EDD 55%,#B26BFF 100%)",
                       border: "none",
-                      borderRadius: "8px",
+                      borderRadius: "999px",
                       color: "#ffffff",
                       fontFamily: "'Inter',sans-serif",
-                      fontWeight: 600,
-                      fontSize: "0.84rem",
+                      fontWeight: 700,
+                      fontSize: "0.8rem",
                       letterSpacing: "0.18em",
                       textTransform: "uppercase",
                       cursor: "pointer",
-                      boxShadow: "0 0 32px rgba(130,40,200,0.35)",
-                      transition: "box-shadow 0.3s, transform 0.2s",
+                      boxShadow: "0 16px 35px rgba(123,47,190,0.28)",
+                      transition: "box-shadow 0.28s ease, transform 0.2s ease",
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.boxShadow =
-                        "0 0 52px rgba(157,78,221,0.55)";
-                      e.currentTarget.style.transform = "translateY(-1px)";
+                        "0 20px 44px rgba(157,78,221,0.35)";
+                      e.currentTarget.style.transform = "translateY(-2px)";
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.boxShadow =
-                        "0 0 32px rgba(130,40,200,0.35)";
+                        "0 16px 35px rgba(123,47,190,0.28)";
                       e.currentTarget.style.transform = "translateY(0)";
+                    }}
+                    onMouseDown={(e) => {
+                      e.currentTarget.style.transform = "translateY(1px)";
+                      e.currentTarget.style.boxShadow =
+                        "0 10px 24px rgba(123,47,190,0.24)";
+                    }}
+                    onMouseUp={(e) => {
+                      e.currentTarget.style.transform = "translateY(0)";
+                      e.currentTarget.style.boxShadow =
+                        "0 16px 35px rgba(123,47,190,0.28)";
                     }}
                   >
                     Apply Now <ArrowUpRight size={15} strokeWidth={2.5} />
@@ -1227,6 +1293,7 @@ export default function Careers() {
                 </div>
               </form>
             )}
+            </div>
           </motion.div>
         </div>
       </section>
