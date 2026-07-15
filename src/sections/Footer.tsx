@@ -14,12 +14,6 @@ const fadeUp = {
 
 const SOCIAL_LINKS = [
   {
-    id: "email-info",
-    label: "info.belvo@gmail.com",
-    href: "mailto:info.belvo@gmail.com",
-    icon: <Mail size={18} />,
-  },
-  {
     id: "email-contact",
     label: "contact.belvo@gmail.com",
     href: "mailto:contact.belvo@gmail.com",
@@ -66,11 +60,15 @@ export default function Footer() {
   const bgY = useTransform(scrollYProgress, [0, 1], [0, -20]);
 
   return (
-    <footer
-      ref={ref}
-      id="footer"
-      style={{ background: "var(--belvo-bg)", position: "relative", overflow: "hidden" }}
-    >
+  <footer
+    ref={ref}
+    id="footer"
+    style={{ 
+      background: "linear-gradient(180deg, #09090b 0%, #110724 100%)", 
+      position: "relative", 
+      overflow: "hidden" 
+    }}
+  >
       {/* Top border line */}
       <div style={{
         height: "1px",
@@ -135,7 +133,10 @@ export default function Footer() {
               <span style={{
                 fontFamily: "'Inter', sans-serif", fontWeight: 700,
                 fontSize: "1.1rem", letterSpacing: "0.2em",
-                color: "var(--belvo-text-1)", textTransform: "uppercase",
+                textTransform: "uppercase",background: "linear-gradient(135deg, #ffffff 0%, #a855f7 50%, #7b2fbe 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                display: "inline-block"
               }}>BELVO</span>
             </div>
             <p style={{
