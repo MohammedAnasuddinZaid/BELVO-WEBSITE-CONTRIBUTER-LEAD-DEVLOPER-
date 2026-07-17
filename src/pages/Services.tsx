@@ -4,6 +4,7 @@ import { ArrowUpRight, Sparkles } from "lucide-react";
 import { smoothScrollToElement } from "@/lib/smoothScroll";
 import Footer from "@/sections/Footer";
 import BookACall from "@/sections/BookACall";
+import ToolsPricing from "@/sections/ToolsPricing";
 import { useTheme } from "@/contexts/ThemeContext";
 
 const SERVICES = [
@@ -281,6 +282,7 @@ export default function Services() {
         </motion.div>
       </section>
 
+      <ToolsPricing />
       <BookACall />
       <Footer />
     </>
