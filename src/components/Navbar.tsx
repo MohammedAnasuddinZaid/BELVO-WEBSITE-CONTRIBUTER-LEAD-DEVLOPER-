@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { name: "About",    href: "/#about" },
   { name: "Services", href: "/#services" },
   { name: "Works",    href: "/#portfolio" },
+  { name: "Tools",    href: "/#tools-pricing" },
   { name: "Events",   href: "/#events" },
   { name: "Careers",  href: "/careers" },
   { name: "Blogs",    href: "/blogs" },
@@ -53,10 +54,13 @@ export default function Navbar() {
       const about = document.getElementById("about");
       const services = document.getElementById("services");
       const portfolio = document.getElementById("portfolio");
+      const tools = document.getElementById("tools-pricing");
       const events = document.getElementById("events");
 
       if (events && scrollY >= events.offsetTop - 100) {
         setActiveSection("events");
+      } else if (tools && scrollY >= tools.offsetTop - 100) {
+        setActiveSection("tools-pricing");
       } else if (portfolio && scrollY >= portfolio.offsetTop - 100) {
         setActiveSection("portfolio");
       } else if (services && scrollY >= services.offsetTop - 100) {
