@@ -5,71 +5,162 @@ import { useTheme } from "@/contexts/ThemeContext";
 
 const TOOLS = [
   {
-    name: "ChatGPT Pro",
-    desc: "Premium AI assistant for content, research, and automation",
-    originalPrice: "₹2,499/mo",
-    price: "₹999/mo",
-    discount: "60% OFF",
-    features: ["GPT-4 access", "Custom instructions", "Priority support", "API credits"],
-  },
-  {
-    name: "Midjourney",
-    desc: "AI-powered image generation for stunning visuals",
-    originalPrice: "₹4,999/mo",
-    price: "₹1,899/mo",
-    discount: "62% OFF",
-    features: ["Commercial license", "HD renders", "Style customization", "Batch processing"],
+    name: "Canva Pro",
+    desc: "Premium Canva access",
+    originalPrice: "₹998",
+    price: "₹167",
+    discount: "2 Months",
+    features: [
+      "Design Tools",
+      "Brand Kit",
+      "AI Tools",
+      "2 Months Access"
+    ],
   },
   {
     name: "Canva Pro",
-    desc: "Professional design tool with premium templates",
-    originalPrice: "₹1,899/mo",
-    price: "₹799/mo",
-    discount: "58% OFF",
-    features: ["Premium templates", "Brand kit", "Background remover", "Team collaboration"],
+    desc: "Premium Canva access",
+    originalPrice: "₹3,999",
+    price: "₹1,000",
+    discount: "1 Year",
+    features: [
+      "Design Tools",
+      "Brand Kit",
+      "AI Tools",
+      "1 Year Access"
+    ],
   },
   {
-    name: "Jasper AI",
-    desc: "Advanced AI copywriting & marketing assistant",
-    originalPrice: "₹3,999/mo",
-    price: "₹1,499/mo",
-    discount: "63% OFF",
-    features: ["50+ templates", "SEO mode", "Brand voice", "Plagiarism check"],
+    name: "Canva Pro",
+    desc: "Premium Canva access",
+    originalPrice: "₹15,996",
+    price: "₹2,500",
+    discount: "4 Years",
+    features: [
+      "Design Tools",
+      "Brand Kit",
+      "AI Tools",
+      "4 Years Access"
+    ],
+  },
+  {
+    name: "Canva Lifetime",
+    desc: "Lifetime Canva Premium",
+    originalPrice: "₹4,999",
+    price: "₹4,999",
+    discount: "Lifetime",
+    features: [
+      "Lifetime Access",
+      "500 Invites",
+      "Premium Features",
+      "No Renewal"
+    ],
   },
   {
     name: "Adobe Creative Cloud",
-    desc: "Full suite of Adobe creative applications",
-    originalPrice: "₹6,999/mo",
-    price: "₹2,499/mo",
-    discount: "64% OFF",
-    features: ["All Adobe apps", "100GB cloud", "Font library", "Adobe Fonts"],
+    desc: "Complete Adobe Suite",
+    originalPrice: "₹50,000+",
+    price: "₹10,000",
+    discount: "80% OFF",
+    features: [
+      "20+ Adobe Apps",
+      "4000+ Credits",
+      "1TB Storage",
+      "Personal Email"
+    ],
   },
   {
-    name: "Notion AI",
-    desc: "AI-powered workspace for docs, wikis & projects",
-    originalPrice: "₹1,499/mo",
-    price: "₹649/mo",
-    discount: "57% OFF",
-    features: ["AI writing assist", "Unlimited blocks", "Version history", "Guest access"],
+    name: "ChatGPT Plus",
+    desc: "OpenAI Premium",
+    originalPrice: "₹1,500/month",
+    price: "₹1,500",
+    discount: "Monthly",
+    features: [
+      "GPT-5",
+      "Fast Responses",
+      "Priority Access",
+      "Monthly Plan"
+    ],
   },
   {
-    name: "Copy.ai",
-    desc: "AI content generation for marketing & sales",
-    originalPrice: "₹2,299/mo",
-    price: "₹899/mo",
-    discount: "61% OFF",
-    features: ["90+ languages", "Workflows", "Integration APIs", "Brand voice"],
+    name: "Claude (ClickUp)",
+    desc: "Claude AI Subscription",
+    originalPrice: "₹999/month",
+    price: "₹999",
+    discount: "Monthly",
+    features: [
+      "Claude AI",
+      "ClickUp Integration",
+      "AI Assistant",
+      "Monthly"
+    ],
   },
   {
-    name: "Runway ML",
-    desc: "AI video editing & generation platform",
-    originalPrice: "₹3,499/mo",
-    price: "₹1,299/mo",
-    discount: "63% OFF",
-    features: ["Text-to-video", "Motion tracking", "Green screen AI", "4K export"],
+    name: "Netflix Shared",
+    desc: "4K Netflix Shared Account",
+    originalPrice: "₹499/month",
+    price: "₹499",
+    discount: "Monthly",
+    features: [
+      "4K Streaming",
+      "1 Device",
+      "HD Quality",
+      "Monthly"
+    ],
+  },
+  {
+    name: "Coursera Plus",
+    desc: "Unlimited Courses",
+    originalPrice: "₹4,999",
+    price: "₹4,999",
+    discount: "1 Year",
+    features: [
+      "Unlimited Courses",
+      "Certificates",
+      "1 Year",
+      "Career Learning"
+    ],
+  },
+  {
+    name: "Gemini AI",
+    desc: "Google Gemini Premium",
+    originalPrice: "₹4,999",
+    price: "₹4,999",
+    discount: "1 Year",
+    features: [
+      "Gemini AI",
+      "Google AI",
+      "Advanced Models",
+      "1 Year"
+    ],
+  },
+  {
+    name: "Amazon Prime",
+    desc: "Amazon Prime Membership",
+    originalPrice: "₹499",
+    price: "₹499",
+    discount: "1 Year",
+    features: [
+      "Prime Video",
+      "Prime Delivery",
+      "Music",
+      "1 Year"
+    ],
+  },
+  {
+    name: "YouTube Premium",
+    desc: "Ad-free YouTube",
+    originalPrice: "₹299/month",
+    price: "₹299",
+    discount: "Monthly",
+    features: [
+      "Ad Free",
+      "Background Play",
+      "Downloads",
+      "YouTube Music"
+    ],
   },
 ];
-
 const easeOut = [0.16, 1, 0.3, 1] as const;
 
 const fadeUp = {
