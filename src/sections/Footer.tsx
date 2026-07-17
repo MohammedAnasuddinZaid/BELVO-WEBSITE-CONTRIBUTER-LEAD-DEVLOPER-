@@ -230,6 +230,7 @@ export default function Footer() {
                 { label: "About", id: "about" },
                 { label: "Services", id: "services" },
                 { label: "Portfolio", id: "portfolio" },
+                { label: "Tools", id: "tools-pricing" },
                 { label: "FAQ", id: "faq" },
                 { label: "Book A Call", id: "book-a-call" },
               ].map((link, i) => (
