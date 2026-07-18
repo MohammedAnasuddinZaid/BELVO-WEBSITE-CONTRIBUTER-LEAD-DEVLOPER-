@@ -107,10 +107,8 @@ function hexToRgb(hex: string): string {
 function BrandBadge({ logoSrc, initial, color, rgb }: { logoSrc: string | undefined; initial: string; color: string; rgb: string }) {
   const [showLetter, setShowLetter] = useState(false);
   const containerStyle: React.CSSProperties = {
-    width: "60px", height: "60px", borderRadius: "14px",
+    width: "56px", height: "56px", borderRadius: "50%",
     flexShrink: 0, overflow: "hidden",
-    background: `linear-gradient(135deg,rgba(${rgb},0.22),rgba(${rgb},0.08))`,
-    border: `1px solid rgba(${rgb},0.2)`,
     display: "inline-flex", alignItems: "center", justifyContent: "center",
   };
 
@@ -120,7 +118,7 @@ function BrandBadge({ logoSrc, initial, color, rgb }: { logoSrc: string | undefi
         <img
           src={logoSrc}
           alt={initial}
-          style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "14px" }}
+          style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%", opacity: 0.85 }}
           onError={() => setShowLetter(true)}
         />
       </span>
@@ -130,7 +128,7 @@ function BrandBadge({ logoSrc, initial, color, rgb }: { logoSrc: string | undefi
   return (
     <span style={{
       ...containerStyle,
-      fontFamily: "'Inter',sans-serif", fontWeight: 700, fontSize: "1.1rem",
+      fontFamily: "'Inter',sans-serif", fontWeight: 700, fontSize: "1.4rem",
       color: color,
     }}>
       {initial}
@@ -151,22 +149,15 @@ function BrandRow({ catName, brands, color, isIvory }: { catName: string; brands
 
     const baseStyle: React.CSSProperties = {
       display: "inline-flex", alignItems: "center", gap: "10px",
-      padding: "8px 18px 8px 12px",
-      background: isIvory
-        ? `linear-gradient(135deg, rgba(${rgb},0.07), rgba(${rgb},0.03))`
-        : `linear-gradient(135deg, rgba(${rgb},0.09), rgba(${rgb},0.03))`,
-      border: `1px solid rgba(${rgb},0.12)`,
-      borderRadius: "100px",
-      fontFamily: "'Inter',sans-serif", fontSize: "0.85rem", fontWeight: 500,
-      color: "var(--belvo-text-1)",
+      fontFamily: "'Inter',sans-serif", fontSize: "1.15rem", fontWeight: 700,
+      color: "#888888",
       whiteSpace: "nowrap",
       flexShrink: 0,
-      transition: "background 0.2s, border-color 0.2s",
     };
     const inner = (
       <>
         {badge}
-        <span style={{ position: "relative", top: "1px" }}>{brand.name}</span>
+        <span>{brand.name}</span>
       </>
     );
     if (brand.url) {
@@ -178,18 +169,6 @@ function BrandRow({ catName, brands, color, isIvory }: { catName: string; brands
           rel="noopener noreferrer"
           title={brand.name}
           style={{ ...baseStyle, textDecoration: "none" }}
-          onMouseEnter={e => {
-            const el = e.currentTarget as HTMLElement;
-            el.style.background = `rgba(${rgb},0.15)`;
-            el.style.borderColor = `rgba(${rgb},0.35)`;
-          }}
-          onMouseLeave={e => {
-            const el = e.currentTarget as HTMLElement;
-            el.style.background = isIvory
-              ? `linear-gradient(135deg, rgba(${rgb},0.07), rgba(${rgb},0.03))`
-              : `linear-gradient(135deg, rgba(${rgb},0.09), rgba(${rgb},0.03))`;
-            el.style.borderColor = `rgba(${rgb},0.12)`;
-          }}
         >
           {inner}
         </a>
@@ -213,12 +192,12 @@ function BrandRow({ catName, brands, color, isIvory }: { catName: string; brands
         }
       `}</style>
       <div style={{
-        position: "absolute", left: 0, top: 0, bottom: 0, width: "60px", zIndex: 2,
+        position: "absolute", left: 0, top: 0, bottom: 0, width: "80px", zIndex: 2,
         background: `linear-gradient(to right, var(--belvo-bg), transparent)`,
         pointerEvents: "none",
       }} />
       <div style={{
-        position: "absolute", right: 0, top: 0, bottom: 0, width: "60px", zIndex: 2,
+        position: "absolute", right: 0, top: 0, bottom: 0, width: "80px", zIndex: 2,
         background: `linear-gradient(to left, var(--belvo-bg), transparent)`,
         pointerEvents: "none",
       }} />
@@ -226,7 +205,7 @@ function BrandRow({ catName, brands, color, isIvory }: { catName: string; brands
       <div
         ref={trackRef}
         style={{
-          display: "flex", gap: "12px", willChange: "transform", width: "fit-content",
+          display: "flex", gap: "24px", willChange: "transform", width: "fit-content",
           animation: `${animName} ${Math.max(15, brands.length * 3)}s linear infinite`,
           animationPlayState: paused ? "paused" : "running",
         }}
@@ -328,7 +307,7 @@ export default function PortfolioSection({ id }: Props) {
       </div>
 
       {/* ── CATEGORY ROWS ── */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "40px", position: "relative", zIndex: 1 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "56px", position: "relative", zIndex: 1 }}>
         {CATEGORIES.map((cat, ci) => (
           <motion.div
             key={cat.name}
