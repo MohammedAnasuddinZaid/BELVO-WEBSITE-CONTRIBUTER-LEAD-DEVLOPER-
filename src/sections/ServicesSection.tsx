@@ -1,6 +1,8 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, Sparkles } from "lucide-react";
+import ServiceDialog from "@/components/ServiceDialog";
+import { SERVICES as SERVICE_ITEMS, type ServiceItem } from "@/content/services";
 import { useTheme } from "@/contexts/ThemeContext";
 
 interface Props {
@@ -39,7 +41,7 @@ const staggerCard = {
   }),
 };
 
-function ServiceCard({ svc, i, isIvory }: { svc: typeof SERVICES[0]; i: number; isIvory: boolean }) {
+function ServiceCard({ svc, i, isIvory, onOpen }: { svc: ServiceItem; i: number; isIvory: boolean; onOpen: (service: ServiceItem) => void }) {
   const ref = useRef<HTMLDivElement>(null);
 
   return (
@@ -68,33 +70,51 @@ function ServiceCard({ svc, i, isIvory }: { svc: typeof SERVICES[0]; i: number; 
           display: "flex",
           flexDirection: "column",
           gap: "14px",
-          cursor: "default",
+          cursor: "pointer",
           boxShadow: isIvory ? "0 2px 12px rgba(0,0,0,0.04)" : "none",
           transition: "border-color 0.3s, box-shadow 0.3s",
         }}
+        onClick={() => onOpen(svc)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            onOpen(svc);
+          }
+        }}
+        tabIndex={0}
+        role="button"
       >
-        <div
-          style={{
-            width: 32,
-            height: 32,
-            borderRadius: "8px",
-            background: "linear-gradient(135deg, rgba(157,78,221,0.2), rgba(123,47,190,0.1))",
-            border: "1px solid rgba(157,78,221,0.2)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "0.8rem",
-            fontWeight: 700,
-            color: "#9D4EDD",
-            fontFamily: "'Inter', sans-serif",
-          }}
-        >
-          {String(i + 1).padStart(2, "0")}
-        </div>
+        <img
+          src={svc.image}
+          alt={svc.title}
+          style={{ width: "100%", aspectRatio: "16 / 9", objectFit: "cover", borderRadius: "10px", border: "1px solid var(--belvo-border-card)", display: "block" }}
+        />
 
-        <h3 style={{ fontFamily: "'Inter',sans-serif", fontWeight: 700, fontSize: "0.97rem", color: "var(--belvo-text-1)", margin: 0, lineHeight: 1.3 }}>
-          {svc.category}
-        </h3>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <div
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: "8px",
+              background: "linear-gradient(135deg, rgba(157,78,221,0.2), rgba(123,47,190,0.1))",
+              border: "1px solid rgba(157,78,221,0.2)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              color: "#9D4EDD",
+              fontFamily: "'Inter', sans-serif",
+              flexShrink: 0,
+            }}
+          >
+            {String(i + 1).padStart(2, "0")}
+          </div>
+
+          <h3 style={{ fontFamily: "'Inter',sans-serif", fontWeight: 700, fontSize: "0.97rem", color: "var(--belvo-text-1)", margin: 0, lineHeight: 1.3 }}>
+            {svc.title}
+          </h3>
+        </div>
 
         <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.85rem", lineHeight: 1.7, color: "var(--belvo-text-6)", margin: 0, flexGrow: 1 }}>
           {svc.desc}
@@ -143,6 +163,7 @@ function ServiceCard({ svc, i, isIvory }: { svc: typeof SERVICES[0]; i: number; 
 export default function ServicesSection({ id }: Props) {
   const { theme } = useTheme();
   const isIvory = theme === "ivory";
+  const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
   const heroRef = useRef(null);
   const heroInView = useInView(heroRef, { once: true, margin: "-80px" });
 
@@ -290,12 +311,13 @@ export default function ServicesSection({ id }: Props) {
           </motion.div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(320px,1fr))", gap: "20px" }}>
-            {SERVICES.map((svc, i) => (
-              <ServiceCard key={svc.id} svc={svc} i={i} isIvory={isIvory} />
+            {SERVICE_ITEMS.map((svc, i) => (
+              <ServiceCard key={svc.id} svc={svc} i={i} isIvory={isIvory} onOpen={setSelectedService} />
             ))}
           </div>
         </div>
       </div>
+      <ServiceDialog service={selectedService} onClose={() => setSelectedService(null)} />
     </section>
   );
 }
