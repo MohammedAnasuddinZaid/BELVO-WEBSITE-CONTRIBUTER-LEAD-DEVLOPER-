@@ -4,7 +4,7 @@ date: 2025-05-10
 category: Marketing
 excerpt: Instagram is still one of the most powerful platforms for brand growth. Here's what actually works in 2025 — from reels strategy to community building.
 thumbnail: /blog-covers/instagram-marketing.png
-published: true
+published: false
 ---
 
 Instagram has evolved — and so have the rules of growing a brand on it. In 2025, it's not about posting every day. It's about posting with **intent**.
