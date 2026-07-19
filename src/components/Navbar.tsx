@@ -6,14 +6,14 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { smoothScrollTo, smoothScrollToElement } from "@/lib/smoothScroll";
 
 const NAV_LINKS = [
-  { name: "Home",     href: "/" },
-  { name: "About",    href: "/#about" },
+  { name: "Home", href: "/" },
+  { name: "About", href: "/#about" },
   { name: "Services", href: "/#services" },
-  { name: "Works",    href: "/#portfolio" },
-  { name: "Tools",    href: "/#tools-pricing" },
-  { name: "Events",   href: "/#events" },
-  { name: "Careers",  href: "/careers" },
-  { name: "Blogs",    href: "/blogs" },
+  { name: "Works", href: "/#portfolio" },
+  { name: "Events", href: "/#events" },
+  { name: "Careers", href: "/careers" },
+  { name: "Blogs", href: "/blogs" },
+  { name: "Tools", href: "/tools" },
 ];
 
 export default function Navbar() {

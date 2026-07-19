@@ -12,6 +12,8 @@ import About from "@/sections/About";
 import ComingSoon from "@/pages/ComingSoon";
 import EventRegistration from "@/pages/EventRegistration";
 import Works from "@/pages/works";
+import Tools from "@/pages/Tools";
+import ToolRegister from "@/pages/ToolRegister";
 import AdminLogin from "@/pages/admin/Login";
 import AdminDashboard from "@/pages/admin/Dashboard";
 import { isAuthenticated } from "@/lib/admin-api";
@@ -20,8 +22,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import ChatBot from "@/components/ChatBot";
 import CursorFollower from "@/components/CursorFollower";
 import GrainOverlay from "@/components/GrainOverlay";
-import Preloader from "@/components/Preloader";
-import React, { useState } from "react";
+import React from "react";
 
 const queryClient = new QueryClient();
 
@@ -77,6 +78,8 @@ function Router() {
               <Route path="/careers" component={Careers} />
               <Route path="/blogs" component={Blogs} />
               <Route path="/works" component={Works} />
+              <Route path="/tools" component={Tools} />
+              <Route path="/tools/register" component={ToolRegister} />
               <Route path="/event-register/:id" component={EventRegistration} />
               <Route path="/contact">
                 <ComingSoon title="Contact Us" />
@@ -91,29 +94,21 @@ function Router() {
 }
 
 function App() {
-  const [preloaderDone, setPreloaderDone] = useState(
-    () => !!sessionStorage.getItem("belvo-preloader-played")
-  );
-
   return (
-    <>
-      {!preloaderDone && <Preloader onFinish={() => setPreloaderDone(true)} />}
-
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <ThemeProvider>
-            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-              <Router />
-            </WouterRouter>
-            <ScrollToTop />
-            <ChatBot />
-            <CursorFollower />
-            <GrainOverlay opacity={0.02} blend="overlay" />
-            <Toaster />
-          </ThemeProvider>
-        </TooltipProvider>
-      </QueryClientProvider>
-    </>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <ThemeProvider>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            <Router />
+          </WouterRouter>
+          <ScrollToTop />
+          <ChatBot />
+          <CursorFollower />
+          <GrainOverlay opacity={0.02} blend="overlay" />
+          <Toaster />
+        </ThemeProvider>
+      </TooltipProvider>
+    </QueryClientProvider>
   );
 }
 
