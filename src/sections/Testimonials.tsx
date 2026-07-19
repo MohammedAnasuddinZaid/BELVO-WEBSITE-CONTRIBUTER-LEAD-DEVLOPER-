@@ -17,11 +17,22 @@ const AVATAR_10 = new URL("../Images/ChatGPT Image Jun 27, 2026, 07_45_48 PM.png
 
 const DEFAULT_TESTIMONIAL_IMAGE = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80";
 
-const TESTIMONIALS = [
+interface Testimonial {
+  id: number;
+  image: string;
+  name: string;
+  title: string;
+  company: string;
+  review: string;
+  linkedin?: string;
+}
+
+const TESTIMONIALS: Testimonial[] = [
   {
     id: 1,
     image: AVATAR_1,
     name: "Sunny Jain",
+    linkedin: "https://www.linkedin.com/in/sunny-jain-450276184/",
     title: "Founder / Key Person",
     company: "Ghar Soaps",
     review:
@@ -40,6 +51,7 @@ const TESTIMONIALS = [
     id: 3,
     image: AVATAR_3,
     name: "Prabhkiran Singh",
+    linkedin: "https://www.linkedin.com/in/prabhkiran-singh-a5124918/",
     title: "Founder / Key Person",
     company: "Bewakoof",
     review:
@@ -49,6 +61,7 @@ const TESTIMONIALS = [
     id: 4,
     image: AVATAR_4,
     name: "Manas Madhu",
+    linkedin: "https://www.linkedin.com/in/manasmadhu/",
     title: "Founder / Key Person",
     company: "Beyond Snacks",
     review:
@@ -58,6 +71,7 @@ const TESTIMONIALS = [
     id: 5,
     image: AVATAR_5,
     name: "Mohammad Raafi Hossain",
+    linkedin: "https://www.linkedin.com/in/raafihossain/",
     title: "Founder / Key Person",
     company: "Fasset",
     review:
@@ -85,6 +99,7 @@ const TESTIMONIALS = [
     id: 8,
     image: AVATAR_6,
     name: "Dr. Aman Dua",
+    linkedin: "https://www.linkedin.com/in/dramandua/",
     title: "Founder / Key Person",
     company: "AK Clinics",
     review:
@@ -109,7 +124,7 @@ const fadeUp = {
   }),
 };
 
-function TestimonialCard({ testimonial, index }: { testimonial: typeof TESTIMONIALS[0]; index: number }) {
+function TestimonialCard({ testimonial, index }: { testimonial: Testimonial; index: number }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -166,7 +181,29 @@ function TestimonialCard({ testimonial, index }: { testimonial: typeof TESTIMONI
             )}
           </motion.div>
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", minHeight: "100%" }}>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "1rem", color: "var(--belvo-text-1)", margin: 0, letterSpacing: "0.01em" }}>{testimonial.name}</p>
+            {testimonial.linkedin ? (
+              <a
+                href={testimonial.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontWeight: 700,
+                  fontSize: "1rem",
+                  color: "var(--belvo-text-1)",
+                  margin: 0,
+                  letterSpacing: "0.01em",
+                  textDecoration: "none",
+                  transition: "color 0.2s ease",
+                }}
+                onMouseEnter={e => { e.currentTarget.style.color = "#9D4EDD"; }}
+                onMouseLeave={e => { e.currentTarget.style.color = "var(--belvo-text-1)"; }}
+              >
+                {testimonial.name}
+              </a>
+            ) : (
+              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "1rem", color: "var(--belvo-text-1)", margin: 0, letterSpacing: "0.01em" }}>{testimonial.name}</p>
+            )}
             <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.78rem", color: "var(--belvo-text-3)", margin: "6px 0 0", letterSpacing: "0.04em" }}>{testimonial.title} · {testimonial.company}</p>
           </div>
         </div>
