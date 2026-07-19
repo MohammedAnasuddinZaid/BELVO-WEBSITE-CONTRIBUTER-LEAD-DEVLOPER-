@@ -20,7 +20,8 @@ import ScrollToTop from "@/components/ScrollToTop";
 import ChatBot from "@/components/ChatBot";
 import CursorFollower from "@/components/CursorFollower";
 import GrainOverlay from "@/components/GrainOverlay";
-import React from "react";
+import Preloader from "@/components/Preloader";
+import React, { useState } from "react";
 
 const queryClient = new QueryClient();
 
@@ -90,21 +91,29 @@ function Router() {
 }
 
 function App() {
+  const [preloaderDone, setPreloaderDone] = useState(
+    () => !!sessionStorage.getItem("belvo-preloader-played")
+  );
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <ThemeProvider>
-          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-            <Router />
-          </WouterRouter>
-          <ScrollToTop />
-          <ChatBot />
-          <CursorFollower />
-          <GrainOverlay opacity={0.02} blend="overlay" />
-          <Toaster />
-        </ThemeProvider>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <>
+      {!preloaderDone && <Preloader onFinish={() => setPreloaderDone(true)} />}
+
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <ThemeProvider>
+            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+              <Router />
+            </WouterRouter>
+            <ScrollToTop />
+            <ChatBot />
+            <CursorFollower />
+            <GrainOverlay opacity={0.02} blend="overlay" />
+            <Toaster />
+          </ThemeProvider>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </>
   );
 }
 
