@@ -1,7 +1,8 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { CalendarDays, FolderOpen, Newspaper } from "lucide-react";
-import { BLOG_CATEGORIES, blogPosts } from "@/content/blogs";
+import { BLOG_CATEGORIES, blogPosts, type BlogPost } from "@/content/blogs";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import Footer from "@/sections/Footer";
 
 const fadeUp = {
@@ -13,9 +14,72 @@ const fadeUp = {
   }),
 };
 
+const startupStages = [
+  { id: 1, name: "Idea Formation", pdfPath: "/Stage_1_Idea_Stage_Startup_Blog.pdf", available: true, description: "Define the vision, sharpen the problem, and frame the opportunity in a way that feels tangible and worth pursuing." },
+  { id: 2, name: "Problem Validation", pdfPath: "/Stage_2_Validation_Stage_Startup_Blog.pdf", available: true, description: "Test whether the problem is urgent, real, and worth solving through customer conversations and early validation signals." },
+  { id: 3, name: "Market Research", pdfPath: "/Stage_3_Planning_Stage_Startup_Blog.pdf", available: true, description: "Map the competitive landscape, customer segments, and market dynamics so the next move is informed rather than reactive." },
+  { id: 4, name: "Positioning & Brand Foundation", pdfPath: "/Stage_4_Development_Stage_Startup_Blog.pdf", available: true, description: "Create a clear identity, voice, and positioning framework so the brand can stand out even before it scales." },
+  { id: 5, name: "MVP Development", pdfPath: "/Stage_5_Launch_Stage_Startup_Blog.pdf", available: true, description: "Build the smallest version of the product that can test assumptions, uncover feedback, and prove the concept." },
+  { id: 6, name: "Early Customer Acquisition", pdfPath: "/Stage_6_Growth_Stage_Startup_Blog.pdf", available: true, description: "Launch first experiments, build early channels, and learn which growth motions attract real demand." },
+  { id: 7, name: "Product-Market Fit", pdfPath: "/Stage_7_Expansion_Stage_Startup_Blog.pdf", available: true, description: "Refine the product and message until users repeatedly choose it, see value, and recommend it to others." },
+  { id: 8, name: "Growth & Scaling", pdfPath: "/Stage_8_Maturity_Stage_Startup_Blog.pdf", available: true, description: "Expand acquisition, strengthen operations, and build systems that support momentum without losing clarity." },
+  { id: 9, name: "Long-Term Brand Building", pdfPath: "/Stage_9_Exit_Renewal_Stage_Startup_Blog.pdf", available: true, description: "Turn early momentum into lasting trust, recognition, and a brand that compounds over time." },
+];
+
+function openStartupStagePdf(pdfPath: string) {
+  if (typeof window !== "undefined") {
+    window.open(pdfPath, "_blank", "noopener,noreferrer");
+  }
+}
+
+function renderBlogContent(content: string) {
+  const blocks = content
+    .split(/\n{2,}/)
+    .map(block => block.trim())
+    .filter(Boolean);
+
+  return blocks.map((block, index) => {
+    const headingMatch = block.match(/^(#{1,6})\s+(.*)$/);
+
+    if (headingMatch) {
+      const level = headingMatch[1].length;
+      const HeadingTag = `h${Math.min(level, 4)}` as keyof JSX.IntrinsicElements;
+      return (
+        <HeadingTag
+          key={`block-${index}`}
+          style={{ fontFamily: "'Inter',sans-serif", fontWeight: 700, margin: "0 0 8px", color: "var(--belvo-text-1)" }}
+        >
+          {headingMatch[2]}
+        </HeadingTag>
+      );
+    }
+
+    if (block.split("\n").every(line => line.startsWith("- "))) {
+      const items = block.split("\n").filter(line => line.startsWith("- "));
+      return (
+        <ul key={`block-${index}`} style={{ paddingLeft: "20px", margin: "0 0 12px", color: "var(--belvo-text-2)" }}>
+          {items.map((item, itemIndex) => (
+            <li key={`${index}-${itemIndex}`} style={{ marginBottom: "6px", lineHeight: 1.7 }}>
+              {item.replace(/^-\s*/, "")}
+            </li>
+          ))}
+        </ul>
+      );
+    }
+
+    return (
+      <p key={`block-${index}`} style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.96rem", lineHeight: 1.8, color: "var(--belvo-text-2)", margin: "0 0 12px" }}>
+        {block}
+      </p>
+    );
+  });
+}
+
 export default function Blogs() {
   const postsRef = useRef(null);
   const postsInView = useInView(postsRef, { once: true, margin: "-80px" });
+  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+  const [selectedStartupStage, setSelectedStartupStage] = useState<(typeof startupStages)[number] | null>(null);
 
   return (
     <>
@@ -131,10 +195,19 @@ export default function Blogs() {
                   initial="hidden"
                   animate={postsInView ? "visible" : "hidden"}
                   data-testid={`card-blog-${post.slug}`}
-                  style={{ background: "var(--belvo-bg-card)", border: "1px solid var(--belvo-border-card)", borderRadius: "14px", overflow: "hidden", transition: "border-color 0.3s, box-shadow 0.3s, transform 0.3s" }}
+                  style={{ background: "var(--belvo-bg-card)", border: "1px solid var(--belvo-border-card)", borderRadius: "14px", overflow: "hidden", transition: "border-color 0.3s, box-shadow 0.3s, transform 0.3s", cursor: "pointer" }}
                   whileHover={{ y: -4, transition: { duration: 0.25 } }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(157,78,221,0.4)"; (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 40px rgba(100,20,180,0.18)"; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--belvo-border-card)"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
+                  onClick={() => setSelectedPost(post)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      setSelectedPost(post);
+                    }
+                  }}
+                  tabIndex={0}
+                  role="button"
                 >
                   <div style={{
                     aspectRatio: "16 / 9",
@@ -204,6 +277,122 @@ export default function Blogs() {
           )}
         </div>
       </section>
+
+      <Dialog open={!!selectedPost} onOpenChange={open => { if (!open) setSelectedPost(null); }}>
+        <DialogContent style={{ maxWidth: "920px", width: "min(92vw, 920px)", maxHeight: "88vh", overflowY: "auto", borderRadius: "24px", padding: 0, border: "1px solid rgba(157,78,221,0.24)", background: "var(--belvo-bg-card)", boxShadow: "0 24px 80px rgba(0,0,0,0.35)" }}>
+          {selectedPost && (
+            <div style={{ padding: "28px 28px 32px" }}>
+              <DialogHeader style={{ marginBottom: "18px" }}>
+                <DialogTitle style={{ fontFamily: "'Inter',sans-serif", fontWeight: 800, fontSize: "1.45rem", color: "var(--belvo-text-1)" }}>
+                  {selectedPost.title}
+                </DialogTitle>
+                <DialogDescription style={{ fontFamily: "'Inter',sans-serif", color: "var(--belvo-text-2)", display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
+                  <span>{selectedPost.category}</span>
+                  <span>•</span>
+                  <span>{selectedPost.date}</span>
+                </DialogDescription>
+              </DialogHeader>
+              <div style={{ display: "grid", gap: "10px" }}>
+                {selectedPost.slug === "the-9-stages-of-starting-a-startup" ? (
+                  <>
+                    <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.75, color: "var(--belvo-text-2)", margin: "0 0 8px" }}>
+                      Select any stage below to explore the startup journey. Stage 1 is currently linked to the PDF you provided.
+                    </p>
+                    <div style={{ display: "grid", gap: "10px" }}>
+                      {startupStages.map(stage => (
+                        <button
+                          key={stage.id}
+                          type="button"
+                          onClick={() => {
+                            if (stage.available) {
+                              setSelectedStartupStage(stage);
+                            }
+                          }}
+                          disabled={!stage.available}
+                          style={{
+                            width: "100%",
+                            textAlign: "left",
+                            padding: "14px 16px",
+                            borderRadius: "12px",
+                            border: stage.available ? "1px solid rgba(157,78,221,0.28)" : "1px solid rgba(255,255,255,0.12)",
+                            background: stage.available ? "rgba(157,78,221,0.1)" : "rgba(255,255,255,0.04)",
+                            color: stage.available ? "var(--belvo-text-1)" : "var(--belvo-text-3)",
+                            fontFamily: "'Inter',sans-serif",
+                            fontSize: "0.96rem",
+                            fontWeight: 600,
+                            cursor: stage.available ? "pointer" : "not-allowed",
+                            transition: "transform 0.2s ease, border-color 0.2s ease",
+                          }}
+                        >
+                          <span style={{ display: "block", marginBottom: "4px", color: "#9D4EDD" }}>Stage {stage.id}</span>
+                          {stage.name}
+                          {!stage.available && <span style={{ display: "block", marginTop: "4px", fontSize: "0.8rem", color: "var(--belvo-text-3)" }}>PDF coming soon</span>}
+                        </button>
+                      ))}
+                    </div>
+                    {selectedStartupStage && (
+                      <div
+                        onClick={() => setSelectedStartupStage(null)}
+                        style={{ position: "fixed", inset: 0, zIndex: 100, background: "rgba(0,0,0,0.7)", backdropFilter: "blur(6px)", display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}
+                      >
+                        <div
+                          onClick={event => event.stopPropagation()}
+                          style={{ width: "min(92vw, 520px)", borderRadius: "20px", padding: "24px", border: "1px solid rgba(157,78,221,0.24)", background: "var(--belvo-bg-card)", boxShadow: "0 24px 80px rgba(0,0,0,0.35)" }}
+                        >
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "12px", marginBottom: "14px" }}>
+                            <div>
+                              <p style={{ margin: 0, fontFamily: "'Inter',sans-serif", fontSize: "0.78rem", fontWeight: 700, letterSpacing: "0.24em", textTransform: "uppercase", color: "#9D4EDD" }}>
+                                Stage {selectedStartupStage.id}
+                              </p>
+                              <h3 style={{ margin: "4px 0 0", fontFamily: "'Inter',sans-serif", fontWeight: 800, fontSize: "1.15rem", color: "var(--belvo-text-1)" }}>
+                                {selectedStartupStage.name}
+                              </h3>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => setSelectedStartupStage(null)}
+                              style={{ border: "none", background: "transparent", color: "var(--belvo-text-2)", cursor: "pointer", fontSize: "1rem" }}
+                              aria-label="Close stage popup"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                          <p style={{ margin: "0 0 20px", fontFamily: "'Inter',sans-serif", fontSize: "0.95rem", lineHeight: 1.75, color: "var(--belvo-text-2)" }}>
+                            {selectedStartupStage.description}
+                          </p>
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (selectedStartupStage.available) {
+                                  openStartupStagePdf(selectedStartupStage.pdfPath);
+                                  setSelectedStartupStage(null);
+                                }
+                              }}
+                              style={{ border: "none", borderRadius: "999px", padding: "10px 16px", fontFamily: "'Inter',sans-serif", fontWeight: 700, background: "linear-gradient(135deg, #9D4EDD, #7B2CBF)", color: "#fff", cursor: selectedStartupStage.available ? "pointer" : "not-allowed", opacity: selectedStartupStage.available ? 1 : 0.7 }}
+                            >
+                              Open PDF
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setSelectedStartupStage(null)}
+                              style={{ border: "1px solid rgba(157,78,221,0.24)", borderRadius: "999px", padding: "10px 16px", fontFamily: "'Inter',sans-serif", fontWeight: 700, background: "transparent", color: "var(--belvo-text-1)", cursor: "pointer" }}
+                            >
+                              Close
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  renderBlogContent(selectedPost.content)
+                )}
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
 
       <Footer />
     </>

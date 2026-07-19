@@ -13,160 +13,67 @@ const fadeUp = {
   }),
 };
 
-const FAQ_ITEMS = [
+const FAQ_CATEGORIES = [
   {
-    id: "faq-1",
-    question: "What is Belvo?",
-    answer:
-      "Belvo is a full-service digital growth agency that helps businesses build their brand, scale their marketing, and compete globally. From branding and web development to performance marketing and social media, we handle every aspect of your digital presence.",
+    id: "about-belvo",
+    title: "About Belvo",
+    description: "Who we are, what we do, and what makes us different.",
+    items: [
+      { id: "faq-1", question: "What is Belvo?", answer: "Belvo is a full-service digital growth agency that helps businesses build their brand, scale their marketing, and compete globally. From branding and web development to performance marketing and social media, we handle every aspect of your digital presence." },
+      { id: "faq-4", question: "Can Belvo work with businesses of any size?", answer: "Yes. We work with early-stage startups, scaling D2C brands, and established enterprises. Our engagement models are flexible — whether you need a one-time project or a long-term growth partner, we can structure something that fits." },
+      { id: "faq-5", question: "What industries does Belvo specialise in?", answer: "We've delivered results across 15+ industries including e-commerce, fashion, skincare, F&B, EdTech, FinTech, healthcare, hospitality, and more. Our portfolio of 100+ brands speaks to the depth and breadth of our industry experience." },
+      { id: "faq-25", question: "What makes Belvo different from other agencies?", answer: "Belvo is built on three pillars: strategy, creativity, and execution. Unlike agencies that focus on just one area, we provide end-to-end solutions under one roof. Our team is young, hungry, and constantly pushing boundaries. We treat every client as a true partner, not just a project number." },
+      { id: "faq-26", question: "Do you support founders who are still validating their idea?", answer: "Absolutely. We often work with founders in the early validation stage to sharpen positioning, define messaging, and create a simple launch plan before investing heavily in design or growth." },
+    ],
   },
   {
-    id: "faq-2",
-    question: "How do I get started with Belvo?",
-    answer:
-      "Getting started is simple — book a free discovery call through our contact section. We'll learn about your business, goals, and challenges, then put together a tailored proposal within 48 hours. No pressure, no obligation.",
+    id: "getting-started",
+    title: "Getting Started",
+    description: "How to begin your project and what to expect.",
+    items: [
+      { id: "faq-2", question: "How do I get started with Belvo?", answer: "Getting started is simple — book a free discovery call through our contact section. We'll learn about your business, goals, and challenges, then put together a tailored proposal within 48 hours. No pressure, no obligation." },
+      { id: "faq-6", question: "How long does a typical project take?", answer: "Timelines vary by scope. A brand identity project typically takes 2–4 weeks. A full website design and development engagement runs 4–8 weeks. Performance marketing campaigns are set up within 1–2 weeks. We'll give you a clear timeline in your proposal." },
+      { id: "faq-10", question: "How do I contact Belvo if I have more questions?", answer: "You can reach us through the Book a Free Call section on this page, or drop us a message via the contact details in the footer. Our team typically responds within 24 hours on business days." },
+      { id: "faq-24", question: "How does Belvo handle revisions and feedback?", answer: "We build revision cycles into every project timeline. After each deliverable, we present it for your review and collect structured feedback. Typically, projects include 2-3 rounds of revisions. We use collaborative tools like Figma, Trello, and Slack to ensure feedback is clear, organized, and actionable." },
+    ],
   },
   {
-    id: "faq-3",
-    question: "Is my data secure when working with Belvo?",
-    answer:
-      "Absolutely. We follow industry-standard security practices across all projects. All client data, assets, and communications are handled with strict confidentiality, and we're happy to sign NDAs before any project begins.",
+    id: "growth-services",
+    title: "Growth & Marketing",
+    description: "Performance marketing, SEO, social media, and content.",
+    items: [
+      { id: "faq-8", question: "What does Belvo's performance marketing service include?", answer: "Our performance marketing service covers paid advertising across Google, Meta, Instagram, and other relevant platforms. It includes campaign strategy, audience research, creative briefing, ad setup, continuous optimisation, and detailed monthly reporting with transparent ROAS tracking." },
+      { id: "faq-12", question: "Does Belvo offer social media management?", answer: "Yes — social media management is one of our core services. We handle content creation, posting schedules, community management, engagement strategies, and growth tactics across Instagram, LinkedIn, Twitter, Facebook, and emerging platforms to ensure your brand stays relevant and top-of-mind." },
+      { id: "faq-13", question: "What is influencer marketing and how does Belvo execute it?", answer: "Influencer marketing involves partnering with content creators and personalities who have engaged audiences aligned with your brand. Belvo identifies, vets, negotiates, and manages influencer campaigns — from nano to macro influencers — ensuring authentic collaborations that drive awareness, trust, and conversions." },
+      { id: "faq-14", question: "Can Belvo help with SEO and organic growth?", answer: "Absolutely. Our SEO services include technical SEO audits, on-page optimization, keyword research, content strategy, link building, and performance tracking. We focus on sustainable organic growth that helps your website rank higher, attract quality traffic, and reduce dependency on paid ads." },
+      { id: "faq-27", question: "Do you create ad creatives and landing pages too?", answer: "Yes. We can create campaign creatives, landing page copy, conversion-focused UI, and messaging systems that align with your paid strategy so the funnel feels consistent from click to conversion." },
+    ],
   },
   {
-    id: "faq-4",
-    question: "Can Belvo work with businesses of any size?",
-    answer:
-      "Yes. We work with early-stage startups, scaling D2C brands, and established enterprises. Our engagement models are flexible — whether you need a one-time project or a long-term growth partner, we can structure something that fits.",
+    id: "design-development",
+    title: "Design & Development",
+    description: "Branding, web development, mobile apps, and product experiences.",
+    items: [
+      { id: "faq-9", question: "Can Belvo handle both design and development?", answer: "Yes — we're a full-service agency with in-house designers and developers. We build everything from brand identities and UI/UX designs to websites, mobile apps, and custom software. Having both under one roof means faster delivery and tighter collaboration between creative and technical teams." },
+      { id: "faq-16", question: "What does a typical brand identity project include?", answer: "A full brand identity project at Belvo includes brand strategy and positioning, logo design (primary and secondary), color palette, typography system, brand guidelines document, stationery design, social media kit, and brand asset library. We ensure every element is cohesive and strategically aligned with your business goals." },
+      { id: "faq-17", question: "How does Belvo approach web development?", answer: "We follow a structured process: discovery and requirements gathering, wireframing and UI/UX design, frontend and backend development, content integration, testing and QA, and deployment. We use modern tech stacks like React, Next.js, Node.js, and ensure every site is fully responsive, fast, and SEO-optimized." },
+      { id: "faq-18", question: "Can Belvo develop mobile apps?", answer: "Yes — we design and develop native and cross-platform mobile applications using Flutter and React Native. Our app development services include concept validation, UI/UX design, development, testing, App Store/Play Store deployment, and post-launch support with regular updates." },
+    ],
   },
   {
-    id: "faq-5",
-    question: "What industries does Belvo specialise in?",
-    answer:
-      "We've delivered results across 15+ industries including e-commerce, fashion, skincare, F&B, EdTech, FinTech, healthcare, hospitality, and more. Our portfolio of 100+ brands speaks to the depth and breadth of our industry experience.",
-  },
-  {
-    id: "faq-6",
-    question: "How long does a typical project take?",
-    answer:
-      "Timelines vary by scope. A brand identity project typically takes 2–4 weeks. A full website design and development engagement runs 4–8 weeks. Performance marketing campaigns are set up within 1–2 weeks. We'll give you a clear timeline in your proposal.",
-  },
-  {
-    id: "faq-7",
-    question: "Do you offer ongoing retainer services?",
-    answer:
-      "Yes — in fact, most of our clients move to monthly retainers after their initial project. Retainers cover ongoing social media management, performance marketing, content creation, SEO, or any combination of services your brand needs to keep growing.",
-  },
-  {
-    id: "faq-8",
-    question: "What does Belvo's performance marketing service include?",
-    answer:
-      "Our performance marketing service covers paid advertising across Google, Meta, Instagram, and other relevant platforms. It includes campaign strategy, audience research, creative briefing, ad setup, continuous optimisation, and detailed monthly reporting with transparent ROAS tracking.",
-  },
-  {
-    id: "faq-9",
-    question: "Can Belvo handle both design and development?",
-    answer:
-      "Yes — we're a full-service agency with in-house designers and developers. We build everything from brand identities and UI/UX designs to websites, mobile apps, and custom software. Having both under one roof means faster delivery and tighter collaboration between creative and technical teams.",
-  },
-  {
-    id: "faq-10",
-    question: "How do I contact Belvo if I have more questions?",
-    answer:
-      "You can reach us through the Book a Free Call section on this page, or drop us a message via the contact details in the footer. Our team typically responds within 24 hours on business days.",
-  },
-  {
-    id: "faq-11",
-    question: "What is the cost of Belvo's services?",
-    answer:
-      "Our pricing is project-based and varies depending on scope, complexity, and deliverables. We offer custom quotes tailored to each client's needs. During your free discovery call, we'll discuss your requirements and provide a transparent pricing proposal with no hidden fees.",
-  },
-  {
-    id: "faq-12",
-    question: "Does Belvo offer social media management?",
-    answer:
-      "Yes — social media management is one of our core services. We handle content creation, posting schedules, community management, engagement strategies, and growth tactics across Instagram, LinkedIn, Twitter, Facebook, and emerging platforms to ensure your brand stays relevant and top-of-mind.",
-  },
-  {
-    id: "faq-13",
-    question: "What is influencer marketing and how does Belvo execute it?",
-    answer:
-      "Influencer marketing involves partnering with content creators and personalities who have engaged audiences aligned with your brand. Belvo identifies, vets, negotiates, and manages influencer campaigns — from nano to macro influencers — ensuring authentic collaborations that drive awareness, trust, and conversions.",
-  },
-  {
-    id: "faq-14",
-    question: "Can Belvo help with SEO and organic growth?",
-    answer:
-      "Absolutely. Our SEO services include technical SEO audits, on-page optimization, keyword research, content strategy, link building, and performance tracking. We focus on sustainable organic growth that helps your website rank higher, attract quality traffic, and reduce dependency on paid ads.",
-  },
-  {
-    id: "faq-15",
-    question: "Does Belvo provide e-commerce management services?",
-    answer:
-      "Yes — we offer end-to-end e-commerce management including store setup, product listing optimization, inventory management, conversion rate optimization (CRO), and scaling strategies for platforms like Shopify and WooCommerce. We help D2C brands streamline operations and maximize revenue.",
-  },
-  {
-    id: "faq-16",
-    question: "What does a typical brand identity project include?",
-    answer:
-      "A full brand identity project at Belvo includes brand strategy and positioning, logo design (primary and secondary), color palette, typography system, brand guidelines document, stationery design, social media kit, and brand asset library. We ensure every element is cohesive and strategically aligned with your business goals.",
-  },
-  {
-    id: "faq-17",
-    question: "How does Belvo approach web development?",
-    answer:
-      "We follow a structured process: discovery and requirements gathering, wireframing and UI/UX design, frontend and backend development, content integration, testing and QA, and deployment. We use modern tech stacks like React, Next.js, Node.js, and ensure every site is fully responsive, fast, and SEO-optimized.",
-  },
-  {
-    id: "faq-18",
-    question: "Can Belvo develop mobile apps?",
-    answer:
-      "Yes — we design and develop native and cross-platform mobile applications using Flutter and React Native. Our app development services include concept validation, UI/UX design, development, testing, App Store/Play Store deployment, and post-launch support with regular updates.",
-  },
-  {
-    id: "faq-19",
-    question: "What is Belvo's approach to performance marketing?",
-    answer:
-      "Our performance marketing approach is data-first and ROI-driven. We start with audience research and campaign strategy, create compelling ad creatives and copy, set up and optimize campaigns on Google Ads, Meta Ads, and other platforms, and provide transparent monthly reporting with actionable insights and ROAS tracking.",
-  },
-  {
-    id: "faq-20",
-    question: "Does Belvo offer content creation services?",
-    answer:
-      "Yes — content creation is integral to everything we do. Our team produces high-quality written content, graphic designs, video content, motion graphics, and photography tailored to your brand voice and platform requirements. From blog posts and social media captions to video ads and product shoots, we cover it all.",
-  },
-  {
-    id: "faq-21",
-    question: "How does Belvo measure success and report results?",
-    answer:
-      "We believe in transparent, data-backed reporting. Depending on the service, we track KPIs like website traffic, conversion rates, engagement metrics, ROAS, follower growth, brand mentions, and more. Clients receive detailed monthly reports with insights, learnings, and optimization recommendations for continuous improvement.",
-  },
-  {
-    id: "faq-22",
-    question: "What is the Belvo team structure like?",
-    answer:
-      "Each client is assigned a dedicated account manager who serves as your single point of contact. Behind them is a multidisciplinary team of designers, developers, strategists, content creators, and marketers who collaborate to deliver exceptional results. This structure ensures accountability, consistency, and seamless communication.",
-  },
-  {
-    id: "faq-23",
-    question: "Does Belvo work with international clients?",
-    answer:
-      "Yes — we work with clients across India, the US, the UK, UAE, Singapore, Australia, and beyond. Our team is experienced in serving global brands and understands the nuances of different markets, time zones, and cultural contexts. All communication and deliverables are in English.",
-  },
-  {
-    id: "faq-24",
-    question: "How does Belvo handle revisions and feedback?",
-    answer:
-      "We build revision cycles into every project timeline. After each deliverable, we present it for your review and collect structured feedback. Typically, projects include 2-3 rounds of revisions. We use collaborative tools like Figma, Trello, and Slack to ensure feedback is clear, organized, and actionable.",
-  },
-  {
-    id: "faq-25",
-    question: "What makes Belvo different from other agencies?",
-    answer:
-      "Belvo is built on three pillars: strategy, creativity, and execution. Unlike agencies that focus on just one area, we provide end-to-end solutions under one roof. Our team is young, hungry, and constantly pushing boundaries. We treat every client as a true partner, not just a project number. The 100+ brands we've worked with trust us because we consistently deliver results that exceed expectations.",
+    id: "delivery-pricing",
+    title: "Delivery & Pricing",
+    description: "Pricing, retainers, reporting, and working with us day to day.",
+    items: [
+      { id: "faq-3", question: "Is my data secure when working with Belvo?", answer: "Absolutely. We follow industry-standard security practices across all projects. All client data, assets, and communications are handled with strict confidentiality, and we're happy to sign NDAs before any project begins." },
+      { id: "faq-7", question: "Do you offer ongoing retainer services?", answer: "Yes — in fact, most of our clients move to monthly retainers after their initial project. Retainers cover ongoing social media management, performance marketing, content creation, SEO, or any combination of services your brand needs to keep growing." },
+      { id: "faq-11", question: "What is the cost of Belvo's services?", answer: "Our pricing is project-based and varies depending on scope, complexity, and deliverables. We offer custom quotes tailored to each client's needs. During your free discovery call, we'll discuss your requirements and provide a transparent pricing proposal with no hidden fees." },
+      { id: "faq-21", question: "How does Belvo measure success and report results?", answer: "We believe in transparent, data-backed reporting. Depending on the service, we track KPIs like website traffic, conversion rates, engagement metrics, ROAS, follower growth, brand mentions, and more. Clients receive detailed monthly reports with insights, learnings, and optimization recommendations for continuous improvement." },
+    ],
   },
 ];
 
-interface FAQItemProps {
+interface FAQQuestionProps {
   id: string;
   question: string;
   answer: string;
@@ -176,7 +83,7 @@ interface FAQItemProps {
   inView: boolean;
 }
 
-function FAQItem({ id, question, answer, isOpen, onToggle, index, inView }: FAQItemProps) {
+function FAQQuestionItem({ id, question, answer, isOpen, onToggle, index, inView }: FAQQuestionProps) {
   const panelId = `${id}-panel`;
 
   return (
@@ -218,7 +125,7 @@ function FAQItem({ id, question, answer, isOpen, onToggle, index, inView }: FAQI
             alignItems: "center",
             justifyContent: "space-between",
             gap: "16px",
-            padding: "22px 26px",
+            padding: "16px 20px",
             background: "none",
             border: "none",
             cursor: "pointer",
@@ -232,24 +139,12 @@ function FAQItem({ id, question, answer, isOpen, onToggle, index, inView }: FAQI
           onBlur={(e) => {
             (e.currentTarget as HTMLButtonElement).style.outline = "none";
           }}
-          onMouseEnter={(e) => {
-            if (!isOpen) {
-              const parent = e.currentTarget.closest("div") as HTMLElement;
-              if (parent) parent.style.borderColor = "rgba(157,78,221,0.22)";
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!isOpen) {
-              const parent = e.currentTarget.closest("div") as HTMLElement;
-              if (parent) parent.style.borderColor = "var(--belvo-border-card)";
-            }
-          }}
         >
           <span
             style={{
               fontFamily: "'Inter', sans-serif",
               fontWeight: 600,
-              fontSize: "clamp(0.9rem, 2vw, 1rem)",
+              fontSize: "clamp(0.88rem, 1.8vw, 0.95rem)",
               color: "var(--belvo-text-1)",
               letterSpacing: "0.01em",
               lineHeight: 1.4,
@@ -263,13 +158,11 @@ function FAQItem({ id, question, answer, isOpen, onToggle, index, inView }: FAQI
             aria-hidden="true"
             style={{
               flexShrink: 0,
-              width: "28px",
-              height: "28px",
+              width: "24px",
+              height: "24px",
               borderRadius: "50%",
               border: `1px solid ${isOpen ? "rgba(157,78,221,0.5)" : "var(--belvo-border-card)"}`,
-              background: isOpen
-                ? "linear-gradient(135deg, rgba(123,47,190,0.25), rgba(157,78,221,0.15))"
-                : "var(--belvo-bg-btn-ghost)",
+              background: isOpen ? "linear-gradient(135deg, rgba(123,47,190,0.25), rgba(157,78,221,0.15))" : "var(--belvo-bg-btn-ghost)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -280,8 +173,8 @@ function FAQItem({ id, question, answer, isOpen, onToggle, index, inView }: FAQI
             <span
               style={{
                 position: "absolute",
-                width: "11px",
-                height: "1.5px",
+                width: "9px",
+                height: "1.3px",
                 background: isOpen ? "#9D4EDD" : "var(--belvo-text-3)",
                 borderRadius: "2px",
                 transition: "background 0.3s ease",
@@ -290,8 +183,8 @@ function FAQItem({ id, question, answer, isOpen, onToggle, index, inView }: FAQI
             <span
               style={{
                 position: "absolute",
-                width: "1.5px",
-                height: "11px",
+                width: "1.3px",
+                height: "9px",
                 background: isOpen ? "#9D4EDD" : "var(--belvo-text-3)",
                 borderRadius: "2px",
                 transform: isOpen ? "rotate(90deg) scaleY(0)" : "rotate(0deg) scaleY(1)",
@@ -311,26 +204,11 @@ function FAQItem({ id, question, answer, isOpen, onToggle, index, inView }: FAQI
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
               style={{ overflow: "hidden" }}
             >
-              <div
-                style={{
-                  padding: "0 26px 24px",
-                  borderTop: "1px solid rgba(130,40,200,0.12)",
-                  paddingTop: "18px",
-                }}
-              >
-                <p
-                  style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: "0.9rem",
-                    color: "var(--belvo-text-2)",
-                    lineHeight: 1.75,
-                    letterSpacing: "0.01em",
-                    margin: 0,
-                  }}
-                >
+              <div style={{ padding: "0 20px 16px", borderTop: "1px solid rgba(130,40,200,0.12)", paddingTop: "12px" }}>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.9rem", color: "var(--belvo-text-2)", lineHeight: 1.75, letterSpacing: "0.01em", margin: 0 }}>
                   {answer}
                 </p>
               </div>
@@ -342,13 +220,81 @@ function FAQItem({ id, question, answer, isOpen, onToggle, index, inView }: FAQI
   );
 }
 
+interface FAQCategoryBlockProps {
+  category: (typeof FAQ_CATEGORIES)[number];
+  isOpen: boolean;
+  onToggle: () => void;
+  activeFaqId: string | null;
+  onToggleFaq: (faqId: string) => void;
+  index: number;
+  inView: boolean;
+}
+
+function FAQCategoryBlock({ category, isOpen, onToggle, activeFaqId, onToggleFaq, index, inView }: FAQCategoryBlockProps) {
+  return (
+    <motion.div
+      custom={index + 1}
+      variants={fadeUp}
+      initial="hidden"
+      animate={inView ? "visible" : "hidden"}
+      style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(157,78,221,0.16)", borderRadius: "18px", overflow: "hidden", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
+    >
+      <button
+        onClick={onToggle}
+        style={{ width: "100%", padding: "20px 22px", background: "none", border: "none", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px" }}
+      >
+        <div>
+          <div style={{ fontFamily: "'Inter', sans-serif", fontWeight: 700, fontSize: "1rem", color: "var(--belvo-text-1)", marginBottom: "4px" }}>{category.title}</div>
+          <div style={{ fontFamily: "'Inter', sans-serif", fontSize: "0.84rem", color: "var(--belvo-text-3)", lineHeight: 1.5 }}>{category.description}</div>
+        </div>
+        <span style={{ width: "32px", height: "32px", borderRadius: "50%", background: isOpen ? "linear-gradient(135deg, rgba(123,47,190,0.25), rgba(157,78,221,0.15))" : "var(--belvo-bg-btn-ghost)", border: "1px solid rgba(157,78,221,0.24)", display: "flex", alignItems: "center", justifyContent: "center", color: "#9D4EDD", fontSize: "1rem", fontWeight: 700 }}>
+          {isOpen ? "−" : "+"}
+        </span>
+      </button>
+
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            style={{ overflow: "hidden", borderTop: "1px solid rgba(157,78,221,0.12)" }}
+          >
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "14px" }}>
+              {category.items.map((item, itemIndex) => (
+                <FAQQuestionItem
+                  key={item.id}
+                  id={item.id}
+                  question={item.question}
+                  answer={item.answer}
+                  isOpen={activeFaqId === item.id}
+                  onToggle={() => onToggleFaq(item.id)}
+                  index={itemIndex}
+                  inView={inView}
+                />
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
 export default function FAQ() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-  const [openId, setOpenId] = useState<string | null>(null);
+  const [openCategory, setOpenCategory] = useState<string | null>("about-belvo");
+  const [openFaqId, setOpenFaqId] = useState<string | null>(null);
 
-  const handleToggle = (id: string) => {
-    setOpenId((prev) => (prev === id ? null : id));
+  const handleToggleCategory = (id: string) => {
+    setOpenCategory((prev) => (prev === id ? null : id));
+    setOpenFaqId(null);
+  };
+
+  const handleToggleFaq = (id: string) => {
+    setOpenFaqId((prev) => (prev === id ? null : id));
   };
 
   return (
@@ -486,15 +432,15 @@ export default function FAQ() {
           </p>
         </motion.div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-          {FAQ_ITEMS.map((item, index) => (
-            <FAQItem
-              key={item.id}
-              id={item.id}
-              question={item.question}
-              answer={item.answer}
-              isOpen={openId === item.id}
-              onToggle={() => handleToggle(item.id)}
+        <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+          {FAQ_CATEGORIES.map((category, index) => (
+            <FAQCategoryBlock
+              key={category.id}
+              category={category}
+              isOpen={openCategory === category.id}
+              onToggle={() => handleToggleCategory(category.id)}
+              activeFaqId={openFaqId}
+              onToggleFaq={handleToggleFaq}
               index={index}
               inView={inView}
             />
