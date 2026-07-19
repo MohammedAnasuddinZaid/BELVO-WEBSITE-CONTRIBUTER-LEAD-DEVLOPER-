@@ -1,7 +1,9 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import { smoothScrollToElement } from "@/lib/smoothScroll";
+import ServiceDialog from "@/components/ServiceDialog";
+import { SERVICES as SERVICE_ITEMS, type ServiceItem } from "@/content/services";
 import Footer from "@/sections/Footer";
 import BookACall from "@/sections/BookACall";
 import ToolsPricing from "@/sections/ToolsPricing";
@@ -102,6 +104,7 @@ const fadeUp = {
 export default function Services() {
   const { theme } = useTheme();
   const isIvory = theme === "ivory";
+  const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
   const gridRef = useRef(null);
   const gridInView = useInView(gridRef, { once: true, margin: "-80px" });
   const ctaRef = useRef(null);
@@ -209,7 +212,7 @@ export default function Services() {
           </motion.div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(320px,1fr))", gap: "20px" }}>
-            {SERVICES.map((svc, i) => (
+            {SERVICE_ITEMS.map((svc, i) => (
               <motion.div
                 key={svc.id}
                 custom={i + 1}
@@ -217,17 +220,32 @@ export default function Services() {
                 initial="hidden"
                 animate={gridInView ? "visible" : "hidden"}
                 data-testid={`card-service-${svc.id}`}
-                style={{ background: "var(--belvo-bg-card)", border: "1px solid var(--belvo-border-card)", borderRadius: "14px", padding: "28px", display: "flex", flexDirection: "column", gap: "14px", transition: "border-color 0.3s, box-shadow 0.3s, transform 0.3s", cursor: "default", boxShadow: isIvory ? "0 2px 12px rgba(0,0,0,0.04)" : "none" }}
+                style={{ background: "var(--belvo-bg-card)", border: "1px solid var(--belvo-border-card)", borderRadius: "14px", padding: "28px", display: "flex", flexDirection: "column", gap: "14px", transition: "border-color 0.3s, box-shadow 0.3s, transform 0.3s", cursor: "pointer", boxShadow: isIvory ? "0 2px 12px rgba(0,0,0,0.04)" : "none" }}
                 whileHover={{ y: -4, transition: { duration: 0.25 } }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(157,78,221,0.4)"; (e.currentTarget as HTMLElement).style.boxShadow = isIvory ? "0 8px 32px rgba(100,20,180,0.10)" : "0 8px 40px rgba(100,20,180,0.18)"; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--belvo-border-card)"; (e.currentTarget as HTMLElement).style.boxShadow = isIvory ? "0 2px 12px rgba(0,0,0,0.04)" : "none"; }}
+                onClick={() => setSelectedService(svc)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    setSelectedService(svc);
+                  }
+                }}
+                tabIndex={0}
+                role="button"
               >
+                <img
+                  src={svc.image}
+                  alt={svc.title}
+                  style={{ width: "100%", aspectRatio: "16 / 9", objectFit: "cover", borderRadius: "10px", border: "1px solid var(--belvo-border-card)", display: "block" }}
+                />
+
                 <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                   <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "linear-gradient(135deg,rgba(123,47,190,0.22),rgba(157,78,221,0.08))", border: "1px solid rgba(157,78,221,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Inter',sans-serif", fontWeight: 700, fontSize: "0.85rem", color: "#9D4EDD", flexShrink: 0 }}>
                     {String(i + 1).padStart(2, "0")}
                   </div>
                   <h3 style={{ fontFamily: "'Inter',sans-serif", fontWeight: 700, fontSize: "0.97rem", color: "var(--belvo-text-1)", margin: 0, lineHeight: 1.3 }}>
-                    {svc.category}
+                    {svc.title}
                   </h3>
                 </div>
 
@@ -284,6 +302,7 @@ export default function Services() {
 
       <ToolsPricing />
       <BookACall />
+      <ServiceDialog service={selectedService} onClose={() => setSelectedService(null)} />
       <Footer />
     </>
   );
