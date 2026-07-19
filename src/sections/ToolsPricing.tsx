@@ -6,6 +6,7 @@ import { useTheme } from "@/contexts/ThemeContext";
 
 const TOOLS = [
   {
+    id: "canva-pro-2-months",
     name: "Canva Pro",
     desc: "Premium Canva access",
     originalPrice: "₹998",
@@ -14,6 +15,7 @@ const TOOLS = [
     features: ["Design Tools", "Brand Kit", "AI Tools", "2 Months Access"],
   },
   {
+    id: "canva-pro-1-year",
     name: "Canva Pro",
     desc: "Premium Canva access",
     originalPrice: "₹3,999",
@@ -22,6 +24,7 @@ const TOOLS = [
     features: ["Design Tools", "Brand Kit", "AI Tools", "1 Year Access"],
   },
   {
+    id: "canva-pro-4-years",
     name: "Canva Pro",
     desc: "Premium Canva access",
     originalPrice: "₹15,996",
@@ -30,6 +33,7 @@ const TOOLS = [
     features: ["Design Tools", "Brand Kit", "AI Tools", "4 Years Access"],
   },
   {
+    id: "canva-lifetime",
     name: "Canva Lifetime",
     desc: "Lifetime Canva Premium",
     originalPrice: "₹4,999",
@@ -38,6 +42,7 @@ const TOOLS = [
     features: ["Lifetime Access", "500 Invites", "Premium Features", "No Renewal"],
   },
   {
+    id: "adobe-creative-cloud",
     name: "Adobe Creative Cloud",
     desc: "Complete Adobe Suite",
     originalPrice: "₹50,000+",
@@ -46,6 +51,7 @@ const TOOLS = [
     features: ["20+ Adobe Apps", "4000+ Credits", "1TB Storage", "Personal Email"],
   },
   {
+    id: "chatgpt-plus-monthly",
     name: "ChatGPT Plus",
     desc: "OpenAI Premium",
     originalPrice: "₹1,500/month",
@@ -54,6 +60,7 @@ const TOOLS = [
     features: ["GPT-5", "Fast Responses", "Priority Access", "Monthly Plan"],
   },
   {
+    id: "claude-clickup-monthly",
     name: "Claude (ClickUp)",
     desc: "Claude AI Subscription",
     originalPrice: "₹999/month",
@@ -62,6 +69,7 @@ const TOOLS = [
     features: ["Claude AI", "ClickUp Integration", "AI Assistant", "Monthly"],
   },
   {
+    id: "netflix-shared-monthly",
     name: "Netflix Shared",
     desc: "4K Netflix Shared Account",
     originalPrice: "₹499/month",
@@ -70,6 +78,7 @@ const TOOLS = [
     features: ["4K Streaming", "1 Device", "HD Quality", "Monthly"],
   },
   {
+    id: "coursera-plus-1-year",
     name: "Coursera Plus",
     desc: "Unlimited Courses",
     originalPrice: "₹4,999",
@@ -78,6 +87,7 @@ const TOOLS = [
     features: ["Unlimited Courses", "Certificates", "1 Year", "Career Learning"],
   },
   {
+    id: "gemini-ai-1-year",
     name: "Gemini AI",
     desc: "Google Gemini Premium",
     originalPrice: "₹4,999",
@@ -86,6 +96,7 @@ const TOOLS = [
     features: ["Gemini AI", "Google AI", "Advanced Models", "1 Year"],
   },
   {
+    id: "amazon-prime-1-year",
     name: "Amazon Prime",
     desc: "Amazon Prime Membership",
     originalPrice: "₹499",
@@ -94,6 +105,7 @@ const TOOLS = [
     features: ["Prime Video", "Prime Delivery", "Music", "1 Year"],
   },
   {
+    id: "youtube-premium-monthly",
     name: "YouTube Premium",
     desc: "Ad-free YouTube",
     originalPrice: "₹299/month",
@@ -184,7 +196,7 @@ export default function ToolsPricing() {
         }}>
           {TOOLS.map((tool, i) => (
             <motion.div
-              key={tool.name}
+              key={tool.id}
               custom={i + 3}
               variants={fadeUp}
               initial="hidden"
@@ -270,7 +282,7 @@ export default function ToolsPricing() {
                 data-testid={`button-tool-${tool.name.toLowerCase().replace(/\s+/g, "-")}`}
                 onClick={() =>
                   navigate(
-                    `/tools/register?tool=${encodeURIComponent(tool.name)}&plan=${encodeURIComponent(tool.discount)}&price=${encodeURIComponent(tool.price)}`
+                    `/tools/register?toolId=${encodeURIComponent(tool.id)}`
                   )
                 }
                 style={{

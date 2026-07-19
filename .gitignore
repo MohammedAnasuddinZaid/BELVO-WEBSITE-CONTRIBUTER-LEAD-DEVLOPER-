@@ -10,3 +10,4 @@ Thumbs.db
 # Server
 server/server.log
 server/uploads/
+server/.env

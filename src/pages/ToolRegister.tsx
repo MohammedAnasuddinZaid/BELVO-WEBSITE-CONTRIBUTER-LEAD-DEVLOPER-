@@ -12,16 +12,98 @@ export default function ToolRegister() {
     const [, navigate] = useLocation();
 
     const params = new URLSearchParams(window.location.search);
-    const tool = params.get("tool") || "";
-    const plan = params.get("plan") || "";
-    const price = params.get("price") || "";
+    const toolId = params.get("toolId") || "";
 
-    const [form, setForm] = useState({ name: "", email: "", whatsapp: "" });
+    const TOOL_DETAILS: Record<
+        string,
+        {
+            name: string;
+            plan: string;
+            price: string;
+        }
+    > = {
+        "canva-pro-2-months": {
+            name: "Canva Pro",
+            plan: "2 Months",
+            price: "₹167",
+        },
+        "canva-pro-1-year": {
+            name: "Canva Pro",
+            plan: "1 Year",
+            price: "₹1,000",
+        },
+        "canva-pro-4-years": {
+            name: "Canva Pro",
+            plan: "4 Years",
+            price: "₹2,500",
+        },
+        "canva-lifetime": {
+            name: "Canva Lifetime",
+            plan: "Lifetime",
+            price: "₹4,999",
+        },
+        "adobe-creative-cloud": {
+            name: "Adobe Creative Cloud",
+            plan: "Standard",
+            price: "₹10,000",
+        },
+        "chatgpt-plus-monthly": {
+            name: "ChatGPT Plus",
+            plan: "Monthly",
+            price: "₹1,500",
+        },
+        "claude-clickup-monthly": {
+            name: "Claude (ClickUp)",
+            plan: "Monthly",
+            price: "₹999",
+        },
+        "netflix-shared-monthly": {
+            name: "Netflix Shared",
+            plan: "Monthly",
+            price: "₹499",
+        },
+        "coursera-plus-1-year": {
+            name: "Coursera Plus",
+            plan: "1 Year",
+            price: "₹4,999",
+        },
+        "gemini-ai-1-year": {
+            name: "Gemini AI",
+            plan: "1 Year",
+            price: "₹4,999",
+        },
+        "amazon-prime-1-year": {
+            name: "Amazon Prime",
+            plan: "1 Year",
+            price: "₹499",
+        },
+        "youtube-premium-monthly": {
+            name: "YouTube Premium",
+            plan: "Monthly",
+            price: "₹299",
+        },
+    };
+
+    const selectedTool = TOOL_DETAILS[toolId];
+
+    console.log("Current search:", window.location.search);
+    console.log("toolId:", toolId);
+    console.log("selectedTool:", selectedTool);
+
+    const tool = selectedTool?.name || "";
+    const plan = selectedTool?.plan || "";
+    const price = selectedTool?.price || "";
+
+    const [form, setForm] = useState({
+        name: "",
+        email: "",
+        whatsapp: "",
+    });
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    if (!tool) {
+    if (!toolId || !selectedTool) {
         return (
             <div className="min-h-screen flex items-center justify-center px-6 py-24" style={{ background: "var(--belvo-bg)" }}>
                 <div style={{ maxWidth: "720px", width: "100%", textAlign: "center", color: "var(--belvo-text-1)" }}>
@@ -53,9 +135,7 @@ export default function ToolRegister() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    tool,
-                    plan,
-                    price,
+                    toolId,
                     name: form.name,
                     email: form.email,
                     whatsapp: form.whatsapp,

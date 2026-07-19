@@ -9,6 +9,7 @@ import express from "express";
 import cors from "cors";
 import jwt from "jsonwebtoken";
 import multer from "multer";
+import { TOOLS_CATALOG } from "./data/tools.js";
 import { authenticateToken, getJWTSecret } from "./middleware/auth.js";
 import { supabase, isDbReady } from "./db.js";
 
@@ -111,163 +112,75 @@ app.get("/api/team", async (req, res) => {
 // ── Tools Registration ──────────────────────────────────
 app.post("/api/tools-register", async (req, res) => {
   try {
-    const { tool, plan, price, name, email, whatsapp } = req.body;
+    const { toolId, name, email, whatsapp } = req.body;
 
-    if (!tool || !name || !email || !whatsapp) {
-      return res.status(400).json({ success: false, message: "All fields are required" });
+    if (!toolId || !name || !email || !whatsapp) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
     }
 
     if (!isDbReady()) {
-      return res.status(500).json({ success: false, message: "Database not configured" });
+      return res.status(500).json({
+        success: false,
+        message: "Database not configured",
+      });
     }
 
-    const timestamp = new Date().toISOString();
+    const selectedTool = TOOLS_CATALOG[toolId];
 
-    const { error } = await supabase.from("book_calls").insert([{
-      type: "tool-registration",
-      created_at: timestamp,
-      full_name: name,
-      email: email,
-      message: `Requested access to ${tool}${plan ? ` (${plan})` : ""}${price ? ` — ${price}` : ""} | WhatsApp: ${whatsapp}`,
-    }]);
+    if (!selectedTool || !selectedTool.active) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or unavailable tool",
+      });
+    }
+
+    const { data, error } = await supabase
+      .from("tool_orders")
+      .insert([
+        {
+          customer_name: name.trim(),
+          customer_email: email.trim().toLowerCase(),
+          whatsapp: whatsapp.trim(),
+
+          tool_name: selectedTool.name,
+          plan_name: selectedTool.plan,
+
+          amount: selectedTool.amount,
+          currency: selectedTool.currency,
+
+          payment_status: "pending",
+          fulfilment_status: "pending",
+        },
+      ])
+      .select()
+      .single();
 
     if (error) throw error;
 
-    res.status(200).json({ success: true, message: "Registration received" });
+    return res.status(201).json({
+      success: true,
+      message: "Registration received",
+      order: {
+        id: data.id,
+        toolId: selectedTool.id,
+        toolName: data.tool_name,
+        planName: data.plan_name,
+        amount: data.amount,
+        currency: data.currency,
+        paymentStatus: data.payment_status,
+        fulfilmentStatus: data.fulfilment_status,
+      },
+    });
   } catch (err) {
     console.error("POST /api/tools-register error:", err);
-    res.status(500).json({ success: false, message: "Failed to save registration" });
-  }
-});
 
-// POST /api/team — Create a member
-app.post("/api/team", authenticateToken, async (req, res) => {
-  try {
-    if (!isDbReady()) {
-      return res.status(500).json({ success: false, message: "Database not configured" });
-    }
-
-    const { name, teamId, teamName, responsibilities, imageUrl } = req.body;
-
-    if (!name || !teamId) {
-      return res.status(400).json({ success: false, message: "Name and teamId are required" });
-    }
-
-    const { data: maxRow } = await supabase
-      .from("team_members")
-      .select("sort_order")
-      .eq("team_id", teamId)
-      .order("sort_order", { ascending: false })
-      .limit(1)
-      .single();
-
-    const nextSortOrder = (maxRow?.sort_order ?? -1) + 1;
-
-    const { data, error } = await supabase
-      .from("team_members")
-      .insert([{
-        name,
-        team_id: teamId,
-        team_name: teamName || "",
-        responsibilities: responsibilities || [],
-        image_url: imageUrl || null,
-        sort_order: nextSortOrder,
-      }])
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    res.status(201).json({ success: true, member: data });
-  } catch (err) {
-    console.error("POST /api/team error:", err);
-    res.status(500).json({ success: false, message: "Failed to create team member" });
-  }
-});
-
-// PUT /api/team/:id — Update a member
-app.put("/api/team/:id", authenticateToken, async (req, res) => {
-  try {
-    if (!isDbReady()) {
-      return res.status(500).json({ success: false, message: "Database not configured" });
-    }
-
-    const { id } = req.params;
-    const { name, teamId, teamName, responsibilities, imageUrl, sortOrder } = req.body;
-
-    const updates = {};
-    if (name !== undefined) updates.name = name;
-    if (teamId !== undefined) updates.team_id = teamId;
-    if (teamName !== undefined) updates.team_name = teamName;
-    if (responsibilities !== undefined) updates.responsibilities = responsibilities;
-    if (imageUrl !== undefined) updates.image_url = imageUrl;
-    if (sortOrder !== undefined) updates.sort_order = sortOrder;
-    updates.updated_at = new Date().toISOString();
-
-    const { data, error } = await supabase
-      .from("team_members")
-      .update(updates)
-      .eq("id", id)
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    if (!data) {
-      return res.status(404).json({ success: false, message: "Team member not found" });
-    }
-
-    res.json({ success: true, member: data });
-  } catch (err) {
-    console.error("PUT /api/team/:id error:", err);
-    res.status(500).json({ success: false, message: "Failed to update team member" });
-  }
-});
-
-// DELETE /api/team/:id — Delete a member
-app.delete("/api/team/:id", authenticateToken, async (req, res) => {
-  try {
-    if (!isDbReady()) {
-      return res.status(500).json({ success: false, message: "Database not configured" });
-    }
-
-    const { id } = req.params;
-
-    const { error } = await supabase
-      .from("team_members")
-      .delete()
-      .eq("id", id);
-
-    if (error) throw error;
-
-    res.json({ success: true, message: "Member deleted" });
-  } catch (err) {
-    console.error("DELETE /api/team/:id error:", err);
-    res.status(500).json({ success: false, message: "Failed to delete team member" });
-  }
-});
-
-// ── Department Routes ──────────────────────────────────
-
-// GET /api/departments — List all departments
-app.get("/api/departments", async (req, res) => {
-  try {
-    if (!isDbReady()) {
-      return res.status(500).json({ success: false, message: "Database not configured" });
-    }
-
-    const { data, error } = await supabase
-      .from("departments")
-      .select("*")
-      .order("sort_order", { ascending: true })
-      .order("name", { ascending: true });
-
-    if (error) throw error;
-
-    res.json({ success: true, departments: data });
-  } catch (err) {
-    console.error("GET /api/departments error:", err);
-    res.status(500).json({ success: false, message: "Failed to fetch departments" });
+    return res.status(500).json({
+      success: false,
+      message: "Failed to save registration",
+    });
   }
 });
 
