@@ -40,15 +40,57 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center"
+      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden"
       style={{ backgroundColor: "#04000e" }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
     >
+      {/* Dynamic ambient background layers */}
+      <div className="absolute inset-0 pointer-events-none">
+        <motion.div
+          className="absolute inset-0"
+          animate={{ opacity: [0.25, 0.55, 0.25], scale: [1, 1.2, 1] }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+          style={{
+            background: "radial-gradient(ellipse at 50% 35%, rgba(130,40,200,0.12) 0%, transparent 60%)",
+            transformOrigin: "center",
+          }}
+        />
+        <motion.div
+          className="absolute inset-0"
+          animate={{ opacity: [0.15, 0.4, 0.15], scale: [1.15, 1, 1.15] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+          style={{
+            background: "radial-gradient(ellipse at 50% 65%, rgba(100,25,180,0.08) 0%, transparent 55%)",
+            transformOrigin: "center",
+          }}
+        />
+        <motion.div
+          className="absolute inset-0"
+          animate={{ opacity: [0.1, 0.3, 0.1] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+          style={{
+            background: "radial-gradient(ellipse at 50% 50%, rgba(180,140,240,0.04) 0%, transparent 50%)",
+          }}
+        />
+        <motion.div
+          className="absolute inset-0"
+          animate={{ opacity: [0.2, 0.45, 0.2], scale: [1, 1.25, 1] }}
+          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+          style={{
+            background: "radial-gradient(ellipse at 30% 70%, rgba(80,15,150,0.06) 0%, transparent 50%)",
+            transformOrigin: "center",
+          }}
+        />
+      </div>
+
       <motion.div
         className="flex flex-col items-center"
-        animate={{ y: [0, -5, 0] }}
-        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ y: [0, -5, 0], rotate: [0, 2.5, 0, -2.5, 0] }}
+        transition={{
+          y: { duration: 4.5, repeat: Infinity, ease: "easeInOut" },
+          rotate: { duration: 9, repeat: Infinity, ease: "easeInOut" },
+        }}
       >
         <Droplet />
 
@@ -60,6 +102,14 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
             <motion.div
               className="absolute inset-y-0 left-0 rounded-full"
               style={{ width, background: "hsl(272, 65%, 52%)" }}
+              animate={{
+                boxShadow: [
+                  "0 0 2px rgba(130,40,200,0.2)",
+                  "0 0 8px rgba(130,40,200,0.4)",
+                  "0 0 2px rgba(130,40,200,0.2)",
+                ],
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             />
           </div>
         </div>
