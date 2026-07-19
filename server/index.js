@@ -108,6 +108,38 @@ app.get("/api/team", async (req, res) => {
   }
 });
 
+// ── Tools Registration ──────────────────────────────────
+app.post("/api/tools-register", async (req, res) => {
+  try {
+    const { tool, plan, price, name, email, whatsapp } = req.body;
+
+    if (!tool || !name || !email || !whatsapp) {
+      return res.status(400).json({ success: false, message: "All fields are required" });
+    }
+
+    if (!isDbReady()) {
+      return res.status(500).json({ success: false, message: "Database not configured" });
+    }
+
+    const timestamp = new Date().toISOString();
+
+    const { error } = await supabase.from("book_calls").insert([{
+      type: "tool-registration",
+      created_at: timestamp,
+      full_name: name,
+      email: email,
+      message: `Requested access to ${tool}${plan ? ` (${plan})` : ""}${price ? ` — ${price}` : ""} | WhatsApp: ${whatsapp}`,
+    }]);
+
+    if (error) throw error;
+
+    res.status(200).json({ success: true, message: "Registration received" });
+  } catch (err) {
+    console.error("POST /api/tools-register error:", err);
+    res.status(500).json({ success: false, message: "Failed to save registration" });
+  }
+});
+
 // POST /api/team — Create a member
 app.post("/api/team", authenticateToken, async (req, res) => {
   try {

@@ -9,7 +9,6 @@ import TeamSection from "@/sections/TeamSection";
 import Testimonials from "@/sections/Testimonials";
 import PortfolioSection from "@/sections/PortfolioSection";
 import UpcomingEvents from "@/sections/UpcomingEvents";
-import ToolsPricing from "@/sections/ToolsPricing";
 import FAQ from "@/sections/FAQ";
 import { useMousePosition } from "@/hooks/useMousePosition";
 import { smoothScrollToElement } from "@/lib/smoothScroll";
@@ -370,7 +369,7 @@ export default function Home() {
       <PortfolioSection id="portfolio" />
       <TeamSection />
       <Testimonials />
-      <ToolsPricing />
+
       <UpcomingEvents />
       <BookACall />
       <FAQ />

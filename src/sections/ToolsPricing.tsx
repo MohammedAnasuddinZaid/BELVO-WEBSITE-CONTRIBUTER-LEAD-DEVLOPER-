@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { useLocation } from "wouter";
 import { motion, useInView } from "framer-motion";
 import { Sparkles, Check } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -10,12 +11,7 @@ const TOOLS = [
     originalPrice: "₹998",
     price: "₹167",
     discount: "2 Months",
-    features: [
-      "Design Tools",
-      "Brand Kit",
-      "AI Tools",
-      "2 Months Access"
-    ],
+    features: ["Design Tools", "Brand Kit", "AI Tools", "2 Months Access"],
   },
   {
     name: "Canva Pro",
@@ -23,12 +19,7 @@ const TOOLS = [
     originalPrice: "₹3,999",
     price: "₹1,000",
     discount: "1 Year",
-    features: [
-      "Design Tools",
-      "Brand Kit",
-      "AI Tools",
-      "1 Year Access"
-    ],
+    features: ["Design Tools", "Brand Kit", "AI Tools", "1 Year Access"],
   },
   {
     name: "Canva Pro",
@@ -36,12 +27,7 @@ const TOOLS = [
     originalPrice: "₹15,996",
     price: "₹2,500",
     discount: "4 Years",
-    features: [
-      "Design Tools",
-      "Brand Kit",
-      "AI Tools",
-      "4 Years Access"
-    ],
+    features: ["Design Tools", "Brand Kit", "AI Tools", "4 Years Access"],
   },
   {
     name: "Canva Lifetime",
@@ -49,12 +35,7 @@ const TOOLS = [
     originalPrice: "₹4,999",
     price: "₹4,999",
     discount: "Lifetime",
-    features: [
-      "Lifetime Access",
-      "500 Invites",
-      "Premium Features",
-      "No Renewal"
-    ],
+    features: ["Lifetime Access", "500 Invites", "Premium Features", "No Renewal"],
   },
   {
     name: "Adobe Creative Cloud",
@@ -62,12 +43,7 @@ const TOOLS = [
     originalPrice: "₹50,000+",
     price: "₹10,000",
     discount: "80% OFF",
-    features: [
-      "20+ Adobe Apps",
-      "4000+ Credits",
-      "1TB Storage",
-      "Personal Email"
-    ],
+    features: ["20+ Adobe Apps", "4000+ Credits", "1TB Storage", "Personal Email"],
   },
   {
     name: "ChatGPT Plus",
@@ -75,12 +51,7 @@ const TOOLS = [
     originalPrice: "₹1,500/month",
     price: "₹1,500",
     discount: "Monthly",
-    features: [
-      "GPT-5",
-      "Fast Responses",
-      "Priority Access",
-      "Monthly Plan"
-    ],
+    features: ["GPT-5", "Fast Responses", "Priority Access", "Monthly Plan"],
   },
   {
     name: "Claude (ClickUp)",
@@ -88,12 +59,7 @@ const TOOLS = [
     originalPrice: "₹999/month",
     price: "₹999",
     discount: "Monthly",
-    features: [
-      "Claude AI",
-      "ClickUp Integration",
-      "AI Assistant",
-      "Monthly"
-    ],
+    features: ["Claude AI", "ClickUp Integration", "AI Assistant", "Monthly"],
   },
   {
     name: "Netflix Shared",
@@ -101,12 +67,7 @@ const TOOLS = [
     originalPrice: "₹499/month",
     price: "₹499",
     discount: "Monthly",
-    features: [
-      "4K Streaming",
-      "1 Device",
-      "HD Quality",
-      "Monthly"
-    ],
+    features: ["4K Streaming", "1 Device", "HD Quality", "Monthly"],
   },
   {
     name: "Coursera Plus",
@@ -114,12 +75,7 @@ const TOOLS = [
     originalPrice: "₹4,999",
     price: "₹4,999",
     discount: "1 Year",
-    features: [
-      "Unlimited Courses",
-      "Certificates",
-      "1 Year",
-      "Career Learning"
-    ],
+    features: ["Unlimited Courses", "Certificates", "1 Year", "Career Learning"],
   },
   {
     name: "Gemini AI",
@@ -127,12 +83,7 @@ const TOOLS = [
     originalPrice: "₹4,999",
     price: "₹4,999",
     discount: "1 Year",
-    features: [
-      "Gemini AI",
-      "Google AI",
-      "Advanced Models",
-      "1 Year"
-    ],
+    features: ["Gemini AI", "Google AI", "Advanced Models", "1 Year"],
   },
   {
     name: "Amazon Prime",
@@ -140,12 +91,7 @@ const TOOLS = [
     originalPrice: "₹499",
     price: "₹499",
     discount: "1 Year",
-    features: [
-      "Prime Video",
-      "Prime Delivery",
-      "Music",
-      "1 Year"
-    ],
+    features: ["Prime Video", "Prime Delivery", "Music", "1 Year"],
   },
   {
     name: "YouTube Premium",
@@ -153,12 +99,7 @@ const TOOLS = [
     originalPrice: "₹299/month",
     price: "₹299",
     discount: "Monthly",
-    features: [
-      "Ad Free",
-      "Background Play",
-      "Downloads",
-      "YouTube Music"
-    ],
+    features: ["Ad Free", "Background Play", "Downloads", "YouTube Music"],
   },
 ];
 const easeOut = [0.16, 1, 0.3, 1] as const;
@@ -173,6 +114,7 @@ export default function ToolsPricing() {
   const isIvory = theme === "ivory";
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const [, navigate] = useLocation();
 
   return (
     <section
@@ -268,7 +210,6 @@ export default function ToolsPricing() {
                 transition: { duration: 0.25, ease: easeOut },
               }}
             >
-              {/* Discount badge */}
               <div style={{
                 position: "absolute", top: 12, right: 12,
                 padding: "4px 10px",
@@ -295,7 +236,6 @@ export default function ToolsPricing() {
                 {tool.desc}
               </p>
 
-              {/* Pricing */}
               <div style={{ marginBottom: "16px" }}>
                 <span style={{
                   fontFamily: "'Inter',sans-serif", fontSize: "0.75rem",
@@ -312,7 +252,6 @@ export default function ToolsPricing() {
                 </span>
               </div>
 
-              {/* Features */}
               <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "20px" }}>
                 {tool.features.map((f) => (
                   <div key={f} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -329,6 +268,11 @@ export default function ToolsPricing() {
 
               <button
                 data-testid={`button-tool-${tool.name.toLowerCase().replace(/\s+/g, "-")}`}
+                onClick={() =>
+                  navigate(
+                    `/tools/register?tool=${encodeURIComponent(tool.name)}&plan=${encodeURIComponent(tool.discount)}&price=${encodeURIComponent(tool.price)}`
+                  )
+                }
                 style={{
                   width: "100%",
                   padding: "10px 0",
