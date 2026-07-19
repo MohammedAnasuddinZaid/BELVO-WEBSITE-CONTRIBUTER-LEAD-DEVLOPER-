@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import LoadingScreen from "@/components/LoadingScreen";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import Careers from "@/pages/Careers";
@@ -22,7 +23,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import ChatBot from "@/components/ChatBot";
 import CursorFollower from "@/components/CursorFollower";
 import GrainOverlay from "@/components/GrainOverlay";
-import React from "react";
+import React, { useState } from "react";
 
 const queryClient = new QueryClient();
 
@@ -94,21 +95,36 @@ function Router() {
 }
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <ThemeProvider>
-          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-            <Router />
-          </WouterRouter>
-          <ScrollToTop />
-          <ChatBot />
-          <CursorFollower />
-          <GrainOverlay opacity={0.02} blend="overlay" />
-          <Toaster />
-        </ThemeProvider>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <AnimatePresence mode="wait">
+      {loading ? (
+        <LoadingScreen key="loading" onComplete={() => setLoading(false)} />
+      ) : (
+        <motion.div
+          key="app"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <QueryClientProvider client={queryClient}>
+            <TooltipProvider>
+              <ThemeProvider>
+                <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+                  <Router />
+                </WouterRouter>
+                <ScrollToTop />
+                <ChatBot />
+                <CursorFollower />
+                <GrainOverlay opacity={0.02} blend="overlay" />
+                <Toaster />
+              </ThemeProvider>
+            </TooltipProvider>
+          </QueryClientProvider>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 
