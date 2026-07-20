@@ -58,6 +58,7 @@ const NAME_OVERRIDES: Record<string, string> = {
   "shaik nihayath": "shaik nihayath",
   "sourab reddy": "sourab reddy",
   "gokavarapu yaswanth": "gokavarapu yaswanth",
+  "vivek khalia": "vivek khalia",
 };
 
 function getImageUrl(memberName: string): string | undefined {
@@ -154,6 +155,13 @@ const HARDCODED_TEAMS: TeamDisplay[] = [
     color: "#7B2FBE",
     lightColor: "#9D4EDD",
     members: ["Adarsh"].map(name => ({ name })),
+  },
+  {
+    id: "Founder's Office",
+    name: "Founder Associate",
+    color: "#7B2FBE",
+    lightColor: "#9D4EDD",
+    members: ["Vivek Khalia"].map(name => ({ name })),
   },
   {
     id: "admin",
