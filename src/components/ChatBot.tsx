@@ -7,6 +7,14 @@ import { useVoiceAssistant } from "@/hooks/useVoiceAssistant";
 const AI_CALL_LIMIT = 15; // max AI-fallback calls per browser session
 const AI_CACHE_PREFIX = "belvo_ai_"; // sessionStorage key prefix
 const AI_COUNTER_KEY = "belvo_ai_count";
+const CHAT_SESSION_KEY = "belvo-chat-session-id";
+const FAQS = [
+  "What services does Belvo provide?",
+  "How can I book a free consultation?",
+  "How much does website development cost?",
+  "Do you provide AI solutions?",
+  "How can I contact Belvo?"
+];
 
 // ── Message type ──────────────────────────────────────────────────────────────
 interface Message {
@@ -209,9 +217,34 @@ function ThinkingDots() {
 // ── Main Component ────────────────────────────────────────────────────────────
 export default function ChatBot() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([{ text: nextGreeting(), isUser: false }]);
+  const [sessionId] = useState(() => {
+  let id = localStorage.getItem(CHAT_SESSION_KEY);
+
+  if (!id) {
+    id = Date.now().toString();
+    localStorage.setItem(CHAT_SESSION_KEY, id);
+  }
+
+  return id;
+  });
+  const storageKey = `belvo-chat-${sessionId}`;
+
+  const [messages, setMessages] = useState<Message[]>(() => {
+    const saved = localStorage.getItem(storageKey);
+
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return [];
+      }
+    }
+
+    return [];
+  });
   const [input, setInput] = useState("");
   const [isAILoading, setIsAILoading] = useState(false);
+  
 
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -238,6 +271,11 @@ export default function ChatBot() {
   useEffect(() => {
     if (open) inputRef.current?.focus();
   }, [open]);
+  
+  useEffect(() => {
+  localStorage.setItem(storageKey, JSON.stringify(messages));
+  }, [messages, storageKey]);
+
 
   // Cancel speech on close
   useEffect(() => {
@@ -363,11 +401,10 @@ export default function ChatBot() {
         {open && (
           <motion.div
             id="belvo-chat-panel"
-            className="fixed bottom-24 left-8 z-[9998] w-[360px] max-w-[calc(100vw-2rem)] rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            className="fixed bottom-24 left-8 z-[9998] w-[420px] h-[650px] max-w-[calc(100vw-2rem)] rounded-2xl shadow-2xl flex flex-col overflow-hidden"
             style={{
-              background: "var(--belvo-bg-card, #0D0A1A)",
+              background: "#120C24",
               border: "1px solid var(--belvo-border-card, rgba(157,78,221,0.2))",
-              maxHeight: "520px",
             }}
             initial={{ opacity: 0, scale: 0.9, y: 20, originX: 0, originY: 1 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -429,29 +466,53 @@ export default function ChatBot() {
                 <CloseIcon />
               </button>
             </div>
+            <div className="flex gap-2 overflow-x-auto px-4 py-3 whitespace-nowrap scrollbar-hide">
+              {FAQS.map((faq) => (
+                <button
+                  key={faq}
+                  onClick={() => handleSend(faq)}
+                  className="flex-shrink-0 rounded-full bg-white/5 border border-white/10 px-3 py-2 text-xs hover:bg-violet-600 transition"
+                >
+                  {faq}
+                </button>
+              ))}
+            </div>
 
             {/* ── Message list ── */}
-            <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3" style={{ scrollbarWidth: "thin" }}>
+            <div
+              className="chat-scroll flex-1 overflow-y-auto px-4 py-4 space-y-4"
+              style={{ scrollbarWidth: "thin" }}
+            >
               {messages.map((msg, i) => (
-                <div key={i} className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}>
+                <div
+                  key={i}
+                  className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}
+                >
                   <div
-                    className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
-                      msg.isUser ? "rounded-br-md" : "rounded-bl-md"
-                    }`}
+                    className={`max-w-[75%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-md transition-all duration-200 ${msg.isUser
+                        ? "rounded-br-md"
+                        : "rounded-bl-md backdrop-blur-md"
+                      }`}
                     style={{
-                      background: msg.isUser ? "#9D4EDD" : "var(--belvo-bg, #04000e)",
-                      color: msg.isUser ? "#fff" : "var(--belvo-text-1, #f0e6ff)",
-                      border: msg.isUser ? "none" : "1px solid var(--belvo-border-card, rgba(157,78,221,0.15))",
+                      background: msg.isUser
+                        ? "linear-gradient(135deg, #7B2FBE, #9D4EDD)"
+                        : "#1A132B",
+                      color: "#FFFFFF",
+                      border: msg.isUser
+                        ? "none"
+                        : "1px solid rgba(157,78,221,0.2)",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
                     }}
                   >
                     {msg.text}
+
                     {msg.link && (
                       <a
                         href={msg.link.href}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="block mt-2 text-xs font-medium underline"
-                        style={{ color: "#9D4EDD" }}
+                        style={{ color: "#C084FC" }}
                       >
                         {msg.link.label} →
                       </a>
@@ -466,8 +527,8 @@ export default function ChatBot() {
                   <div
                     className="max-w-[85%] rounded-2xl rounded-bl-md px-4 py-2.5"
                     style={{
-                      background: "var(--belvo-bg, #04000e)",
-                      border: "1px solid var(--belvo-border-card, rgba(157,78,221,0.15))",
+                      background: "rgba(255,255,255,0.06)",
+                      border: "1px solid rgba(255,255,255,0.12)",
                     }}
                   >
                     <ThinkingDots />

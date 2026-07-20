@@ -19,7 +19,6 @@
   --color-popover: hsl(var(--popover));
   --color-popover-foreground: hsl(var(--popover-foreground));
   --color-popover-border: hsl(var(--popover-border));
-
   --color-primary: hsl(var(--primary));
   --color-primary-foreground: hsl(var(--primary-foreground));
   --color-primary-border: var(--primary-border);
@@ -296,4 +295,20 @@ img[loading] {
 img[loading].loaded,
 img[loading][complete] {
   opacity: 1;
+}
+.chat-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb {
+  background: #9D4EDD;
+  border-radius: 999px;
+}
+
+.chat-scroll::-webkit-scrollbar-thumb:hover {
+  background: #7B2FBE;
 }
