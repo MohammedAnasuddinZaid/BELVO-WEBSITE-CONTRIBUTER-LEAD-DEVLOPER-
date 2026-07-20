@@ -9,11 +9,26 @@ const AI_CACHE_PREFIX = "belvo_ai_"; // sessionStorage key prefix
 const AI_COUNTER_KEY = "belvo_ai_count";
 const CHAT_SESSION_KEY = "belvo-chat-session-id";
 const FAQS = [
-  "What services does Belvo provide?",
-  "How can I book a free consultation?",
-  "How much does website development cost?",
-  "Do you provide AI solutions?",
-  "How can I contact Belvo?"
+  {
+    label: "Services",
+    prompt: "What services does Belvo provide?",
+  },
+  {
+    label: "Pricing",
+    prompt: "How much does website development cost?",
+  },
+  {
+    label: "AI Solutions",
+    prompt: "Do you provide AI solutions?",
+  },
+  {
+    label: "Book a Call",
+    prompt: "How can I book a free consultation?",
+  },
+  {
+    label: "Contact",
+    prompt: "How can I contact Belvo?",
+  },
 ];
 
 // ── Message type ──────────────────────────────────────────────────────────────
@@ -401,9 +416,9 @@ export default function ChatBot() {
         {open && (
           <motion.div
             id="belvo-chat-panel"
-            className="fixed bottom-24 left-8 z-[9998] w-[420px] h-[650px] max-w-[calc(100vw-2rem)] rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            className="fixed bottom-22 left-8 z-[9998] w-[420px] h-[calc(100vh-120px)] max-w-[calc(100vw-2rem)] rounded-2xl shadow-2xl flex flex-col overflow-hidden"
             style={{
-              background: "#120C24",
+              background: "var(--belvo-chat-bg)",
               border: "1px solid var(--belvo-border-card, rgba(157,78,221,0.2))",
             }}
             initial={{ opacity: 0, scale: 0.9, y: 20, originX: 0, originY: 1 }}
@@ -466,14 +481,31 @@ export default function ChatBot() {
                 <CloseIcon />
               </button>
             </div>
-            <div className="flex gap-2 overflow-x-auto px-4 py-3 whitespace-nowrap scrollbar-hide">
+            <div className="flex flex-wrap gap-2 px-4 py-3 border-b"
+              style={{
+                borderColor: "var(--belvo-border-card)",
+              }}
+            >
               {FAQS.map((faq) => (
                 <button
-                  key={faq}
-                  onClick={() => handleSend(faq)}
-                  className="flex-shrink-0 rounded-full bg-white/5 border border-white/10 px-3 py-2 text-xs hover:bg-violet-600 transition"
+                  key={faq.label}
+                  onClick={() => handleSend(faq.prompt)}
+                  className="rounded-full px-4 py-2 text-sm font-medium transition-all duration-200"
+                  style={{
+                    background: "#9D4EDD",
+                    color: "var(--belvo-text-1)",
+                    border: "1.5px solid var(--belvo-border-card)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = "#9D4EDD";
+                    e.currentTarget.style.background = "rgba(157,78,221,0.08)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = "var(--belvo-border-card)";
+                    e.currentTarget.style.background = "transparent";
+                  }}
                 >
-                  {faq}
+                  {faq.label}
                 </button>
               ))}
             </div>
@@ -496,8 +528,8 @@ export default function ChatBot() {
                     style={{
                       background: msg.isUser
                         ? "linear-gradient(135deg, #7B2FBE, #9D4EDD)"
-                        : "#1A132B",
-                      color: "#FFFFFF",
+                        : "var(--belvo-bg-card)",
+                      color: msg.isUser ? "#fff" : "var(--belvo-text-1)",
                       border: msg.isUser
                         ? "none"
                         : "1px solid rgba(157,78,221,0.2)",
@@ -568,7 +600,7 @@ export default function ChatBot() {
                   disabled={isAILoading}
                   className="flex-1 rounded-xl px-4 py-2.5 text-sm outline-none"
                   style={{
-                    background: "var(--belvo-bg, #04000e)",
+                    background: "var(--belvo-bg-card)",
                     color: "var(--belvo-text-1, #f0e6ff)",
                     border: `1px solid ${isListening ? "#9D4EDD" : "var(--belvo-border-card, rgba(157,78,221,0.2))"}`,
                     transition: "border-color 0.2s",

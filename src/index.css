@@ -131,7 +131,7 @@
 /* ─── BELVO Design Tokens — Midnight (default) ─────────────────────────────── */
 :root {
   --belvo-bg:            #04000e;
-  --belvo-bg-card:       rgba(255,255,255,0.03);
+  --belvo-bg-card: #120C24;
   --belvo-bg-card-2:     rgba(255,255,255,0.055);
   --belvo-bg-nav:        rgba(4,0,14,0.62);
   --belvo-bg-nav-mobile: rgba(4,0,14,0.97);
