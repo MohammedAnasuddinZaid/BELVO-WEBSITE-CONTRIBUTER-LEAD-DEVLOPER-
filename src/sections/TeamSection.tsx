@@ -52,6 +52,9 @@ const NAME_OVERRIDES: Record<string, string> = {
   "yash": "yash1",
   "chirag arora": "chirag-arora",
   "neha gaikwad": "",
+  "anisha verma": "anisha verma",
+  "anshul nautiyal": "anshul nautiyal",
+  "sujeet kumar": "sujeet kumar",
 };
 
 function getImageUrl(memberName: string): string | undefined {
@@ -90,7 +93,7 @@ const HARDCODED_TEAMS: TeamDisplay[] = [
       "Guru dutt", "Shailender",
       "Aditya Sarkar", "Divyansh Salanki", "Harshitha",
       "Chirag Arora", "Prathamesh Kharbal", "Himagiri Siddesh", "Yashwanth Polepalli",
-      "Varsha", "Anuj Kumar",
+      "Varsha", "Anuj Kumar", "Anshul Nautiyal",
     ].map(name => ({ name })),
   },
   {
@@ -119,7 +122,7 @@ const HARDCODED_TEAMS: TeamDisplay[] = [
     name: "Business & Data Analytics",
     color: "#7B2FBE",
     lightColor: "#9D4EDD",
-    members: ["Ishika", "Obed", "Sasikumar", "Sharfudeen", "Sibijan", "Tejaswini"].map(name => ({ name })),
+    members: ["Ishika", "Obed", "Sasikumar", "Sharfudeen", "Sibijan", "Tejaswini", "Sujeet Kumar"].map(name => ({ name })),
   },
   {
     id: "graphic",
@@ -133,7 +136,7 @@ const HARDCODED_TEAMS: TeamDisplay[] = [
     name: "Social Media Management",
     color: "#7B2FBE",
     lightColor: "#9D4EDD",
-    members: ["Yash Mewati"].map(name => ({ name })),
+    members: ["Yash Mewati", "Anisha Verma"].map(name => ({ name })),
   },
   {
     id: "content",
