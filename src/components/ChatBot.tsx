@@ -397,18 +397,124 @@ export default function ChatBot() {
         {voiceError ? voiceError : ""}
       </div>
 
-      {/* ── Floating toggle button ── */}
+      {/* ── Floating Siri Spectrum Orb Toggle ── */}
       <motion.button
         id="belvo-chat-toggle"
         onClick={() => setOpen((o) => !o)}
-        className="fixed bottom-8 left-8 z-[9998] flex items-center justify-center w-14 h-14 rounded-full cursor-pointer border-none shadow-xl"
-        style={{ background: "var(--belvo-accent, #9D4EDD)", color: "#fff" }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        animate={{ rotate: open ? 90 : 0 }}
+        className="fixed bottom-8 left-8 z-[9998] cursor-pointer border-none"
+        style={{
+          width: 60,
+          height: 60,
+          borderRadius: "50%",
+          background: "transparent",
+          padding: 0,
+          outline: "none",
+        }}
+        whileTap={{ scale: 0.93 }}
         aria-label={open ? "Close chat" : "Open chat"}
       >
-        {open ? <CloseIcon size={24} /> : <ChatIcon />}
+        {open ? (
+          <CloseIcon size={24} />
+        ) : (
+          <div
+            style={{
+              position: "relative",
+              width: 60,
+              height: 60,
+              borderRadius: "50%",
+              overflow: "hidden",
+              background: [
+                "radial-gradient(ellipse at 75% 25%, #d4498f 0%, transparent 55%)",
+                "radial-gradient(ellipse at 50% 40%, #ed7fe3 0%, transparent 45%)",
+                "radial-gradient(ellipse at 30% 65%, #ba9aca 0%, transparent 50%)",
+                "radial-gradient(ellipse at 45% 80%, #ffffff 0%, transparent 30%)",
+                "#7c3aed",
+              ].join(","),
+              boxShadow: "0 0 30px rgba(76,29,149,0.3), 0 0 15px rgba(236,72,153,0.12), inset 0 0 20px rgba(0,0,0,0.4)",
+            }}
+          >
+            <div style={{ animation: "guillotine-spin 14s linear infinite" }}>
+              <svg
+                viewBox="0 0 120 120"
+                style={{
+                  display: "block",
+                  width: 120,
+                  height: 120,
+                }}
+              >
+                <defs>
+                  {Array.from({ length: 16 }).map((_, i) => (
+                    <linearGradient key={i} id={`wave-${i}`} x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stopColor="rgba(255,255,255,0)" />
+                      <stop offset="25%" stopColor={`rgba(255,255,255,${0.12 + i * 0.015})`} />
+                      <stop offset="50%" stopColor={`rgba(255,255,255,${0.25 + i * 0.02})`} />
+                      <stop offset="75%" stopColor={`rgba(255,255,255,${0.12 + i * 0.015})`} />
+                      <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+                    </linearGradient>
+                  ))}
+                </defs>
+                {Array.from({ length: 24 }).map((_, i) => {
+                  const phase = i * 0.4 + Math.sin(i * 0.2) * 0.3;
+                  const amp = 10 + Math.sin(i * 0.5) * 5;
+                  const freq = 0.06 + Math.sin(i * 0.25) * 0.02;
+                  const yOff = 5 + i * 4.8 + Math.sin(i * 0.6) * 2;
+                  const opacity = 0.12 + Math.sin(i * 0.3) * 0.08 + 0.1;
+                  const strokeW = 0.25 + Math.sin(i * 0.5) * 0.12 + 0.15;
+
+                  const d = Array.from({ length: 140 }, (_, x) => {
+                    const t = x * 1.2;
+                    const ny = yOff
+                      + Math.sin(t * freq + phase) * amp
+                      + Math.sin(t * 0.03 + i * 0.4) * 5
+                      + Math.sin(t * 0.008 + i * 0.7) * 3;
+                    return `${x === 0 ? "M" : "L"} ${t - 10} ${ny}`;
+                  }).join(" ");
+
+                  return (
+                    <path
+                      key={i}
+                      d={d}
+                      fill="none"
+                      stroke={`url(#wave-${i % 16})`}
+                      strokeWidth={strokeW}
+                      opacity={opacity}
+                      style={{ filter: "blur(0.4px)" }}
+                    />
+                  );
+                })}
+                {Array.from({ length: 16 }).map((_, i) => {
+                  const phase = i * 0.6 + 1.5 + Math.cos(i * 0.3) * 0.4;
+                  const amp = 9 + Math.cos(i * 0.7) * 4;
+                  const freq = 0.05 + Math.cos(i * 0.35) * 0.018;
+                  const xOff = 5 + i * 6.5 + Math.cos(i * 0.5) * 2.5;
+                  const opacity = 0.06 + Math.cos(i * 0.4) * 0.05 + 0.05;
+                  const strokeW = 0.2 + Math.cos(i * 0.6) * 0.08 + 0.12;
+
+                  const d = Array.from({ length: 140 }, (_, y) => {
+                    const t = y * 1.2;
+                    const nx = xOff
+                      + Math.sin(t * freq + phase) * amp
+                      + Math.sin(t * 0.025 + i * 0.5) * 4
+                      + Math.sin(t * 0.007 + i * 0.8) * 2.5;
+                    return `${y === 0 ? "M" : "L"} ${nx} ${t - 10}`;
+                  }).join(" ");
+
+                  return (
+                    <path
+                      key={`cross-${i}`}
+                      d={d}
+                      fill="none"
+                      stroke="rgba(255,255,255,0.05)"
+                      strokeWidth={strokeW}
+                      opacity={opacity}
+                      style={{ filter: "blur(0.3px)" }}
+                    />
+                  );
+                })}
+              </svg>
+            </div>
+          </div>
+        )}
       </motion.button>
 
       {/* ── Chat panel ── */}
