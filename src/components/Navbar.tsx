@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, ArrowUpRight, Moon, Sun } from "lucide-react";
+import { Menu, X, ArrowUpRight, Moon, Sun, ArrowDownLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/contexts/ThemeContext";
 import { smoothScrollTo, smoothScrollToElement } from "@/lib/smoothScroll";
@@ -161,7 +161,7 @@ export default function Navbar() {
         transition: "background 0.3s ease, box-shadow 0.3s ease",
       }}
     >
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 h-[68px] flex items-center justify-between">
+      <div className="max-w-[1180px] mx-auto px-4 lg:px-6 h-[68px] flex items-center justify-between">
 
         <Link href="/" onClick={handleLogoClick} className="flex items-center gap-2.5" data-testid="link-logo">
           <img
@@ -176,7 +176,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-9">
+        <nav className="hidden lg:flex items-center gap-6">
           {NAV_LINKS.map((link) => {
             const isActive = isLinkActive(link.href);
             return (
@@ -212,7 +212,7 @@ export default function Navbar() {
           })}
         </nav>
 
-        <div className="hidden lg:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-2">
           <motion.button
             onClick={toggleTheme}
             whileHover={{ scale: 1.08 }}
@@ -281,7 +281,7 @@ export default function Navbar() {
             }}
           >
             Book A Free Call
-            <ArrowUpRight size={13} />
+            <ArrowDownLeft size={15} />
           </motion.button>
         </div>
 
@@ -362,7 +362,7 @@ export default function Navbar() {
                       cursor: "pointer",
                     }}
                   >
-                    {isIvory ? <Sun size={13} /> : <Moon size={13} />}
+                    {isIvory ? <Sun size={15} /> : <Moon size={15} />}
                     {isIvory ? "Midnight" : "Ivory"}
                   </button>
                 </motion.div>
@@ -385,7 +385,7 @@ export default function Navbar() {
                       fontFamily: "'Inter', sans-serif",
                     }}
                   >
-                    Book A Free Call <ArrowUpRight size={14} />
+                    Book A Free Call <ArrowDownLeft size={15} />
                   </button>
                 </motion.div>
               </div>
