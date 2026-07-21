@@ -354,7 +354,7 @@ export default function FAQ() {
           whiteSpace: "nowrap",
         }}
       >
-        08
+
       </motion.div>
 
       <div

@@ -5,8 +5,8 @@ export default function CursorFollower() {
   const [visible, setVisible] = useState(false);
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
-  const springX = useSpring(mouseX, { stiffness: 80, damping: 20 });
-  const springY = useSpring(mouseY, { stiffness: 80, damping: 20 });
+  const springX = useSpring(mouseX, { stiffness: 300, damping: 30, mass: 0.5 });
+  const springY = useSpring(mouseY, { stiffness: 300, damping: 30, mass: 0.5 });
   const isScrolling = useRef(false);
   const scrollTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
