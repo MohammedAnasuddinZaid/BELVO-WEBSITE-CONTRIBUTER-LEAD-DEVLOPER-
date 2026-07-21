@@ -35,12 +35,7 @@ const pageVariants = {
 
 function AnimatedPage({ children }: { children: React.ReactNode }) {
   return (
-    <motion.div
-      variants={pageVariants}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-    >
+    <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
       {children}
     </motion.div>
   );
@@ -95,36 +90,30 @@ function Router() {
 }
 
 function App() {
-  const [loading, setLoading] = useState(true);
+  const [showSplash, setShowSplash] = useState(true);
 
   return (
-    <AnimatePresence mode="wait">
-      {loading ? (
-        <LoadingScreen key="loading" onComplete={() => setLoading(false)} />
-      ) : (
-        <motion.div
-          key="app"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <QueryClientProvider client={queryClient}>
-            <TooltipProvider>
-              <ThemeProvider>
-                <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-                  <Router />
-                </WouterRouter>
-                <ScrollToTop />
-                <ChatBot />
-                <CursorFollower />
-                <GrainOverlay opacity={0.02} blend="overlay" />
-                <Toaster />
-              </ThemeProvider>
-            </TooltipProvider>
-          </QueryClientProvider>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <ThemeProvider>
+            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+              <Router />
+            </WouterRouter>
+            <ScrollToTop />
+            <ChatBot />
+            <CursorFollower />
+            <GrainOverlay opacity={0.02} blend="overlay" />
+            <Toaster />
+          </ThemeProvider>
+        </TooltipProvider>
+      </QueryClientProvider>
+      <AnimatePresence>
+        {showSplash && (
+          <LoadingScreen key="splash" onComplete={() => setShowSplash(false)} />
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
