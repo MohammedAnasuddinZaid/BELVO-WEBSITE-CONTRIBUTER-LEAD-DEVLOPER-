@@ -7,8 +7,8 @@ interface TeamMemberDisplay {
   name: string;
   imageUrl?: string | null;
   responsibilities?: readonly string[];
+  role?: string;
 }
-
 interface TeamDisplay {
   id: string;
   name: string;
@@ -156,19 +156,36 @@ const HARDCODED_TEAMS: TeamDisplay[] = [
     lightColor: "#9D4EDD",
     members: ["Adarsh"].map(name => ({ name })),
   },
-  {
-    id: "Founder's Office",
-    name: "Founder Associate",
-    color: "#7B2FBE",
-    lightColor: "#9D4EDD",
-    members: ["Vivek Khalia"].map(name => ({ name })),
-  },
+
   {
     id: "admin",
-    name: "Administration",
+    name: "Human Resources",
     color: "#007BFF",
     lightColor: "#0056b3",
-    members: ["Mohd Usaid Ali Khan", "Raavula Vaibhav", "Achintya Gurba", "Chetan Pawar"].map(name => ({ name })),
+    members: [
+      { name: "Mohd Usaid Ali Khan" },
+      { name: "Raavula Vaibhav" },
+      {
+        name: "Achintya Gurba",
+        role: "Operational Manager",
+        responsibilities: ["Daily Operations", "Process Improvement", "Team Coordination", "Quality Assurance"],
+      },
+      {
+        name: "Chetan Pawar",
+        role: "Operational Manager",
+        responsibilities: ["Daily Operations",
+          "Process Improvement",
+          "Team Coordination",
+          "Quality Assurance"],
+      },
+      {
+        name: "Vivek Khalia", role: "Founder Associate",
+        responsibilities: ["Strategic Execution",
+          "Process Optimization",
+          "Partnership Development",
+          "Performance Tracking"],
+      },
+    ],
     responsibilities: ["Operations", "Team Coordination", "Client Communication", "Internal Management"] as readonly string[],
   },
 ];
@@ -401,10 +418,15 @@ function AdminGroup({ adminTeam }: { adminTeam?: TeamDisplay }) {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 240px))", gap: 16 }}>
         {adminTeam.members.map((member, i) => (
           <MemberCard
-            key={member.name} name={member.name} team={adminTeam.name} color={adminTeam.color} lightColor={adminTeam.lightColor}
+            key={member.name}
+            name={member.name}
+            team={member.role ?? adminTeam.name}
+            color={adminTeam.color}
+            lightColor={adminTeam.lightColor}
             responsibilities={member.responsibilities ?? adminTeam.responsibilities}
             imageUrl={member.imageUrl}
-            inView={inView} index={i}
+            inView={inView}
+            index={i}
           />
         ))}
       </div>

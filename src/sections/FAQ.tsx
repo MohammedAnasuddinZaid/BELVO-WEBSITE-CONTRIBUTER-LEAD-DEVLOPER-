@@ -285,7 +285,7 @@ function FAQCategoryBlock({ category, isOpen, onToggle, activeFaqId, onToggleFaq
 export default function FAQ() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-  const [openCategory, setOpenCategory] = useState<string | null>("about-belvo");
+  const [openCategory, setOpenCategory] = useState<string | null>(null);
   const [openFaqId, setOpenFaqId] = useState<string | null>(null);
 
   const handleToggleCategory = (id: string) => {
@@ -335,37 +335,37 @@ export default function FAQ() {
         }}
       />
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 1.2, delay: 0.1 }}
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            fontSize: "clamp(8rem, 22vw, 18rem)",
-            fontFamily: "'Inter', sans-serif",
-            fontWeight: 900,
-            color: "var(--belvo-ghost-num)",
-            letterSpacing: "-0.06em",
-            userSelect: "none",
-            pointerEvents: "none",
-            whiteSpace: "nowrap",
-          }}
-        >
-          08
-        </motion.div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 1.2, delay: 0.1 }}
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          fontSize: "clamp(8rem, 22vw, 18rem)",
+          fontFamily: "'Inter', sans-serif",
+          fontWeight: 900,
+          color: "var(--belvo-ghost-num)",
+          letterSpacing: "-0.06em",
+          userSelect: "none",
+          pointerEvents: "none",
+          whiteSpace: "nowrap",
+        }}
+      >
+        08
+      </motion.div>
 
-        <div
-          style={{
-            maxWidth: "780px",
-            margin: "0 auto",
-            position: "relative",
-            zIndex: 1,
-          }}
-        >
-          <motion.div
+      <div
+        style={{
+          maxWidth: "780px",
+          margin: "0 auto",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        <motion.div
           custom={0}
           variants={fadeUp}
           initial="hidden"

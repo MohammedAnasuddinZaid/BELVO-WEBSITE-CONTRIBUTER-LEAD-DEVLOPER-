@@ -53,7 +53,7 @@ export default function CursorFollower() {
         height: 200,
         borderRadius: "50%",
         background:
-          "radial-gradient(circle, rgba(157,78,221,0.12) 0%, transparent 70%)",
+          "radial-gradient(circle, rgba(50, 20, 90, 0.22) 0%, transparent 70%)",
         pointerEvents: "none",
         zIndex: 9998,
         transform: "translate(-50%, -50%)",
