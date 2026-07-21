@@ -17,7 +17,7 @@ const FAQ_CATEGORIES = [
   {
     id: "about-belvo",
     title: "About Belvo",
-    description: "Who we are, what we do, and what makes us different.",
+    description: "Who we are, what we do, and what makes us different. ",
     items: [
       { id: "faq-1", question: "What is Belvo?", answer: "Belvo is a full-service digital growth agency that helps businesses build their brand, scale their marketing, and compete globally. From branding and web development to performance marketing and social media, we handle every aspect of your digital presence." },
       { id: "faq-4", question: "Can Belvo work with businesses of any size?", answer: "Yes. We work with early-stage startups, scaling D2C brands, and established enterprises. Our engagement models are flexible — whether you need a one-time project or a long-term growth partner, we can structure something that fits." },
