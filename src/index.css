@@ -256,11 +256,8 @@ body {
   }
 }
 
-/* Smooth scroll reveal for all sections */
 section {
   scroll-margin-top: 80px;
-  content-visibility: auto;
-  contain-intrinsic-size: 1px 500px;
 }
 
 /* Custom scrollbar */
