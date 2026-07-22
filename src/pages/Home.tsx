@@ -1,6 +1,6 @@
-import { motion, useInView } from "framer-motion";
-import { ArrowUpRight, Play, Sparkles } from "lucide-react";
-import { useRef } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowUpRight, Play, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import About from "@/sections/About";
 import BookACall from "@/sections/BookACall";
 import Footer from "@/sections/Footer";
@@ -10,14 +10,26 @@ import Testimonials from "@/sections/Testimonials";
 import PortfolioSection from "@/sections/PortfolioSection";
 import UpcomingEvents from "@/sections/UpcomingEvents";
 import FAQ from "@/sections/FAQ";
-import { useMousePosition } from "@/hooks/useMousePosition";
-import { smoothScrollToElement } from "@/lib/smoothScroll";
+import ExploreSection from "@/sections/ExploreSection";
 
-const easeOut = [0.16, 1, 0.3, 1] as const;
+function jumpToVideoShowcase() {
+  const videoShowcase = document.getElementById("belvo-videos");
+  if (!videoShowcase) return;
 
-function MagneticButton({ children, className, style, onClick, ...props }: any) {
-  const ref = useRef<HTMLButtonElement>(null);
-  const pos = useMousePosition();
+  const root = document.documentElement;
+  const previousScrollBehavior = root.style.scrollBehavior;
+  const targetTop = window.scrollY + videoShowcase.getBoundingClientRect().top
+    - Math.max(80, (window.innerHeight - videoShowcase.offsetHeight) / 2);
+
+  root.style.scrollBehavior = "auto";
+  window.scrollTo(0, Math.max(0, targetTop));
+  window.requestAnimationFrame(() => {
+    root.style.scrollBehavior = previousScrollBehavior;
+  });
+}
+
+function MagneticButton({ children, className, style, onClick, as: Component = "button", ...props }: any) {
+  const ref = useRef<HTMLElement>(null);
 
   const handleMove = (e: React.MouseEvent) => {
     const el = ref.current;
@@ -36,7 +48,7 @@ function MagneticButton({ children, className, style, onClick, ...props }: any) 
   };
 
   return (
-    <button
+    <Component
       ref={ref}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
@@ -46,7 +58,7 @@ function MagneticButton({ children, className, style, onClick, ...props }: any) 
       {...props}
     >
       {children}
-    </button>
+    </Component>
   );
 }
 
@@ -228,6 +240,25 @@ const itemUp = {
 };
 
 export default function Home() {
+  const [showNaivaidyaSoon, setShowNaivaidyaSoon] = useState(false);
+
+  useEffect(() => {
+    if (!showNaivaidyaSoon) return;
+
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setShowNaivaidyaSoon(false);
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [showNaivaidyaSoon]);
+
   return (
     <>
       {/* ── HERO ── */}
@@ -303,8 +334,8 @@ export default function Home() {
             className="flex flex-col sm:flex-row items-center gap-4"
           >
             <MagneticButton
-              onClick={() => smoothScrollToElement("book-a-call")}
-              data-testid="button-hero-cta"
+              onClick={jumpToVideoShowcase}
+              data-testid="button-hero-videos"
               className="inline-flex items-center gap-2.5 px-8 py-3.5 font-semibold text-sm tracking-[0.12em] uppercase"
               style={{
                 background: "linear-gradient(135deg, #7B2FBE, #9D4EDD)",
@@ -320,25 +351,25 @@ export default function Home() {
                 (e.currentTarget as HTMLElement).style.background = "linear-gradient(135deg, #7B2FBE, #9D4EDD)";
               }}
             >
-              Book A Free Call
+              Explore Videos
               <motion.span
                 animate={{ x: [0, 3, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                 style={{ display: "inline-flex" }}
               >
-                <ArrowUpRight size={15} strokeWidth={2.5} />
+                <Play size={14} fill="currentColor" strokeWidth={0} />
               </motion.span>
             </MagneticButton>
 
             <MagneticButton
-              onClick={() => smoothScrollToElement("services")}
-              data-testid="button-hero-services"
+              onClick={() => setShowNaivaidyaSoon(true)}
+              data-testid="button-hero-naivaidya"
               className="inline-flex items-center gap-2.5 px-8 py-3.5 font-semibold text-sm tracking-[0.12em] uppercase"
               style={{
                 background: "var(--belvo-bg-card)",
                 border: "1px solid var(--belvo-border-card)",
                 borderRadius: "8px", color: "var(--belvo-text-1)",
-                cursor: "pointer",
+                cursor: "pointer", textDecoration: "none",
               }}
               onMouseEnter={e => {
                 (e.currentTarget as HTMLElement).style.background = "var(--belvo-bg-card-2)";
@@ -350,13 +381,13 @@ export default function Home() {
               }}
             >
               <motion.span
-                animate={{ rotate: [0, 360] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                animate={{ x: [0, 2, 0], y: [0, -2, 0] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
                 style={{ display: "inline-flex" }}
               >
-                <Play size={13} fill="currentColor" strokeWidth={0} />
+                <ArrowUpRight size={15} strokeWidth={2.4} />
               </motion.span>
-              View Services
+              Explore Naivaidya
             </MagneticButton>
           </motion.div>
         </motion.div>
@@ -367,6 +398,7 @@ export default function Home() {
       <About />
       <ServicesSection id="services" />
       <PortfolioSection id="portfolio" />
+      <ExploreSection />
       <TeamSection />
       <Testimonials />
 
@@ -374,6 +406,109 @@ export default function Home() {
       <BookACall />
       <FAQ />
       <Footer />
+
+      <AnimatePresence>
+        {showNaivaidyaSoon && (
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="naivaidya-coming-soon-title"
+            data-testid="naivaidya-coming-soon-dialog"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setShowNaivaidyaSoon(false)}
+            className="fixed inset-0 z-[100] grid place-items-center px-5 py-8"
+            style={{
+              background: "rgba(12, 5, 22, 0.68)",
+              backdropFilter: "blur(14px)",
+            }}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 22, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 14, scale: 0.98 }}
+              transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
+              onClick={(event) => event.stopPropagation()}
+              className="relative w-full max-w-[520px] overflow-hidden p-8 sm:p-10"
+              style={{
+                borderRadius: "28px",
+                border: "1px solid var(--belvo-border-card)",
+                background: "var(--belvo-bg-card)",
+                boxShadow: "0 30px 100px rgba(12, 5, 22, 0.38)",
+              }}
+            >
+              <div
+                aria-hidden="true"
+                className="absolute -right-20 -top-24 h-64 w-64 rounded-full"
+                style={{
+                  background: "radial-gradient(circle, rgba(157,78,221,0.24), transparent 68%)",
+                }}
+              />
+
+              <button
+                type="button"
+                aria-label="Close Naivaidya coming soon"
+                data-testid="button-close-naivaidya-dialog"
+                onClick={() => setShowNaivaidyaSoon(false)}
+                className="absolute right-5 top-5 z-10 grid h-10 w-10 place-items-center rounded-full"
+                style={{
+                  border: "1px solid var(--belvo-border-card)",
+                  background: "var(--belvo-bg-card-2)",
+                  color: "var(--belvo-text-1)",
+                  cursor: "pointer",
+                }}
+              >
+                <X size={18} />
+              </button>
+
+              <div className="relative z-[1]">
+                <div
+                  className="mb-6 inline-flex items-center gap-2 rounded-full px-3 py-2 text-[0.68rem] font-bold uppercase tracking-[0.16em]"
+                  style={{
+                    color: "#9D4EDD",
+                    background: "rgba(157,78,221,0.1)",
+                    border: "1px solid rgba(157,78,221,0.22)",
+                  }}
+                >
+                  In the works
+                </div>
+
+                <h2
+                  id="naivaidya-coming-soon-title"
+                  className="mb-4 pr-10 text-[2.35rem] font-bold leading-[0.98] sm:text-[3.2rem]"
+                  style={{
+                    color: "var(--belvo-text-1)",
+                    fontFamily: "'Cormorant Garamond', serif",
+                  }}
+                >
+                  Naivaidya is coming soon.
+                </h2>
+                <p
+                  className="mb-7 max-w-md text-sm leading-7 sm:text-base"
+                  style={{ color: "var(--belvo-text-2)" }}
+                >
+                  We&apos;re adding the final polish before the big reveal. The full experience will be ready to explore soon—and it&apos;ll be worth the wait.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setShowNaivaidyaSoon(false)}
+                  className="inline-flex items-center justify-center rounded-lg px-6 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white"
+                  style={{
+                    background: "linear-gradient(135deg, #7B2FBE, #9D4EDD)",
+                    boxShadow: "0 12px 30px rgba(123,47,190,0.28)",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
+                >
+                  Got it
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
