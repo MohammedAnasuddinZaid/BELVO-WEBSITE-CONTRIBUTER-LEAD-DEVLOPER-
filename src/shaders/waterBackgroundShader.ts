@@ -30,9 +30,9 @@ export function createWaterBackgroundMaterial(
 
       void main() {
         vec2 uv = vUv;
-        float imgRatio = uImgAspect;
-        float screenRatio = uScreenAspect;
-        float scale = screenRatio / imgRatio;
+        float imageAspect = uImgAspect;
+        float screenAspect = uScreenAspect;
+        float scale = screenAspect / imageAspect;
 
         vec2 adjustedUv = uv;
         if (scale > 1.0) {
@@ -41,15 +41,12 @@ export function createWaterBackgroundMaterial(
           adjustedUv.y = (uv.y - 0.5) * scale + 0.5;
         }
 
-        float waveX = sin(uv.y * 12.0 + uTime * 0.6) * 0.008;
-        float waveY = sin(uv.x * 10.0 + uTime * 0.5) * 0.006;
+        float waveX = sin(adjustedUv.y * 20.0 + uTime * 0.5) * 0.004;
+        float waveY = sin(adjustedUv.x * 16.0 + uTime * 0.4) * 0.003;
         vec2 distorted = adjustedUv + vec2(waveX, waveY);
 
-        float edge = smoothstep(0.0, 0.08, distorted.x) * smoothstep(1.0, 0.92, distorted.x) *
-                     smoothstep(0.0, 0.08, distorted.y) * smoothstep(1.0, 0.92, distorted.y);
-
         vec4 color = texture2D(uTexture, distorted);
-        gl_FragColor = vec4(color.rgb, uOpacity * edge);
+        gl_FragColor = vec4(color.rgb, uOpacity);
       }
     `,
     transparent: true,
