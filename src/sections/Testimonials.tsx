@@ -84,9 +84,9 @@ const CARD_COUNT = TESTIMONIALS.length;
 
 function getRadius() {
   const w = window.innerWidth;
-  if (w <= 480) return 170;
-  if (w <= 768) return 240;
-  return 340;
+  if (w <= 480) return Math.round((w - 220) / 2);
+  if (w <= 768) return Math.round((w - 280) / 2);
+  return Math.min(340, Math.round((w - 360) / 2));
 }
 
 export default function Testimonials() {
@@ -108,7 +108,7 @@ export default function Testimonials() {
       const angle = i * angleStep + Math.PI * 0.5 + rotOffset;
       return {
         x: radius * Math.cos(angle),
-        y: radius * 0.45 * Math.sin(angle) - 10,
+        y: radius * 0.45 * Math.sin(angle) - radius * 0.15,
         z: radius * Math.sin(angle),
       };
     }
@@ -122,22 +122,15 @@ export default function Testimonials() {
 
         const ferris = getFerrisPos(i, p * Math.PI * 1.8);
 
-        const stackY = 40 - i * 8;
-        const stackZ = -i * 2;
-
         const blendStart = 0.55;
         const blend = p > blendStart ? (p - blendStart) / (1 - blendStart) : 0;
         const easeBlend = blend * blend * (3 - 2 * blend);
-
-        const finalX = ferris.x * (1 - easeBlend);
-        const finalY = ferris.y * (1 - easeBlend) + stackY * easeBlend;
-        const finalZ = ferris.z * (1 - easeBlend) + stackZ * easeBlend;
 
         const baseOpacity = 0.4 + 0.6 * ((ferris.z / radius) + 1) / 2;
         const clampedOpacity = Math.min(1, Math.max(0.2, baseOpacity));
         const finalOpacity = clampedOpacity * (1 - easeBlend) + 0.95 * easeBlend;
 
-        let transform = `translate3d(${finalX}px, ${finalY}px, ${finalZ}px)`;
+        let transform = `translate3d(${ferris.x}px, ${ferris.y}px, ${ferris.z}px) scale(0.55)`;
         if (easeBlend < 0.8) {
           const rotX = 0.12 * Math.sin(i * angleStep + p * Math.PI * 1.8);
           const rotY = 0.06 * Math.cos(i * angleStep + p * Math.PI * 1.8);
@@ -160,8 +153,8 @@ export default function Testimonials() {
         ease: "none",
         scrollTrigger: {
           trigger: spacer,
-          start: "top top",
-          end: "bottom bottom",
+          start: "top top+=90vh",
+          end: "bottom top+=90vh",
           scrub: 1.2,
           invalidateOnRefresh: true,
           onRefresh: () => updateCards(master.progress),
@@ -194,75 +187,97 @@ export default function Testimonials() {
     <>
       <style>{`
         .testimonial-card {
-          width: 360px !important;
-          height: 340px !important;
-          padding: 1.5rem 1.5rem 0.8rem !important;
-          border-radius: 28px !important;
+          position: absolute;
+          backdrop-filter: blur(14px) saturate(180%);
+          -webkit-backdrop-filter: blur(14px) saturate(180%);
+          background: var(--belvo-bg-card);
+          border: 1px solid var(--belvo-border-card);
+          box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+          display: flex;
+          flex-direction: column;
+          will-change: transform, opacity;
+          transform-style: preserve-3d;
+          backface-visibility: hidden;
+          text-align: left;
+          overflow-y: auto;
+          color: var(--belvo-text-1);
+          width: 360px;
+          height: 340px;
+          padding: 1.5rem 1.5rem 0.8rem;
+          border-radius: 28px;
         }
-        .testimonial-card .testimonial-text {
-          font-size: 0.95rem !important;
-          line-height: 1.6 !important;
-        }
-        .testimonial-card .quote-mark {
-          font-size: 2rem !important;
-        }
-        .testimonial-card .author-name {
-          font-size: 1.05rem !important;
-        }
-        .testimonial-card .author-title {
-          font-size: 0.7rem !important;
+        .testimonial-card .avatar-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 0.6rem;
+          flex-shrink: 0;
         }
         .testimonial-card .avatar-img {
-          width: 66px !important;
-          height: 66px !important;
+          width: 66px;
+          height: 66px;
+          border-radius: 50%;
+          overflow: hidden;
+          flex-shrink: 0;
+          border: 2px solid rgba(157,78,221,0.25);
+        }
+        .testimonial-card .avatar-img img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+        .testimonial-card .author-name {
+          font-size: 1.05rem;
+          font-weight: 700;
+          color: var(--belvo-text-1);
+          letter-spacing: 0.01em;
+        }
+        .testimonial-card .author-title {
+          font-size: 0.7rem;
+          color: var(--belvo-text-3);
+        }
+        .testimonial-card .quote-mark {
+          font-size: 2rem;
+          line-height: 1.2;
+          margin-bottom: 0.2rem;
+          opacity: 0.25;
+          font-family: serif;
+          color: #9D4EDD;
+          flex-shrink: 0;
+        }
+        .testimonial-card .testimonial-text {
+          font-size: 0.95rem;
+          line-height: 1.5;
+          font-weight: 400;
+          color: var(--belvo-text-2);
+          flex: 1;
         }
         @media (max-width: 768px) {
           .testimonial-card {
-            width: 280px !important;
-            height: 280px !important;
-            padding: 1rem 1rem 0.6rem !important;
-            border-radius: 22px !important;
+            width: 280px;
+            height: 280px;
+            padding: 1rem 1rem 0.6rem;
+            border-radius: 22px;
           }
-          .testimonial-card .testimonial-text {
-            font-size: 0.78rem !important;
-          }
-          .testimonial-card .quote-mark {
-            font-size: 1.5rem !important;
-          }
-          .testimonial-card .author-name {
-            font-size: 0.85rem !important;
-          }
-          .testimonial-card .author-title {
-            font-size: 0.6rem !important;
-          }
-          .testimonial-card .avatar-img {
-            width: 52px !important;
-            height: 52px !important;
-          }
+          .testimonial-card .avatar-img { width: 52px; height: 52px; }
+          .testimonial-card .author-name { font-size: 0.85rem; }
+          .testimonial-card .author-title { font-size: 0.6rem; }
+          .testimonial-card .quote-mark { font-size: 1.5rem; }
+          .testimonial-card .testimonial-text { font-size: 0.78rem; }
         }
         @media (max-width: 480px) {
           .testimonial-card {
-            width: 220px !important;
-            height: 240px !important;
-            padding: 0.8rem 0.8rem 0.4rem !important;
-            border-radius: 18px !important;
+            width: 220px;
+            height: 240px;
+            padding: 0.8rem 0.8rem 0.4rem;
+            border-radius: 18px;
           }
-          .testimonial-card .testimonial-text {
-            font-size: 0.68rem !important;
-          }
-          .testimonial-card .quote-mark {
-            font-size: 1.2rem !important;
-          }
-          .testimonial-card .author-name {
-            font-size: 0.75rem !important;
-          }
-          .testimonial-card .author-title {
-            font-size: 0.55rem !important;
-          }
-          .testimonial-card .avatar-img {
-            width: 44px !important;
-            height: 44px !important;
-          }
+          .testimonial-card .avatar-img { width: 44px; height: 44px; }
+          .testimonial-card .author-name { font-size: 0.75rem; }
+          .testimonial-card .author-title { font-size: 0.55rem; }
+          .testimonial-card .quote-mark { font-size: 1.2rem; }
+          .testimonial-card .testimonial-text { font-size: 0.68rem; }
         }
       `}</style>
       <section
@@ -317,7 +332,7 @@ export default function Testimonials() {
             overflow: "hidden",
             perspective: "1000px",
             perspectiveOrigin: "50% 50%",
-            background: "#f6f1ee",
+            background: "var(--belvo-bg)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -336,66 +351,24 @@ export default function Testimonials() {
                 key={t.id}
                 data-index={i}
                 className="testimonial-card"
-                style={{
-                  position: "absolute",
-                  backdropFilter: "blur(14px) saturate(180%)",
-                  WebkitBackdropFilter: "blur(14px) saturate(180%)",
-                  background: "rgba(255,255,255,0.85)",
-                  border: "1px solid rgba(0,0,0,0.08)",
-                  boxShadow: "0 8px 32px rgba(0,0,0,0.08)",
-                  display: "flex",
-                  flexDirection: "column",
-                  willChange: "transform, opacity",
-                  transformStyle: "preserve-3d",
-                  backfaceVisibility: "hidden",
-                  textAlign: "left",
-                  overflowY: "auto",
-                  color: "#1a1a2e",
-                }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "0.6rem", flexShrink: 0 }}>
-                  <div className="avatar-img" style={{
-                    borderRadius: "50%", overflow: "hidden", flexShrink: 0,
-                    border: "2px solid rgba(157,78,221,0.25)",
-                  }}>
-                    <img
-                      src={t.image}
-                      alt={t.name}
-                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                    />
+                <div className="avatar-row">
+                  <div className="avatar-img">
+                    <img src={t.image} alt={t.name} />
                   </div>
                   <div>
-                    <div className="author-name" style={{
-                      fontWeight: 700, color: "#1a1a2e",
-                      letterSpacing: "0.01em",
-                    }}>
-                      {t.name}
-                    </div>
-                    <div className="author-title" style={{
-                      opacity: 0.5, color: "rgba(26,26,46,0.6)",
-                    }}>
-                      {t.title}
-                    </div>
+                    <div className="author-name">{t.name}</div>
+                    <div className="author-title">{t.title}</div>
                   </div>
                 </div>
-                <div className="quote-mark" style={{
-                  lineHeight: 1.2, marginBottom: "0.2rem",
-                  opacity: 0.25, fontFamily: "serif", color: "#9D4EDD", flexShrink: 0,
-                }}>
-                  &ldquo;
-                </div>
-                <div className="testimonial-text" style={{
-                  lineHeight: 1.5, fontWeight: 400,
-                  color: "rgba(26,26,46,0.75)", flex: 1,
-                }}>
-                  {t.text}
-                </div>
+                <div className="quote-mark">&ldquo;</div>
+                <div className="testimonial-text">{t.text}</div>
               </div>
             ))}
           </div>
         </div>
 
-        <div ref={spacerRef} style={{ height: "400vh", pointerEvents: "none" }} />
+        <div ref={spacerRef} style={{ height: "200vh", pointerEvents: "none" }} />
       </section>
     </>
   );
