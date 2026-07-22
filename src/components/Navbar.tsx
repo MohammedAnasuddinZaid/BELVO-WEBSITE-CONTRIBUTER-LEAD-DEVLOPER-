@@ -13,7 +13,7 @@ const NAV_LINKS = [
 
   { name: "Events",   href: "/#events" },
   { name: "Careers",  href: "/careers" },
-  { name: "Blogs",    href: "/blogs" },
+  { name: "Resources", href: "/resources" },
 ];
 
 export default function Navbar() {

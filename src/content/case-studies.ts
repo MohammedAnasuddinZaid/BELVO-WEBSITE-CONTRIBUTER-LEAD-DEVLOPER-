@@ -1,0 +1,138 @@
+export type CaseStudy = {
+  sequence: number;
+  slug: string;
+  title: string;
+  focus: string;
+  excerpt: string;
+  cover: string;
+  pdfPath: string;
+};
+
+export const caseStudies: CaseStudy[] = [
+  {
+    sequence: 1,
+    slug: "sutra",
+    title: "Sutra Fine Jewellery",
+    focus: "Instagram, performance marketing & automation",
+    excerpt: "Strengthening a premium jewellery brand through social media management, customer automation, and performance-led digital growth.",
+    cover: "/case-studies/covers/sutra-case-study.png",
+    pdfPath: "/case-studies/sutra-case-study.pdf",
+  },
+  {
+    sequence: 2,
+    slug: "kdak",
+    title: "KDAK",
+    focus: "Personal branding & social media management",
+    excerpt: "Building Karan Desai's personal brand and KDAK's digital presence through consistent content, profile management, and audience engagement.",
+    cover: "/case-studies/covers/kdak-case-study.png",
+    pdfPath: "/case-studies/kdak-case-study.pdf",
+  },
+  {
+    sequence: 3,
+    slug: "72mg-studio",
+    title: "72MG Studio",
+    focus: "Strategic consulting & business optimization",
+    excerpt: "Improving brand positioning, digital assets, customer communication, and lead management through a focused consulting framework.",
+    cover: "/case-studies/covers/72mg-studio-case-study.png",
+    pdfPath: "/case-studies/72mg-studio-case-study.pdf",
+  },
+  {
+    sequence: 4,
+    slug: "envi-salon-spa",
+    title: "Envi Salon & Spa",
+    focus: "Instagram optimization & social media management",
+    excerpt: "Creating a stronger premium online identity through profile optimization, content planning, and consistent audience engagement.",
+    cover: "/case-studies/covers/envi-salon-spa-case-study.png",
+    pdfPath: "/case-studies/envi-salon-spa-case-study.pdf",
+  },
+  {
+    sequence: 5,
+    slug: "fintech-brand",
+    title: "FinTech Brand",
+    focus: "Content planning & social media strategy",
+    excerpt: "Making financial content clearer, more consistent, and more trustworthy through a structured content and campaign strategy.",
+    cover: "/case-studies/covers/fintech-brand-case-study.png",
+    pdfPath: "/case-studies/fintech-brand-case-study.pdf",
+  },
+  {
+    sequence: 6,
+    slug: "leaping-frogs",
+    title: "Leaping Frogs - The School",
+    focus: "Content marketing & creative graphic design",
+    excerpt: "Helping an educational brand communicate its values through useful content, visual storytelling, and a consistent digital presence.",
+    cover: "/case-studies/covers/leaping-frogs-case-study.png",
+    pdfPath: "/case-studies/leaping-frogs-case-study.pdf",
+  },
+  {
+    sequence: 7,
+    slug: "the-safarnama",
+    title: "The Safarnama",
+    focus: "Instagram optimization & social media management",
+    excerpt: "Building a clearer travel brand identity through profile optimization, content consistency, and stronger community interaction.",
+    cover: "/case-studies/covers/the-safarnama-case-study.png",
+    pdfPath: "/case-studies/the-safarnama-case-study.pdf",
+  },
+  {
+    sequence: 8,
+    slug: "habitat-cafe",
+    title: "The Habitat Cafe",
+    focus: "Social media & food-delivery lead generation",
+    excerpt: "Improving digital visibility, customer engagement, and online order discovery across Instagram and food-delivery platforms.",
+    cover: "/case-studies/covers/habitat-cafe-case-study.png",
+    pdfPath: "/case-studies/habitat-cafe-case-study.pdf",
+  },
+  {
+    sequence: 9,
+    slug: "ak-clinics",
+    title: "AK Clinics",
+    focus: "Social media management & virtual event assistance",
+    excerpt: "Strengthening patient trust and brand visibility through Instagram optimization, content management, and virtual event support.",
+    cover: "/case-studies/covers/ak-clinics-case-study.png",
+    pdfPath: "/case-studies/ak-clinics-case-study.pdf",
+  },
+  {
+    sequence: 10,
+    slug: "chakki-peesing",
+    title: "Chakki Peesing",
+    focus: "Strategic Reels & WhatsApp automation",
+    excerpt: "Using short-form video and automated customer communication to support reach, engagement, enquiries, and lead generation.",
+    cover: "/case-studies/covers/chakki-peesing-case-study.png",
+    pdfPath: "/case-studies/chakki-peesing-case-study.pdf",
+  },
+  {
+    sequence: 11,
+    slug: "ghar-soaps",
+    title: "Ghar Soaps",
+    focus: "Social media management & digital marketing",
+    excerpt: "Supporting awareness, trust, traffic, and product discovery through educational content, collaborations, and performance marketing.",
+    cover: "/case-studies/covers/ghar-soaps-case-study.png",
+    pdfPath: "/case-studies/ghar-soaps-case-study.pdf",
+  },
+  {
+    sequence: 12,
+    slug: "chakki-peesing-2",
+    title: "Chakki Peesing",
+    focus: "Strategic Reels & WhatsApp automation",
+    excerpt: "A second supplied case study presentation covering short-form video strategy, customer communication, and lead generation.",
+    cover: "/case-studies/covers/chakki-peesing-case-study-2.png",
+    pdfPath: "/case-studies/chakki-peesing-case-study-2.pdf",
+  },
+  {
+    sequence: 13,
+    slug: "fintech-brand-2",
+    title: "FinTech Brand",
+    focus: "Content planning & social media strategy",
+    excerpt: "A second supplied case study presentation focused on financial education, content consistency, trust, and audience engagement.",
+    cover: "/case-studies/covers/fintech-brand-case-study-2.png",
+    pdfPath: "/case-studies/fintech-brand-case-study-2.pdf",
+  },
+  {
+    sequence: 14,
+    slug: "bewakoof",
+    title: "Bewakoof",
+    focus: "Social media management & digital marketing",
+    excerpt: "A Gen Z-focused fashion growth plan using content, influencer collaborations, paid advertising, and community engagement.",
+    cover: "/case-studies/covers/bewakoof-case-study.png",
+    pdfPath: "/case-studies/bewakoof-case-study.pdf",
+  },
+];

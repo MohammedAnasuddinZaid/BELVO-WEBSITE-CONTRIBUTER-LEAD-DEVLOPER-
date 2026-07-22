@@ -5,6 +5,7 @@ export type BlogPost = {
   category: string;
   excerpt: string;
   thumbnail: string;
+  pdfPath?: string;
   content: string;
 };
 
@@ -14,6 +15,9 @@ export const BLOG_CATEGORIES = [
   "Tech",
   "Agency Life",
   "Case Studies",
+  "Startup Playbook",
+  "Web Development",
+  "SEO",
 ];
 
 const markdownPosts = import.meta.glob("./blogs/*.md", {
@@ -54,7 +58,7 @@ function parseMarkdownPost(path: string, raw: string): BlogPost | null {
     return null;
   }
 
-  const { title, date, category, excerpt, thumbnail } = frontmatter;
+  const { title, date, category, excerpt, thumbnail, pdfPath } = frontmatter;
 
   if (!title || !date || !category || !excerpt || !thumbnail) {
     return null;
@@ -67,6 +71,7 @@ function parseMarkdownPost(path: string, raw: string): BlogPost | null {
     category,
     excerpt,
     thumbnail,
+    pdfPath: pdfPath || undefined,
     content: match[2].trim(),
   };
 }
