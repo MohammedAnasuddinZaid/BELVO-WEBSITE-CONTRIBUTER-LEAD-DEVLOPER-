@@ -72,12 +72,17 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    const w = innerWidth;
+    const h = innerHeight;
+    const isMobile = w < 768;
+    const sf = Math.min(1, Math.max(0.5, w / 1200));
+
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 100);
-    camera.position.z = 4.5;
+    const camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 100);
+    camera.position.z = isMobile ? 6 : 4.5;
 
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
-    renderer.setSize(innerWidth, innerHeight);
+    renderer.setSize(w, h);
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     renderer.setClearColor(0x000000, 0);
 
@@ -89,8 +94,8 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
     bgTex.colorSpace = THREE.SRGBColorSpace;
 
     const waterMat = createWaterBackgroundMaterial(bgTex, IMG_ASPECT);
-    const bgSize = 2 * Math.tan((60 * Math.PI) / 360) * 4.5 * 2.2;
-    const bgGeo = new THREE.PlaneGeometry(bgSize * (innerWidth / innerHeight), bgSize);
+    const bgSize = 2 * Math.tan((60 * Math.PI) / 360) * camera.position.z * 2.2;
+    const bgGeo = new THREE.PlaneGeometry(bgSize * (w / h), bgSize);
     const bgMesh = new THREE.Mesh(bgGeo, waterMat);
     bgMesh.renderOrder = -1;
     bgMesh.frustumCulled = false;
@@ -144,7 +149,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
     geo.setAttribute("color", new THREE.BufferAttribute(particleColors, 3));
 
     const mat = new THREE.PointsMaterial({
-      size: 0.058,
+      size: 0.058 * sf,
       map: particleTex,
       transparent: true,
       opacity: 0,
@@ -172,7 +177,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
     gGeo.setAttribute("position", new THREE.BufferAttribute(gPos, 3));
     const gMat = new THREE.PointsMaterial({
       color: 0xd49a9a,
-      size: 0.025,
+      size: 0.025 * sf,
       map: particleTex,
       transparent: true,
       opacity: 0,
@@ -203,7 +208,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
       depthWrite: false,
     });
     const flash = new THREE.Sprite(flashMat);
-    flash.scale.set(0.5, 0.5, 1);
+    flash.scale.set(0.5 * sf, 0.5 * sf, 1);
     scene.add(flash);
 
     // ── Animation loop ──
@@ -294,10 +299,13 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
     }, 5000);
 
     const onResize = () => {
-      camera.aspect = innerWidth / innerHeight;
+      const nw = innerWidth;
+      const nh = innerHeight;
+      camera.aspect = nw / nh;
+      camera.position.z = nw < 768 ? 6 : 4.5;
       camera.updateProjectionMatrix();
-      renderer.setSize(innerWidth, innerHeight);
-      waterMat.uniforms.uScreenAspect.value = innerWidth / innerHeight;
+      renderer.setSize(nw, nh);
+      waterMat.uniforms.uScreenAspect.value = nw / nh;
     };
     addEventListener("resize", onResize);
 
@@ -344,6 +352,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
           width: "100%",
           height: "100%",
           display: "block",
+          touchAction: "none",
         }}
       />
 
@@ -367,7 +376,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
               fontFamily: "'Cinzel', serif",
               fontSize: "clamp(3rem, 10vw, 7rem)",
               color: "#f5f0eb",
-              letterSpacing: "0.08em",
+              letterSpacing: "clamp(0.03em, 1.5vw, 0.08em)",
               textShadow:
                 "0 2px 24px rgba(0,0,0,0.25), 0 0 60px rgba(0,0,0,0.1)",
               perspective: "800px",
@@ -420,7 +429,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
               fontFamily: "'Cormorant Garamond', serif",
               fontSize: "clamp(1rem, 3vw, 1.8rem)",
               color: "rgba(255,255,255,0.85)",
-              letterSpacing: "0.25em",
+              letterSpacing: "clamp(0.12em, 2vw, 0.25em)",
               marginTop: "1.5rem",
               fontWeight: 300,
               textTransform: "uppercase",

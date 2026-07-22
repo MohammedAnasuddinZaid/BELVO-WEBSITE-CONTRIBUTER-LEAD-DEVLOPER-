@@ -2,6 +2,7 @@ node_modules/
 dist/
 .tsbuildinfo
 *.local
+vite-server.log
 .env
 .env.local
 .DS_Store
