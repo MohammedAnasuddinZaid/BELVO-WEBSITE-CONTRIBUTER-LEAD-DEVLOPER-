@@ -55,24 +55,30 @@ function ServiceCard({ svc, i, isIvory, onOpen }: { svc: ServiceItem; i: number;
     >
       <motion.div
         whileHover={{
-          y: -6,
-          borderColor: "rgba(157,78,221,0.4)",
+          y: -10,
+          scale: 1.02,
+          borderColor: "#9D4EDD",
           boxShadow: isIvory
-            ? "0 8px 32px rgba(100,20,180,0.10)"
-            : "0 8px 40px rgba(100,20,180,0.18)",
-          transition: { duration: 0.25, ease: easeOut },
+            ? "0 20px 50px rgba(123,47,190,0.15)"
+            : "0 20px 60px rgba(123,47,190,0.28)",
+          transition: {
+            duration: 0.3,
+            ease: easeOut,
+          },
         }}
         style={{
           background: "var(--belvo-bg-card)",
           border: "1px solid var(--belvo-border-card)",
-          borderRadius: "14px",
-          padding: "28px",
+          borderRadius: "18px",
+          overflow: "hidden",
+          position: "relative",
+          padding: "24px",
           display: "flex",
           flexDirection: "column",
-          gap: "14px",
+          gap: "18px",
           cursor: "pointer",
           boxShadow: isIvory ? "0 2px 12px rgba(0,0,0,0.04)" : "none",
-          transition: "border-color 0.3s, box-shadow 0.3s",
+          transition: "border-color 0.3s, box-shadow 0.3s, transform 0.3s",
         }}
         onClick={() => onOpen(svc)}
         onKeyDown={(event) => {
@@ -84,24 +90,62 @@ function ServiceCard({ svc, i, isIvory, onOpen }: { svc: ServiceItem; i: number;
         tabIndex={0}
         role="button"
       >
-        <img
-          src={svc.image}
-          alt={svc.title}
-          style={{ width: "100%", aspectRatio: "16 / 9", objectFit: "cover", borderRadius: "10px", border: "1px solid var(--belvo-border-card)", display: "block" }}
-        />
+        <div
+          style={{
+            position: "relative",
+            overflow: "hidden",
+            borderRadius: "12px",
+          }}
+        >
+          <motion.img
+            src={svc.image}
+            alt={svc.title}
+            whileHover={{ scale: 1.08 }}
+            transition={{ duration: 0.35 }}
+            style={{
+              width: "100%",
+              aspectRatio: "16 / 9",
+              objectFit: "cover",
+              borderRadius: "12px",
+              border: "1px solid var(--belvo-border-card)",
+              display: "block",
+            }}
+          />
 
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <div
             style={{
-              width: 32,
-              height: 32,
-              borderRadius: "8px",
+              position: "absolute",
+              inset: 0,
+              background:
+                "linear-gradient(to top, rgba(123,47,190,0.22), transparent 60%)",
+              pointerEvents: "none",
+            }}
+          />
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "14px",
+            padding: "10px 12px",
+            borderRadius: "12px",
+            background: isIvory
+              ? "rgba(123,47,190,0.05)"
+              : "rgba(123,47,190,0.08)",
+          }}
+        >
+          <div
+            style={{
+              width: 38,
+              height: 38,
+              borderRadius: "10px",
               background: "linear-gradient(135deg, rgba(157,78,221,0.2), rgba(123,47,190,0.1))",
               border: "1px solid rgba(157,78,221,0.2)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: "0.8rem",
+              fontSize: "0.82rem",
               fontWeight: 700,
               color: "#9D4EDD",
               fontFamily: "'Inter', sans-serif",
@@ -111,9 +155,20 @@ function ServiceCard({ svc, i, isIvory, onOpen }: { svc: ServiceItem; i: number;
             {String(i + 1).padStart(2, "0")}
           </div>
 
-          <h3 style={{ fontFamily: "'Inter',sans-serif", fontWeight: 700, fontSize: "0.97rem", color: "var(--belvo-text-1)", margin: 0, lineHeight: 1.3 }}>
+          <motion.h3
+            whileHover={{ y: -2 }}
+            transition={{ duration: 0.2 }}
+            style={{
+              fontFamily: "'Inter',sans-serif",
+              fontWeight: 700,
+              fontSize: "0.97rem",
+              color: "var(--belvo-text-1)",
+              margin: 0,
+              lineHeight: 1.3,
+            }}
+          >
             {svc.title}
-          </h3>
+          </motion.h3>
         </div>
 
         <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "0.85rem", lineHeight: 1.7, color: "var(--belvo-text-6)", margin: 0, flexGrow: 1 }}>
@@ -154,6 +209,38 @@ function ServiceCard({ svc, i, isIvory, onOpen }: { svc: ServiceItem; i: number;
               {kw}
             </motion.span>
           ))}
+        </motion.div>
+        <motion.div
+          whileHover={{
+            x: 6,
+            color: "#B06CFF",
+          }}
+          transition={{ duration: 0.2 }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginTop: "18px",
+            paddingTop: "14px",
+            borderTop: "1px solid var(--belvo-border-card)",
+            color: "#9D4EDD",
+            fontFamily: "'Inter', sans-serif",
+            fontWeight: 600,
+            fontSize: "0.9rem",
+          }}
+        >
+          <span>Learn More</span>
+
+          <motion.div
+            whileHover={{
+              x: 4,
+              y: -2,
+              rotate: 8,
+            }}
+            transition={{ duration: 0.2 }}
+          >
+            <ArrowUpRight size={18} />
+          </motion.div>
         </motion.div>
       </motion.div>
     </motion.div>
