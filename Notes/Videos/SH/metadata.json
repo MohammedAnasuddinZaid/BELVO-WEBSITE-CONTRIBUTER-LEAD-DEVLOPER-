@@ -1,0 +1,6 @@
+{
+  "name": "OS Question Bank",
+  "description": "A comprehensive Operating System Question Bank with practice tests, dark mode, CSV import, results analytics, and detailed performance tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

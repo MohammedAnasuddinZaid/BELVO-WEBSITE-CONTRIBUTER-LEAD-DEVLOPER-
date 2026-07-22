@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Georgia&family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --color-bg-app: #FFFFFF;
+  --color-bg-card: #FFFFFF;
+  --color-bg-sidebar: #F8F4FF;
+  --color-bg-panel: #F8F4FF;
+  --color-text-app: #1A1A2E;
+  --color-text-muted: #7A7A9A;
+  --color-border-app: #E8E0F0;
+  --color-brand: #9D4EDD;
+  --color-brand-hover: #7B2CBF;
+  --color-brand-text: #FFFFFF;
+  --color-brand-light: #F3E8FF;
+  --color-accent-gold: #B8860B;
+  --color-accent-gold-light: rgba(184, 134, 11, 0.1);
+  --color-accent-rose: #A34A3E;
+  --color-accent-emerald: #4E7C59;
+}
+
+.dark {
+  --color-bg-app: #0F0F1A;
+  --color-bg-card: #1A1A2E;
+  --color-bg-sidebar: #191928;
+  --color-bg-panel: #24243A;
+  --color-text-app: #F0E6FF;
+  --color-text-muted: #9A8AB0;
+  --color-border-app: #2D2D45;
+  --color-brand: #B06CE0;
+  --color-brand-hover: #9D4EDD;
+  --color-brand-text: #FFFFFF;
+  --color-brand-light: #24243A;
+  --color-accent-gold: #D4AF37;
+  --color-accent-gold-light: rgba(212, 175, 55, 0.15);
+  --color-accent-rose: #E06C60;
+  --color-accent-emerald: #69A778;
+}
+
+@theme {
+  --color-bg-app: var(--color-bg-app);
+  --color-bg-card: var(--color-bg-card);
+  --color-bg-sidebar: var(--color-bg-sidebar);
+  --color-bg-panel: var(--color-bg-panel);
+  --color-text-app: var(--color-text-app);
+  --color-text-muted: var(--color-text-muted);
+  --color-border-app: var(--color-border-app);
+  --color-brand: var(--color-brand);
+  --color-brand-hover: var(--color-brand-hover);
+  --color-brand-text: var(--color-brand-text);
+  --color-brand-light: var(--color-brand-light);
+  --color-accent-gold: var(--color-accent-gold);
+  --color-accent-gold-light: var(--color-accent-gold-light);
+  --color-accent-rose: var(--color-accent-rose);
+  --color-accent-emerald: var(--color-accent-emerald);
+
+  --font-serif: "Georgia", "Times New Roman", serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: var(--color-bg-app);
+  color: var(--color-text-app);
+  font-family: var(--font-sans);
+}
