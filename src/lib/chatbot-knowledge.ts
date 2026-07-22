@@ -106,8 +106,12 @@ export const INTENTS: Intent[] = [
     answer: { text: "Hrishikesh Mishra is the Founder & CEO of BELVO. His vision: 'Building BELVO to deliver world-class digital solutions — one idea, one team, one product at a time.'" },
   },
   {
+    keywords: ["pricing", "cost", "how much", "price", "budget", "rates", "package"],
+    answer: { text: "Our pricing is project-based and tailored to your needs. Budget ranges: **Under $1,000**, **$1,000 - $5,000**, **$5,000 - $10,000**, **$10,000 - $25,000**, and **$25,000+**. Book a free call and we'll give you a custom quote within 24 hours." },
+  },
+  {
     keywords: ["contact", "email", "reach", "get in touch", "contact us"],
-    answer: { text: "You can reach us at contact.belvo@gmail.com or info.belvo@gmail.com or career.belvo@gmail.com (for jobs). Call us at +91 89284 66820 or +91 98495 67122. We're active on Instagram (@belvo_official) and LinkedIn (belvo.buzz). Expect a reply within 24 hours. Our office is in Goregaon, Mumbai, Maharashtra." },
+    answer: { text: "You can reach us at **contact.belvo@gmail.com** or **info.belvo@gmail.com** or **career.belvo@gmail.com** (for jobs). Call us at **+91 89284 66820** or **+91 98495 67122**. We're active on **Instagram (@belvo_official)** and **LinkedIn (belvo.buzz)**. Expect a reply within 24 hours. Our office is in Goregaon, Mumbai, Maharashtra." },
   },
   {
     keywords: ["instagram", "social link"],
