@@ -417,15 +417,15 @@ export default function Careers() {
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
-                  gap: "10px",
-                  padding: "14px 36px",
+                  gap: "8px",
+                  padding: "12px 28px",
                   background: "linear-gradient(135deg,#7B2FBE,#9D4EDD)",
                   border: "none",
                   borderRadius: "8px",
                   color: "#ffffff",
                   fontFamily: "'Inter',sans-serif",
                   fontWeight: 600,
-                  fontSize: "0.82rem",
+                  fontSize: "0.75rem",
                   letterSpacing: "0.18em",
                   textTransform: "uppercase",
                   cursor: "pointer",
@@ -443,22 +443,43 @@ export default function Careers() {
                   e.currentTarget.style.transform = "translateY(0)";
                 }}
               >
-                View Open Positions <ArrowUpRight size={14} strokeWidth={2.5} />
+                View Open Positions <ArrowUpRight size={13} strokeWidth={2.5} />
               </button>
               <span style={{
-                display: "inline-flex", alignItems: "center", gap: "8px",
-                padding: "10px 20px",
+                display: "inline-flex", alignItems: "center", gap: "6px",
+                padding: "8px 16px",
                 background: "rgba(123,47,190,0.1)",
                 border: "1px solid rgba(157,78,221,0.2)",
                 borderRadius: "100px",
                 fontFamily: "'Inter',sans-serif",
-                fontSize: "0.78rem",
+                fontSize: "0.7rem",
                 color: "#9D4EDD",
                 letterSpacing: "0.04em",
+                whiteSpace: "nowrap",
               }}>
-                <Mail size={13} />
+                <Mail size={11} />
                 career.belvo@gmail.com
               </span>
+              <button
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: "6px",
+                  padding: "8px 18px",
+                  background: "rgba(123,47,190,0.08)",
+                  border: "1px solid rgba(157,78,221,0.25)",
+                  borderRadius: "100px",
+                  fontFamily: "'Inter',sans-serif",
+                  fontSize: "0.7rem", fontWeight: 500,
+                  color: "#7B2FBE",
+                  letterSpacing: "0.04em", cursor: "pointer",
+                  whiteSpace: "nowrap",
+                  transition: "box-shadow 0.3s, transform 0.2s",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 0 20px rgba(157,78,221,0.3)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translateY(0)"; }}
+                onClick={() => window.location.href = "/notes/index.html"}
+              >
+                Notes <ArrowUpRight size={11} strokeWidth={2.5} />
+              </button>
             </div>
 
             <div style={{
