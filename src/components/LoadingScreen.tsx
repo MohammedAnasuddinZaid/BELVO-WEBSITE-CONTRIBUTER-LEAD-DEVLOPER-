@@ -226,7 +226,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         geo.attributes.position.needsUpdate = true;
         mat.opacity = ease * 0.95;
         gMat.opacity = ease * 0.12;
-        waterMat.opacity = ease;
+        waterMat.uniforms.uOpacity.value = ease;
         mesh.rotation.y = elapsed * 0.25;
         gMesh.rotation.y = elapsed * 0.18;
       } else if (elapsed < 3.5) {
@@ -235,7 +235,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         gMesh.rotation.y = rt * 0.32;
         mat.opacity = 0.95;
         gMat.opacity = 0.12;
-        waterMat.opacity = 1;
+        waterMat.uniforms.uOpacity.value = 1;
         const breathe = 1 + Math.sin(rt * 1.8) * 0.025;
         mesh.scale.set(breathe, breathe, breathe);
         const bgBreathe = 1 + Math.sin(rt * 0.5) * 0.008;
@@ -246,7 +246,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         mesh.scale.set(s, s, s);
         mat.opacity = 0.95 - t * 0.15;
         gMat.opacity = 0.12 - t * 0.05;
-        waterMat.opacity = 1 - t * 0.1;
+        waterMat.uniforms.uOpacity.value = 1 - t * 0.1;
       } else if (elapsed < 4.8) {
         const t = (elapsed - 3.8) / 1.0;
         for (let i = 0; i < N; i++) {
@@ -260,7 +260,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         geo.attributes.position.needsUpdate = true;
         mat.opacity = Math.max(0, 0.85 - t * 0.85);
         gMat.opacity = Math.max(0, 0.12 - t * 0.12);
-        waterMat.opacity = Math.max(0, 0.9 - t * 0.9);
+        waterMat.uniforms.uOpacity.value = Math.max(0, 0.9 - t * 0.9);
         mesh.rotation.y += 0.03;
         gMesh.rotation.y += 0.02;
         mesh.scale.set(1, 1, 1);
@@ -275,7 +275,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         mat.opacity = Math.max(0, mat.opacity - 0.03);
         gMat.opacity = Math.max(0, gMat.opacity - 0.02);
         flashMat.opacity = Math.max(0, flashMat.opacity - 0.04);
-        waterMat.opacity = Math.max(0, waterMat.opacity - 0.03);
+        waterMat.uniforms.uOpacity.value = Math.max(0, waterMat.uniforms.uOpacity.value - 0.03);
       }
 
       renderer.render(scene, camera);
