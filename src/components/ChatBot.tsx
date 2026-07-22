@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { MessageCircle, ArrowLeft, Mic } from "lucide-react";
 import { INTENTS, FALLBACKS, GREETINGS, GREETING_KEYWORDS, type Answer } from "@/lib/chatbot-knowledge";
 import { useVoiceAssistant } from "@/hooks/useVoiceAssistant";
 
@@ -134,6 +135,16 @@ function SendIcon() {
     </svg>
   );
 }
+function renderText(text: string) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/);
+  return parts.map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return <span key={i} style={{ color: "#9d4edd", fontWeight: 600 }}>{part.slice(2, -2)}</span>;
+    }
+    return <span key={i}>{part}</span>;
+  });
+}
+
 function CloseIcon({ size = 18 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -148,15 +159,8 @@ function ChatIcon() {
     </svg>
   );
 }
-function MicIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
-      <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-      <line x1="12" y1="19" x2="12" y2="23" />
-      <line x1="8" y1="23" x2="16" y2="23" />
-    </svg>
-  );
+function MicIcon({ size = 16 }: { size?: number }) {
+  return <Mic size={size} />;
 }
 function MuteIcon() {
   return (
@@ -191,11 +195,15 @@ function MicButton({
       onClick={onClick}
       aria-label={isListening ? "Stop voice input" : "Start voice input"}
       title={isListening ? "Stop voice input" : "Start voice input"}
-      className="rounded-xl w-10 h-10 flex items-center justify-center border-none cursor-pointer shrink-0 relative"
+      className="flex items-center justify-center border-none cursor-pointer shrink-0 relative"
       style={{
-        background: isListening ? "rgba(157,78,221,0.25)" : "rgba(157,78,221,0.12)",
-        color: isListening ? "#9D4EDD" : "rgba(240,230,255,0.6)",
-        border: isListening ? "1.5px solid #9D4EDD" : "1.5px solid rgba(157,78,221,0.2)",
+        width: 40,
+        height: 40,
+        borderRadius: "50%",
+        background: isListening ? "#9d4edd" : "#9d4edd",
+        color: "#fff",
+        border: "none",
+        flexShrink: 0,
       }}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.93 }}
@@ -391,13 +399,40 @@ export default function ChatBot() {
 
   return (
     <>
+      <style>{`
+        @keyframes chatLoaderCircle {
+          0% { transform: rotate(90deg); box-shadow: 0 6px 12px 0 #38bdf8 inset, 0 12px 18px 0 #005dff inset, 0 36px 36px 0 #1e40af inset, 0 0 3px 1.2px rgba(56,189,248,0.3), 0 0 6px 1.8px rgba(0,93,255,0.2); }
+          50% { transform: rotate(270deg); box-shadow: 0 6px 12px 0 #60a5fa inset, 0 12px 6px 0 #0284c7 inset, 0 24px 36px 0 #005dff inset, 0 0 3px 1.2px rgba(56,189,248,0.3), 0 0 6px 1.8px rgba(0,93,255,0.2); }
+          100% { transform: rotate(450deg); box-shadow: 0 6px 12px 0 #4dc8fd inset, 0 12px 18px 0 #005dff inset, 0 36px 36px 0 #1e40af inset, 0 0 3px 1.2px rgba(56,189,248,0.3), 0 0 6px 1.8px rgba(0,93,255,0.2); }
+        }
+        .chat-toggle-loader {
+          position: relative;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #fff;
+          background: linear-gradient(135deg, #7B2FBE, #9D4EDD);
+          box-shadow: 0 0 20px rgba(157,78,221,0.4), 0 0 40px rgba(124,58,237,0.25);
+        }
+        .chat-toggle-loader::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          animation: chatLoaderCircle 5s linear infinite;
+        }
+      `}</style>
+
       {/* ── Screen-reader live region for voice state changes ── */}
       <div aria-live="polite" aria-atomic="true" className="sr-only" id="belvo-voice-status">
         {isListening ? "Listening… speak now." : ""}
         {voiceError ? voiceError : ""}
       </div>
 
-      {/* ── Floating Siri Spectrum Orb Toggle ── */}
+      {/* ── Floating Chat Toggle ── */}
       <motion.button
         id="belvo-chat-toggle"
         onClick={() => setOpen((o) => !o)}
@@ -416,103 +451,8 @@ export default function ChatBot() {
         {open ? (
           <CloseIcon size={24} />
         ) : (
-          <div
-            style={{
-              position: "relative",
-              width: 60,
-              height: 60,
-              borderRadius: "50%",
-              overflow: "hidden",
-              background: [
-                "radial-gradient(ellipse at 75% 25%, #d4498f 0%, transparent 55%)",
-                "radial-gradient(ellipse at 50% 40%, #ed7fe3 0%, transparent 45%)",
-                "radial-gradient(ellipse at 30% 65%, #ba9aca 0%, transparent 50%)",
-                "radial-gradient(ellipse at 45% 80%, #ffffff 0%, transparent 30%)",
-                "#7c3aed",
-              ].join(","),
-              boxShadow: "0 0 30px rgba(76,29,149,0.3), 0 0 15px rgba(236,72,153,0.12), inset 0 0 20px rgba(0,0,0,0.4)",
-            }}
-          >
-            <div style={{ animation: "guillotine-spin 14s linear infinite" }}>
-              <svg
-                viewBox="0 0 120 120"
-                style={{
-                  display: "block",
-                  width: 120,
-                  height: 120,
-                }}
-              >
-                <defs>
-                  {Array.from({ length: 16 }).map((_, i) => (
-                    <linearGradient key={i} id={`wave-${i}`} x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stopColor="rgba(255,255,255,0)" />
-                      <stop offset="25%" stopColor={`rgba(255,255,255,${0.12 + i * 0.015})`} />
-                      <stop offset="50%" stopColor={`rgba(255,255,255,${0.25 + i * 0.02})`} />
-                      <stop offset="75%" stopColor={`rgba(255,255,255,${0.12 + i * 0.015})`} />
-                      <stop offset="100%" stopColor="rgba(255,255,255,0)" />
-                    </linearGradient>
-                  ))}
-                </defs>
-                {Array.from({ length: 24 }).map((_, i) => {
-                  const phase = i * 0.4 + Math.sin(i * 0.2) * 0.3;
-                  const amp = 10 + Math.sin(i * 0.5) * 5;
-                  const freq = 0.06 + Math.sin(i * 0.25) * 0.02;
-                  const yOff = 5 + i * 4.8 + Math.sin(i * 0.6) * 2;
-                  const opacity = 0.12 + Math.sin(i * 0.3) * 0.08 + 0.1;
-                  const strokeW = 0.25 + Math.sin(i * 0.5) * 0.12 + 0.15;
-
-                  const d = Array.from({ length: 140 }, (_, x) => {
-                    const t = x * 1.2;
-                    const ny = yOff
-                      + Math.sin(t * freq + phase) * amp
-                      + Math.sin(t * 0.03 + i * 0.4) * 5
-                      + Math.sin(t * 0.008 + i * 0.7) * 3;
-                    return `${x === 0 ? "M" : "L"} ${t - 10} ${ny}`;
-                  }).join(" ");
-
-                  return (
-                    <path
-                      key={i}
-                      d={d}
-                      fill="none"
-                      stroke={`url(#wave-${i % 16})`}
-                      strokeWidth={strokeW}
-                      opacity={opacity}
-                      style={{ filter: "blur(0.4px)" }}
-                    />
-                  );
-                })}
-                {Array.from({ length: 16 }).map((_, i) => {
-                  const phase = i * 0.6 + 1.5 + Math.cos(i * 0.3) * 0.4;
-                  const amp = 9 + Math.cos(i * 0.7) * 4;
-                  const freq = 0.05 + Math.cos(i * 0.35) * 0.018;
-                  const xOff = 5 + i * 6.5 + Math.cos(i * 0.5) * 2.5;
-                  const opacity = 0.06 + Math.cos(i * 0.4) * 0.05 + 0.05;
-                  const strokeW = 0.2 + Math.cos(i * 0.6) * 0.08 + 0.12;
-
-                  const d = Array.from({ length: 140 }, (_, y) => {
-                    const t = y * 1.2;
-                    const nx = xOff
-                      + Math.sin(t * freq + phase) * amp
-                      + Math.sin(t * 0.025 + i * 0.5) * 4
-                      + Math.sin(t * 0.007 + i * 0.8) * 2.5;
-                    return `${y === 0 ? "M" : "L"} ${nx} ${t - 10}`;
-                  }).join(" ");
-
-                  return (
-                    <path
-                      key={`cross-${i}`}
-                      d={d}
-                      fill="none"
-                      stroke="rgba(255,255,255,0.05)"
-                      strokeWidth={strokeW}
-                      opacity={opacity}
-                      style={{ filter: "blur(0.3px)" }}
-                    />
-                  );
-                })}
-              </svg>
-            </div>
+          <div className="chat-toggle-loader">
+            <MessageCircle size={22} color="white" style={{ position: "relative", zIndex: 1 }} />
           </div>
         )}
       </motion.button>
@@ -522,137 +462,154 @@ export default function ChatBot() {
         {open && (
           <motion.div
             id="belvo-chat-panel"
-            className="fixed bottom-22 left-8 z-[9998] w-[420px] h-[calc(100vh-120px)] max-w-[calc(100vw-2rem)] rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            className="fixed bottom-22 left-8 z-[9998] flex flex-col overflow-hidden"
             style={{
-              background: "var(--belvo-chat-bg)",
-              border: "1px solid var(--belvo-border-card, rgba(157,78,221,0.2))",
+              maxWidth: 400,
+              width: "100%",
+              height: "calc(100vh - 100px)",
+              maxHeight: 780,
+              borderRadius: "16px 16px 0 0",
+              background: "#ffffff",
+              boxShadow: "0 20px 40px -12px rgba(0,0,0,0.25), 0 8px 24px -6px rgba(0,0,0,0.08)",
             }}
-            initial={{ opacity: 0, scale: 0.9, y: 20, originX: 0, originY: 1 }}
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
           >
-            {/* ── Header ── */}
+            {/* ── Header pitch black ── */}
             <div
-              className="flex items-center gap-3 px-5 py-4"
-              style={{ background: "linear-gradient(135deg, #7B2FBE, #9D4EDD)" }}
+              className="flex items-center gap-2 px-4 py-4 shrink-0"
+              style={{ background: "#9d4edd" }}
             >
-              <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-sm">
-                B
+              <ArrowLeft size={20} color="#fff" style={{ marginRight: 2 }} />
+              <div style={{ position: "relative", width: 38, height: 38, flexShrink: 0 }}>
+                <img
+                  src="/Belvo%20logo.png"
+                  alt="Belvo"
+                  style={{ width: 38, height: 38, borderRadius: "50%", objectFit: "cover", background: "#2c2c2e" }}
+                />
+                <span
+                  style={{
+                    position: "absolute",
+                    bottom: 0,
+                    right: 0,
+                    width: 13,
+                    height: 13,
+                    background: "#9d4edd",
+                    border: "2px solid #fff",
+                    borderRadius: "50%",
+                    boxShadow: "0 0 0 1px #fff",
+                  }}
+                />
               </div>
-              <div>
-                <div className="text-white font-semibold text-sm">BELVO Assistant</div>
-                <div className="text-white/70 text-xs flex items-center gap-1.5">
-                  {isListening ? (
-                    <>
-                      <motion.span
-                        style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ade80", display: "inline-block" }}
-                        animate={{ opacity: [1, 0.3, 1] }}
-                        transition={{ duration: 0.9, repeat: Infinity }}
-                      />
-                      Listening…
-                    </>
-                  ) : isAILoading ? (
-                    <>
-                      <motion.span
-                        style={{ width: 6, height: 6, borderRadius: "50%", background: "#facc15", display: "inline-block" }}
-                        animate={{ opacity: [1, 0.3, 1] }}
-                        transition={{ duration: 0.9, repeat: Infinity }}
-                      />
-                      Thinking…
-                    </>
-                  ) : "Online"}
+              <div style={{ flex: 1, marginLeft: 2 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: -0.2, color: "#fff" }}>
+                  BELVO Assistant
+                </div>
+                <div style={{ fontSize: 11, color: "#fff", letterSpacing: 0.2 }}>
+                  Online
                 </div>
               </div>
-
-              {/* Mute / unmute speaker (only if synthesis supported) */}
-              {speechSynthesisSupported && (
-                <button
-                  id="belvo-mute-btn"
-                  onClick={toggleMute}
-                  className="ml-auto text-white/70 hover:text-white cursor-pointer bg-transparent border-none p-1"
-                  aria-label={isMuted ? "Unmute voice" : "Mute voice"}
-                  title={isMuted ? "Unmute voice" : "Mute voice"}
-                >
-                  {isMuted ? <MuteIcon /> : <SpeakerIcon />}
-                </button>
-              )}
-
               <button
                 id="belvo-chat-close"
                 onClick={() => setOpen(false)}
-                className={`${speechSynthesisSupported ? "" : "ml-auto"} text-white/70 hover:text-white cursor-pointer bg-transparent border-none`}
+                className="bg-transparent border-none cursor-pointer"
+                style={{
+                  width: 32,
+                  height: 32,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#fff",
+                  opacity: 0.7,
+                }}
                 aria-label="Close chat"
               >
-                <CloseIcon />
+                <CloseIcon size={18} />
               </button>
             </div>
-            <div className="flex flex-wrap gap-2 px-4 py-3 border-b"
+
+            {/* ── Chat body ── */}
+            <div
+              className="flex-1 overflow-y-auto"
               style={{
-                borderColor: "var(--belvo-border-card)",
+                background: "#fcfcfc",
+                padding: "18px 16px 12px",
+                display: "flex",
+                flexDirection: "column",
+                gap: 12,
+                scrollbarWidth: "thin",
               }}
             >
-              {FAQS.map((faq) => (
-                <button
-                  key={faq.label}
-                  onClick={() => handleSend(faq.prompt)}
-                  className="rounded-full px-4 py-2 text-sm font-medium transition-all duration-200"
-                  style={{
-                    background: "#9D4EDD",
-                    color: "var(--belvo-text-1)",
-                    border: "1.5px solid var(--belvo-border-card)",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = "#9D4EDD";
-                    e.currentTarget.style.background = "rgba(157,78,221,0.08)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = "var(--belvo-border-card)";
-                    e.currentTarget.style.background = "transparent";
-                  }}
-                >
-                  {faq.label}
-                </button>
-              ))}
-            </div>
+              {/* system notice */}
+              <div
+                style={{
+                  textAlign: "center",
+                  fontSize: 10,
+                  color: "#808080",
+                  letterSpacing: 0.2,
+                  lineHeight: 1.5,
+                  marginBottom: 4,
+                  padding: "0 4px",
+                }}
+              >
+                This chat is recorded using a cloud service and is subject to the terms of our{" "}
+                <span style={{ textDecoration: "underline", textUnderlineOffset: 2, fontWeight: 500, color: "#5a5a5a" }}>
+                  Privacy Notice
+                </span>
+                <span style={{ display: "inline-block", marginLeft: 3, fontSize: 10 }}>↗</span>
+              </div>
 
-            {/* ── Message list ── */}
-            <div
-              className="chat-scroll flex-1 overflow-y-auto px-4 py-4 space-y-4"
-              style={{ scrollbarWidth: "thin" }}
-            >
+              {/* timestamp */}
+              <div style={{ textAlign: "center", fontSize: 10, color: "#9e9e9e", margin: "2px 0 6px", letterSpacing: 0.2 }}>
+                1:17 PM
+              </div>
+
+              {/* sender label */}
+              <div style={{ fontSize: 10, fontWeight: 600, color: "#1f1f1f", margin: "4px 0 2px", letterSpacing: -0.1 }}>
+                Belvo AI Agent
+              </div>
+
+              {/* messages */}
               {messages.map((msg, i) => (
                 <div
                   key={i}
-                  className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}
+                  style={{
+                    display: "flex",
+                    justifyContent: msg.isUser ? "flex-end" : "flex-start",
+                  }}
                 >
                   <div
-                    className={`max-w-[75%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-md transition-all duration-200 ${msg.isUser
-                        ? "rounded-br-md"
-                        : "rounded-bl-md backdrop-blur-md"
-                      }`}
                     style={{
-                      background: msg.isUser
-                        ? "linear-gradient(135deg, #7B2FBE, #9D4EDD)"
-                        : "var(--belvo-bg-card)",
-                      color: msg.isUser ? "#fff" : "var(--belvo-text-1)",
-                      border: msg.isUser
-                        ? "none"
-                        : "1px solid rgba(157,78,221,0.2)",
-                      boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                      background: "#fff",
+                      padding: "12px 18px",
+                      borderRadius: msg.isUser ? "18px 18px 4px 18px" : "18px 18px 18px 4px",
+                      maxWidth: "90%",
+                      fontSize: 13,
+                      lineHeight: 1.5,
+                      color: msg.isUser ? "#000" : "#1d1d1d",
+                      border: msg.isUser ? "1px solid #9d4edd" : "1px solid #000",
+                      wordBreak: "break-word",
+                      boxShadow: "0 1px 2px rgba(0,0,0,0.02)",
                     }}
                   >
-                    {msg.text}
-
+                    {renderText(msg.text)}
                     {msg.link && (
                       <a
                         href={msg.link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="block mt-2 text-xs font-medium underline"
-                        style={{ color: "#C084FC" }}
+                        style={{
+                          display: "block",
+                          marginTop: 8,
+                          fontSize: 12,
+                          fontWeight: 500,
+                          textDecoration: "underline",
+                          color: "#5a5a5a",
+                        }}
                       >
-                        {msg.link.label} →
+                        {msg.link.label}
                       </a>
                     )}
                   </div>
@@ -663,10 +620,10 @@ export default function ChatBot() {
               {isAILoading && (
                 <div className="flex justify-start">
                   <div
-                    className="max-w-[85%] rounded-2xl rounded-bl-md px-4 py-2.5"
                     style={{
-                      background: "rgba(255,255,255,0.06)",
-                      border: "1px solid rgba(255,255,255,0.12)",
+                      background: "#f1f1f1",
+                      padding: "12px 18px",
+                      borderRadius: "18px 18px 18px 4px",
                     }}
                   >
                     <ThinkingDots />
@@ -674,61 +631,115 @@ export default function ChatBot() {
                 </div>
               )}
 
-              {/* Voice error inline message */}
+              {/* Voice error */}
               {voiceError && (
-                <div className="flex justify-start">
+                <div style={{ display: "flex", justifyContent: "center", margin: "4px 0" }}>
                   <div
-                    className="max-w-[85%] rounded-2xl rounded-bl-md px-4 py-2.5 text-xs"
                     style={{
-                      background: "rgba(239,68,68,0.12)",
-                      border: "1px solid rgba(239,68,68,0.3)",
-                      color: "#fca5a5",
+                      background: "#fff",
+                      padding: "8px 16px",
+                      borderRadius: 8,
+                      fontSize: 12,
+                      color: "#dc2626",
+                      border: "1px solid #fca5a5",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                      boxShadow: "0 2px 8px rgba(220,38,38,0.08)",
                     }}
                   >
-                    🎤 {voiceError}
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" y1="8" x2="12" y2="12" />
+                      <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                    {voiceError}
                   </div>
                 </div>
               )}
 
+              {/* suggestion chips */}
+              <div style={{ marginTop: 8, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4, width: "100%" }}>
+                <span style={{ fontSize: 11, color: "#9e9e9e", letterSpacing: 0.2, paddingRight: 4 }}>Just now</span>
+                <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-end", gap: 8, maxWidth: "100%" }}>
+                  {FAQS.map((faq) => (
+                    <span
+                      key={faq.label}
+                      onClick={() => handleSend(faq.prompt)}
+                      style={{
+                        background: "#ffffff",
+                        border: "1px solid #9d4edd",
+                        borderRadius: 50,
+                        padding: "8px 18px",
+                          fontSize: 12,
+                          fontWeight: 500,
+                          color: "#6b6b6b",
+                          whiteSpace: "nowrap",
+                          cursor: "pointer",
+                          letterSpacing: -0.1,
+                      }}
+                    >
+                      {faq.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
               <div ref={endRef} />
             </div>
 
-            {/* ── Input row ── */}
-            <div className="px-4 py-3 border-t" style={{ borderColor: "var(--belvo-border-card, rgba(157,78,221,0.15))" }}>
-              <div className="flex gap-2">
+            {/* ── Input area ── */}
+            <div
+              className="shrink-0"
+              style={{
+                borderTop: "1px solid #e2e2e2",
+                background: "#ffffff",
+                padding: "14px 16px 12px",
+                display: "flex",
+                flexDirection: "column",
+                gap: 8,
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <img src="/Belvo%20logo.png" alt="Belvo" style={{ width: 20, height: 20, borderRadius: "50%", objectFit: "cover", background: "#2c2c2e" }} />
                 <input
                   ref={inputRef}
                   id="belvo-chat-input"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && !isAILoading && handleSend(undefined, "text")}
-                  placeholder={isListening ? "Listening… speak now" : "Ask me anything…"}
+                  placeholder={isListening ? "Listening… speak now" : "Type a message"}
                   disabled={isAILoading}
-                  className="flex-1 rounded-xl px-4 py-2.5 text-sm outline-none"
                   style={{
-                    background: "var(--belvo-bg-card)",
-                    color: "var(--belvo-text-1, #f0e6ff)",
-                    border: `1px solid ${isListening ? "#9D4EDD" : "var(--belvo-border-card, rgba(157,78,221,0.2))"}`,
-                    transition: "border-color 0.2s",
+                    flex: 1,
+                    border: "2px solid #9d4edd",
+                    borderRadius: 50,
+                    padding: "10px 16px",
+                    fontSize: 13,
+                    fontFamily: "inherit",
+                    background: "#ffffff",
+                    outline: "none",
+                    color: "#1a1a1a",
+                    minWidth: 0,
                     opacity: isAILoading ? 0.6 : 1,
                   }}
                 />
-
-                {/* Mic button — hidden if recognition not supported */}
                 {speechRecognitionSupported && (
                   <MicButton isListening={isListening} onClick={handleMicToggle} />
                 )}
-
-                {/* Send button — always text source */}
                 <motion.button
                   id="belvo-chat-send"
                   onClick={() => handleSend(undefined, "text")}
                   disabled={isAILoading}
-                  className="rounded-xl w-10 h-10 flex items-center justify-center border-none cursor-pointer shrink-0"
+                  className="flex items-center justify-center border-none shrink-0"
                   style={{
-                    background: isAILoading ? "rgba(157,78,221,0.4)" : "#9D4EDD",
+                    width: 40,
+                    height: 40,
+                    borderRadius: "50%",
+                    background: "#9d4edd",
                     color: "#fff",
                     cursor: isAILoading ? "not-allowed" : "pointer",
+                    opacity: isAILoading ? 0.4 : 1,
                   }}
                   whileHover={isAILoading ? {} : { scale: 1.05 }}
                   whileTap={isAILoading ? {} : { scale: 0.95 }}
