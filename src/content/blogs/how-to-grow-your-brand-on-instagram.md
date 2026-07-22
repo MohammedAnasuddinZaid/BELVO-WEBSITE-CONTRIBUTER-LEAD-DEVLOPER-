@@ -3,7 +3,7 @@ title: How to Grow Your Brand on Instagram in 2025
 date: 2025-05-10
 category: Marketing
 excerpt: Instagram is still one of the most powerful platforms for brand growth. Here's what actually works in 2025 — from reels strategy to community building.
-thumbnail: /blog-covers/instagram-marketing.png
+thumbnail: /blog-covers/instagram-marketing-soft.jpg
 published: true
 ---
 
