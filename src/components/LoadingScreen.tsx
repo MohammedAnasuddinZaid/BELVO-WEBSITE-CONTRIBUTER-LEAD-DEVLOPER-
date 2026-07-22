@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import * as THREE from "three";
-import { createWaterBackgroundMaterial } from "../shaders/waterBackgroundShader";
 
 interface LoadingScreenProps {
   onComplete: () => void;
@@ -9,8 +8,6 @@ interface LoadingScreenProps {
 
 const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5));
 const LETTERS = "BELVO".split("");
-const BG_IMAGE = "/splash-bg.jpg";
-const IMG_ASPECT = 845 / 472;
 
 function makeSpriteTexture(color: string): THREE.CanvasTexture {
   const c = document.createElement("canvas");
@@ -36,18 +33,10 @@ function computeParticleColors(
     const y = home[i * 3 + 1];
     const t = (y / 2.12) * 0.5 + 0.5;
 
-    let r: number, g: number, b: number;
-    if (t < 0.5) {
-      const s = t * 2;
-      r = 0.55 + s * (0.82 - 0.55);
-      g = 0.25 + s * (0.55 - 0.25);
-      b = 0.55 + s * (0.55 - 0.55);
-    } else {
-      const s = (t - 0.5) * 2;
-      r = 0.82 + s * (0.90 - 0.82);
-      g = 0.55 + s * (0.75 - 0.55);
-      b = 0.55 - s * (0.55 - 0.43);
-    }
+    const s = Math.min(1, t * 1.2);
+    const r = 0.95 + s * (1.0 - 0.95);
+    const g = 0.70 + s * (0.95 - 0.70);
+    const b = 0.30 + s * (0.70 - 0.30);
 
     colors[i * 3] = r;
     colors[i * 3 + 1] = g;
@@ -61,6 +50,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const doneRef = useRef(onComplete);
   doneRef.current = onComplete;
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -70,7 +60,8 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
     }
 
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const video = videoRef.current;
+    if (!canvas || !video) return;
 
     const w = innerWidth;
     const h = innerHeight;
@@ -87,19 +78,6 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
     renderer.setClearColor(0x000000, 0);
 
     const particleTex = makeSpriteTexture("rgba(255,255,255,1)");
-
-    // ── Water-distorted background image ──
-    const loader = new THREE.TextureLoader();
-    const bgTex = loader.load(BG_IMAGE);
-    bgTex.colorSpace = THREE.SRGBColorSpace;
-
-    const waterMat = createWaterBackgroundMaterial(bgTex, IMG_ASPECT);
-    const bgSize = 2 * Math.tan((60 * Math.PI) / 360) * camera.position.z * 2.2;
-    const bgGeo = new THREE.PlaneGeometry(bgSize * (w / h), bgSize);
-    const bgMesh = new THREE.Mesh(bgGeo, waterMat);
-    bgMesh.renderOrder = -1;
-    bgMesh.frustumCulled = false;
-    scene.add(bgMesh);
 
     // ── Sphere particles ──
     const N = 2800;
@@ -219,8 +197,6 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
       const elapsed = (performance.now() - start) / 1000;
       const p = geo.attributes.position.array as Float32Array;
 
-      waterMat.uniforms.uTime.value = elapsed;
-
       if (elapsed < 1.5) {
         const t = elapsed / 1.5;
         const ease = t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
@@ -232,7 +208,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         geo.attributes.position.needsUpdate = true;
         mat.opacity = ease * 0.95;
         gMat.opacity = ease * 0.12;
-        waterMat.uniforms.uOpacity.value = ease;
+        video.style.opacity = String(ease);
         mesh.rotation.y = elapsed * 0.25;
         gMesh.rotation.y = elapsed * 0.18;
       } else if (elapsed < 3.5) {
@@ -241,18 +217,16 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         gMesh.rotation.y = rt * 0.32;
         mat.opacity = 0.95;
         gMat.opacity = 0.12;
-        waterMat.uniforms.uOpacity.value = 1;
+        video.style.opacity = '1';
         const breathe = 1 + Math.sin(rt * 1.8) * 0.025;
         mesh.scale.set(breathe, breathe, breathe);
-        const bgBreathe = 1 + Math.sin(rt * 0.5) * 0.008;
-        bgMesh.scale.set(bgBreathe, bgBreathe, 1);
       } else if (elapsed < 3.8) {
         const t = (elapsed - 3.5) / 0.3;
         const s = 1 - t * 0.08;
         mesh.scale.set(s, s, s);
         mat.opacity = 0.95 - t * 0.15;
         gMat.opacity = 0.12 - t * 0.05;
-        waterMat.uniforms.uOpacity.value = 1 - t * 0.1;
+        video.style.opacity = String(1 - t * 0.1);
       } else if (elapsed < 4.8) {
         const t = (elapsed - 3.8) / 1.0;
         for (let i = 0; i < N; i++) {
@@ -266,7 +240,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         geo.attributes.position.needsUpdate = true;
         mat.opacity = Math.max(0, 0.85 - t * 0.85);
         gMat.opacity = Math.max(0, 0.12 - t * 0.12);
-        waterMat.uniforms.uOpacity.value = Math.max(0, 0.9 - t * 0.9);
+        video.style.opacity = String(Math.max(0, 0.9 - t * 0.9));
         mesh.rotation.y += 0.03;
         gMesh.rotation.y += 0.02;
         mesh.scale.set(1, 1, 1);
@@ -281,7 +255,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         mat.opacity = Math.max(0, mat.opacity - 0.03);
         gMat.opacity = Math.max(0, gMat.opacity - 0.02);
         flashMat.opacity = Math.max(0, flashMat.opacity - 0.04);
-        waterMat.uniforms.uOpacity.value = Math.max(0, waterMat.uniforms.uOpacity.value - 0.03);
+        video.style.opacity = String(Math.max(0, parseFloat(video.style.opacity || '1') - 0.03));
       }
 
       renderer.render(scene, camera);
@@ -296,7 +270,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
     const t3 = setTimeout(() => {
       setPhase("hidden");
       doneRef.current();
-    }, 5000);
+    }, 4200);
 
     const onResize = () => {
       const nw = innerWidth;
@@ -305,7 +279,6 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
       camera.position.z = nw < 768 ? 6 : 4.5;
       camera.updateProjectionMatrix();
       renderer.setSize(nw, nh);
-      waterMat.uniforms.uScreenAspect.value = nw / nh;
     };
     addEventListener("resize", onResize);
 
@@ -320,9 +293,6 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
       flashMat.dispose();
       flashTex.dispose();
       particleTex.dispose();
-      bgGeo.dispose();
-      waterMat.dispose();
-      bgTex.dispose();
       scene.clear();
       clearTimeout(t1);
       clearTimeout(t2);
@@ -344,6 +314,24 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         backgroundColor: "#04000e",
       }}
     >
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        loop
+        playsInline
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          opacity: 0,
+          zIndex: 0,
+        }}
+      >
+        <source src="/videos/belvo-opening-bg.mp4" type="video/mp4" />
+      </video>
       <canvas
         ref={canvasRef}
         style={{
@@ -353,6 +341,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
           height: "100%",
           display: "block",
           touchAction: "none",
+          zIndex: 1,
         }}
       />
 
@@ -375,10 +364,10 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
             style={{
               fontFamily: "'Cinzel', serif",
               fontSize: "clamp(3rem, 10vw, 7rem)",
-              color: "#f5f0eb",
+              color: "#ffffff",
               letterSpacing: "clamp(0.03em, 1.5vw, 0.08em)",
-              textShadow:
-                "0 2px 24px rgba(0,0,0,0.25), 0 0 60px rgba(0,0,0,0.1)",
+              WebkitTextStroke: "1.5px rgba(0,0,0,0.65)",
+              textShadow: "0 0 12px rgba(0,0,0,0.5)",
               perspective: "800px",
             }}
           >
@@ -428,12 +417,13 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
             style={{
               fontFamily: "'Cormorant Garamond', serif",
               fontSize: "clamp(1rem, 3vw, 1.8rem)",
-              color: "rgba(255,255,255,0.85)",
+              color: "#ffffff",
               letterSpacing: "clamp(0.12em, 2vw, 0.25em)",
               marginTop: "1.5rem",
-              fontWeight: 300,
+              fontWeight: 400,
               textTransform: "uppercase",
-              textShadow: "0 2px 16px rgba(0,0,0,0.15)",
+              WebkitTextStroke: "0.8px rgba(0,0,0,0.5)",
+              textShadow: "0 0 10px rgba(0,0,0,0.4)",
             }}
           >
             A Perfect Agency For Your Brand
@@ -455,7 +445,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
               height: 1,
               width: "clamp(80px, 15vw, 180px)",
               background:
-                "linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)",
+                "linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)",
               marginTop: "2rem",
               transformOrigin: "center",
             }}
