@@ -24,6 +24,8 @@ import ChatBot from "@/components/ChatBot";
 import CursorFollower from "@/components/CursorFollower";
 import GrainOverlay from "@/components/GrainOverlay";
 import React, { useState } from "react";
+import DemoOne from "@/pages/DemoOne";
+import NotesPDFs from "@/pages/NotesPDFs";
 
 const queryClient = new QueryClient();
 
@@ -62,7 +64,7 @@ function Router() {
   return (
     <div
       className="min-h-[100dvh] flex flex-col"
-      style={{ background: "var(--belvo-bg)", color: "var(--belvo-text-1)" }}
+      style={{ color: "#1a1a1a" }}
     >
       <Navbar />
       <main className="flex-1">
@@ -72,7 +74,6 @@ function Router() {
               <Route path="/" component={Home} />
               <Route path="/about" component={About} />
               <Route path="/careers" component={Careers} />
-              <Route path="/resources" component={Blogs} />
               <Route path="/blogs" component={Blogs} />
               <Route path="/works" component={Works} />
               <Route path="/tools" component={Tools} />
@@ -81,6 +82,8 @@ function Router() {
               <Route path="/contact">
                 <ComingSoon title="Contact Us" />
               </Route>
+              <Route path="/demo" component={DemoOne} />
+              <Route path="/notes-pdfs" component={NotesPDFs} />
               <Route component={NotFound} />
             </Switch>
           </AnimatedPage>
