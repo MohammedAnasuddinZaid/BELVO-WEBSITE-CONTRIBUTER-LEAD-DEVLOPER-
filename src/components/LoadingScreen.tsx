@@ -89,7 +89,8 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
     bgTex.colorSpace = THREE.SRGBColorSpace;
 
     const waterMat = createWaterBackgroundMaterial(bgTex, IMG_ASPECT);
-    const bgGeo = new THREE.PlaneGeometry(2, 2);
+    const bgSize = 2 * Math.tan((60 * Math.PI) / 360) * 4.5 * 2.2;
+    const bgGeo = new THREE.PlaneGeometry(bgSize * (innerWidth / innerHeight), bgSize);
     const bgMesh = new THREE.Mesh(bgGeo, waterMat);
     bgMesh.renderOrder = -1;
     bgMesh.frustumCulled = false;
